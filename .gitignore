@@ -1,5 +1,8 @@
 target/
 
+# intellij
+.idea
+
 *.class
 
 # Mobile Tools for Java (J2ME)
@@ -10,6 +13,7 @@ target/
 *.war
 *.ear
 
+# eclipse
 .settings
 .classpath
 .project 
