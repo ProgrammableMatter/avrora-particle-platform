@@ -2,6 +2,7 @@ target/
 
 # intellij
 .idea
+*.iml
 
 *.class
 
