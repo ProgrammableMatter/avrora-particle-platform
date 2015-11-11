@@ -4,7 +4,7 @@ import edu.ucla.cs.compilers.avrora.avrora.sim.mcu.Microcontroller;
 
 /**
  * implementation of an SMA-Wire; SMA = Shape Memory Alloy
- * 
+ *
  * @author Raoul Rubien
  *
  */
@@ -30,7 +30,7 @@ public class SmaWire
 
 
     /**
-     * 
+     *
      * @return From {@link SmaWire} perspective the TX input pin.
      */
     public Microcontroller.Pin.Output getTxIn()
@@ -40,7 +40,7 @@ public class SmaWire
 
 
     /**
-     * 
+     *
      * @return From {@link SmaWire} perspective the RX output pin.
      */
     public Microcontroller.Pin.Input getRxOut()
@@ -50,7 +50,7 @@ public class SmaWire
 
 
     /**
-     * 
+     *
      * @return From {@link SmaWire} perspective the SWITCH_TX/RX input pin.
      */
     public Microcontroller.Pin.Output getRxSwitchOut()
