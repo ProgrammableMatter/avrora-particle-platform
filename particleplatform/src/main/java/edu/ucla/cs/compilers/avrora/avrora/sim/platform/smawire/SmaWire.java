@@ -1,4 +1,4 @@
-package at.tugraz.ist.avrora.particleplatform.smawire;
+package edu.ucla.cs.compilers.avrora.avrora.sim.platform.smawire;
 
 import edu.ucla.cs.compilers.avrora.avrora.sim.mcu.Microcontroller;
 

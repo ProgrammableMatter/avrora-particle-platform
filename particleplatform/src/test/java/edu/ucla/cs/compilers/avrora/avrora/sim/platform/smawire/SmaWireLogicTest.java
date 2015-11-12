@@ -1,4 +1,4 @@
-package at.tugraz.ist.avrora.particleplatform.smawire;
+package edu.ucla.cs.compilers.avrora.avrora.sim.platform.smawire;
 
 import static org.junit.Assert.assertEquals;
 

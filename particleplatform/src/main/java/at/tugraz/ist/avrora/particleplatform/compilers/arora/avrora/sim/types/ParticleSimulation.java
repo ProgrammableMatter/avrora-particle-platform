@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.ucla.cs.compilers.arora.avrora.sim.types;
+package at.tugraz.ist.avrora.particleplatform.compilers.arora.avrora.sim.types;
 
 import java.util.Random;
 
@@ -38,8 +38,9 @@ import edu.ucla.cs.compilers.avrora.avrora.Main;
 import edu.ucla.cs.compilers.avrora.avrora.core.LoadableProgram;
 import edu.ucla.cs.compilers.avrora.avrora.sim.Simulation;
 import edu.ucla.cs.compilers.avrora.avrora.sim.SimulatorThread;
-import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformConnector;
+import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformNodeConnector;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.PlatformFactory;
+import edu.ucla.cs.compilers.avrora.avrora.sim.platform.WiredPlatformConnector;
 import edu.ucla.cs.compilers.avrora.avrora.sim.types.WiredSimulation;
 import edu.ucla.cs.compilers.avrora.cck.text.StringUtil;
 import edu.ucla.cs.compilers.avrora.cck.util.Option;
@@ -140,14 +141,14 @@ public class ParticleSimulation extends Simulation
     long stagger;
 
     // class that connects all the nodes together via wire interconnect
-    ParticlePlatformConnector particleConnector;
+    WiredPlatformConnector particleConnector;
 
 
     public ParticleSimulation()
     {
         super("wired", HELP, null);
 
-        particleConnector = ParticlePlatformConnector.getInstance();
+        particleConnector = ParticlePlatformNodeConnector.getInstance();
         synchronizer = particleConnector.getSynchronizer();
 
         addSection("WIRED SIMULATION OVERVIEW", help);

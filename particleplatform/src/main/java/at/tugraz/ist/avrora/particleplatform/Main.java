@@ -1,6 +1,6 @@
 package at.tugraz.ist.avrora.particleplatform;
 
-import edu.ucla.cs.compilers.arora.avrora.sim.types.ParticleSimulation;
+import at.tugraz.ist.avrora.particleplatform.compilers.arora.avrora.sim.types.ParticleSimulation;
 import edu.ucla.cs.compilers.avrora.avrora.Defaults;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatform;
 
