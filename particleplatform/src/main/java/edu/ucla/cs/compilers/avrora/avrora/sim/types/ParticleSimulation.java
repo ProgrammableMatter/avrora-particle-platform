@@ -1,44 +1,35 @@
 /**
- * Copyright (c) 2004-2005, Regents of the University of California
- * All rights reserved.
+ * Copyright (c) 2004-2005, Regents of the University of California All rights reserved.
  * <p>
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+ * following conditions are met:
  * <p>
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+ * disclaimer.
  * <p>
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+ * disclaimer in the documentation and/or other materials provided with the distribution.
  * <p>
- * Neither the name of the University of California, Los Angeles nor the
- * names of its contributors may be used to endorse or promote products
- * derived from this software without specific prior written permission.
+ * Neither the name of the University of California, Los Angeles nor the names of its contributors may be used to
+ * endorse or promote products derived from this software without specific prior written permission.
  * <p>
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package at.tugraz.ist.avrora.particleplatform.compilers.arora.avrora.sim.types;
+package edu.ucla.cs.compilers.avrora.avrora.sim.types;
 
 import edu.ucla.cs.compilers.avrora.avrora.Main;
 import edu.ucla.cs.compilers.avrora.avrora.core.LoadableProgram;
 import edu.ucla.cs.compilers.avrora.avrora.sim.Simulation;
 import edu.ucla.cs.compilers.avrora.avrora.sim.SimulatorThread;
-import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformNodeConnector;
+import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatform;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.PlatformFactory;
-import edu.ucla.cs.compilers.avrora.avrora.sim.platform.WiredPlatformConnector;
 import edu.ucla.cs.compilers.avrora.avrora.sim.types.WiredSimulation;
 import edu.ucla.cs.compilers.avrora.cck.text.StringUtil;
 import edu.ucla.cs.compilers.avrora.cck.util.Option;
@@ -48,15 +39,13 @@ import edu.ucla.cs.compilers.avrora.cck.util.Util;
 import java.util.Random;
 
 /**
- * The <code>WiredSimulation</code> class represents a simulation type where
- * multiple nodes, each with a microcontroller are connected together by wires.
- * It supports options from the command line that allow a simulation to be
- * constructed with multiple nodes with multiple different programs.
+ * The <code>WiredSimulation</code> class represents a simulation type where multiple nodes, each with a microcontroller
+ * are connected together by wires. It supports options from the command line that allow a simulation to be constructed
+ * with multiple nodes with multiple different programs.
  *
  * @author Jacob Everist
  *         <p>
- *         TODO: this s a copy of {@link WiredSimulation} because of lack of
- *         extensibility.
+ *         TODO: this s a copy of {@link WiredSimulation} because of lack of extensibility.
  */
 public class ParticleSimulation extends Simulation {
 
@@ -79,55 +68,46 @@ public class ParticleSimulation extends Simulation {
             " of clock cycles. For example, if this option is given the value X, then node 0 will start at " +
             "time 0, node 1 at time 1*X, node 2 at time 2*X, etc.");
     long stagger;
-    // class that connects all the nodes together via wire interconnect
-    WiredPlatformConnector particleConnector;
 
     public ParticleSimulation() {
         super("wired", HELP, null);
 
-        particleConnector = ParticlePlatformNodeConnector.getInstance();
-        synchronizer = particleConnector.getSynchronizer();
+        synchronizer = ParticlePlatform.getPlatformConnector().getSynchronizer();
 
         addSection("WIRED SIMULATION OVERVIEW", help);
         addOptionSection("This simulation type supports simulating multiple nodes that communicate  with each " +
                 "other over wires. There are options to specify how many of each type of node to instantiate, as" +
                 " well as the program to be loaded onto each node.", options);
 
-        PLATFORM.setNewDefault("PARTICLE");
+        PLATFORM.setNewDefault("particle");
     }
 
     /**
-     * The <code>process()</code> method processes options and arguments from
-     * the command line. In this implementation, this method accepts multiple
-     * programs from the command line as arguments as well as options that
-     * describe how many of each type of node to instantiate.
+     * The <code>process()</code> method processes options and arguments from the command line. In this implementation,
+     * this method accepts multiple programs from the command line as arguments as well as options that describe how
+     * many of each type of node to instantiate.
      *
      * @param o    the options from the command line
      * @param args the arguments from the command line
-     * @throws Exception if there is a problem loading any of the files or
-     *                   instantiating the simulation
+     * @throws Exception if there is a problem loading any of the files or instantiating the simulation
      */
     @Override
     public void process(Options o, String[] args) throws Exception {
         options.process(o);
         processMonitorList();
 
-        if (args.length == 0)
-            Util.userError("Simulation error", "No program specified");
+        if (args.length == 0) Util.userError("Simulation error", "No program specified");
         Main.checkFilesExist(args);
         PlatformFactory pf = getPlatform();
 
         // create the nodes based on arguments
         createNodes(args, pf);
-
     }
 
     /**
-     * The <code>newNode()</code> method creates a new node in the simulation.
-     * In this implementation, a <code>WiredNode</code> is created that
-     * contains, in addition to the simulator, ID, program, etc, a reference to
-     * the <code>Radio</code> instance for the node and a
-     * <code>SimulatorThread</code> for the node.
+     * The <code>newNode()</code> method creates a new node in the simulation. In this implementation, a
+     * <code>WiredNode</code> is created that contains, in addition to the simulator, ID, program, etc, a reference to
+     * the <code>Radio</code> instance for the node and a <code>SimulatorThread</code> for the node.
      *
      * @param id the integer identifier for the node
      * @param pf the platform factory to use to instantiate the node
@@ -143,14 +123,13 @@ public class ParticleSimulation extends Simulation {
     protected void instantiateNodes() {
         super.instantiateNodes();
 
-        particleConnector.initializeConnections();
+        ParticlePlatform.getPlatformConnector().initializeConnections();
     }
 
     private void createNodes(String[] args, PlatformFactory pf) throws Exception {
         int cntr = 0;
         for (String str : NODECOUNT.get()) {
-            if (args.length <= cntr)
-                break;
+            if (args.length <= cntr) break;
 
             String pname = args[cntr++];
             LoadableProgram lp = new LoadableProgram(pname);
@@ -174,8 +153,7 @@ public class ParticleSimulation extends Simulation {
         if (size > 0) {
             Random r = getRandom();
             delay = r.nextLong();
-            if (delay < 0)
-                delay = -delay;
+            if (delay < 0) delay = -delay;
             delay = delay % size;
         }
 
@@ -189,26 +167,22 @@ public class ParticleSimulation extends Simulation {
     }
 
     /**
-     * The <code>WiredNode</code> class extends the <code>Node</code> class of a
-     * simulation by adding a reference to the radio device as well as sensor
-     * data input. It extends the <code>instantiate()</code> method to create a
-     * new thread for the node and to attach the sensor data input.
+     * The <code>WiredNode</code> class extends the <code>Node</code> class of a simulation. It extends the
+     * <code>instantiate()</code> method to create a new thread for the node and to attach the sensor data input.
      */
     protected class WiredNode extends Node {
 
-        long startup;
+        protected long startup;
 
-        WiredNode(int id, PlatformFactory pf, LoadableProgram p) {
+        public WiredNode(int id, PlatformFactory pf, LoadableProgram p) {
             super(id, pf, p);
         }
 
         /**
-         * The <code>instantiate()</code> method of the sensor node extends the
-         * default simulation node by creating a new thread to execute the node
-         * as well as getting references to the radio and adding it to the radio
-         * model, adding an optional start up delay for each node, and
-         * connecting the node's sensor input to replay or random data as
-         * specified on the command line.
+         * The <code>instantiate()</code> method of the sensor node extends the default simulation node by creating a
+         * new thread to execute the node as well as getting references to the radio and adding it to the radio model,
+         * adding an optional start up delay for each node, and connecting the node's sensor input to replay or random
+         * data as specified on the command line.
          */
         @Override
         protected void instantiate() {
@@ -216,13 +190,12 @@ public class ParticleSimulation extends Simulation {
         }
 
         /**
-         * The <code>remove()</code> method removes this node from the
-         * simulation. This method extends the default simulation remove method
-         * by removing the node from the radio air implementation.
+         * The <code>remove()</code> method removes this node from the simulation. This method extends the default
+         * simulation remove method by removing the node from the radio air implementation.
          */
         @Override
         protected void remove() {
-            particleConnector.disconnectConnections();
+            ParticlePlatform.getPlatformConnector().disconnectConnections();
         }
 
         private void createNode() {
@@ -231,5 +204,4 @@ public class ParticleSimulation extends Simulation {
             simulator.delay(startup);
         }
     }
-
 }

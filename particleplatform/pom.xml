@@ -21,6 +21,13 @@
     </scm>
 
     <build>
+
+        <resources>
+            <resource>
+                <directory>resource</directory>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -85,8 +92,15 @@
         <dependency>
             <groupId>com.github.avrora-framework</groupId>
             <artifactId>avrora</artifactId>
-            <version>0.1.44-SNAPSHOT</version>
+            <version>0.1.45-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.2</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>
