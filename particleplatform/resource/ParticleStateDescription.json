@@ -1,0 +1,42 @@
+{
+  /* the StateType enum */
+  "stateType": [
+    "STATE_TYPE_START",
+    "STATE_TYPE_ACTIVE",
+    "STATE_TYPE_NEIGHBOURS_DISCOVERY",
+    "STATE_TYPE_WAITING",
+    "STATE_TYPE_RESET",
+    "STATE_TYPE_ENUMERATED",
+    "STATE_TYPE_IDLE",
+    "STATE_TYPE_RX_A",
+    "STATE_TYPE_RX_B",
+    "STATE_TYPE_FORWARD_PKG",
+    "STATE_TYPE_SCHEDULE_COMMAND",
+    "STATE_TYPE_COMMAND_SCHEDULED_ACK"
+  ],
+  /* the NodeType enum */
+  "nodeType": [
+    "NODE_TYPE_ORPHAN",
+    "NODE_TYPE_HEAD",
+    "NODE_TYPE_INTER_NODE",
+    "NODE_TYPE_TAIL"
+  ],
+  /* definition of global state struct */
+  "globalState": {
+    "state": "StateType",
+    "type": "NodeType",
+    "nodeId": "unsigned char"
+  },
+  /* global structs start addresses */
+  "addresses": {
+    "globalState": 96
+  },
+  /* data type size in byte on microcontroller */
+  "sizeofTypes": {
+    "StateType": 1,
+    "NodeType": 1,
+    "unsigned char": 1,
+    "enum": 1,
+    "char": 1
+  }
+}
