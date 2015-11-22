@@ -38,14 +38,20 @@ public class OnParticleStateChangeWatch extends Simulator.Watch.Empty {
         if (data_addr < registerWriteCount.length) {
             registerWriteCount[data_addr]++;
         }
-        int oldRegisterValue = ((AtmelInterpreter.StateImpl) simulator.getInterpreter().getState())
-                .getRegisterByte(data_addr);
+        int oldRegisterValue = ((AtmelInterpreter.StateImpl) simulator.getInterpreter().getState()).getRegisterByte
+                (data_addr);
         if (oldRegisterValue != value) {
             registerChangeCount[data_addr]++;
         }
 
+        String valueString = "nan";
+        try {
+            valueString = stateRegister.toDetailedType(data_addr, value);
+        } catch (Exception e) {
+            valueString = Integer.toHexString(value);
+        }
         StringBuffer buffer = simulator.getPrinter().getBuffer().append("SRAM[" + stateRegister
-                .getAddressToRegisterMapping().get(data_addr) + "] <- " + Integer.toHexString(value));
+                .getAddressToRegisterNameMapping().get(data_addr) + "] <- " + valueString);
         simulator.getPrinter().printBuffer(buffer);
         particleStateLogger.log(buffer);
     }
@@ -55,7 +61,7 @@ public class OnParticleStateChangeWatch extends Simulator.Watch.Empty {
         Terminal.printGreen("   Address      Writes      Changes");
         Terminal.nextln();
         TermUtil.printThinSeparator(Terminal.MAXLINE);
-        for (Map.Entry<Integer, String> entry : stateRegister.getAddressToRegisterMapping().entrySet()) {
+        for (Map.Entry<Integer, String> entry : stateRegister.getAddressToRegisterNameMapping().entrySet()) {
             Terminal.println("   " + entry.getValue() + "  " + registerWriteCount[entry.getKey()] +
                     "            " + registerChangeCount[entry.getKey()]);
         }

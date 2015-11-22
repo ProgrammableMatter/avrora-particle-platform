@@ -1,5 +1,6 @@
 package edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor;
 
+import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.registerdetails.RegisterOfInterrestDescription;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -21,10 +22,11 @@ public class ParticleFlashStateRegisterDetails {
     private static final Logger LOGGER = Logger.getLogger(ParticleFlashStateRegisterDetails.class.getName());
     private static final String descriptionFileName = "ParticleStateDescription.json";
     private Map<Integer, String> addressToRegisterName = new HashMap<Integer, String>();
+    private Map<Integer, String> addressToTypeName = new HashMap<Integer, String>();
+    private RegisterOfInterrestDescription registerDescription = null;
 
     public ParticleFlashStateRegisterDetails() {
 
-        RegisterOfInterrestDetails registerDetails = null;
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
 
@@ -32,77 +34,73 @@ public class ParticleFlashStateRegisterDetails {
             // read file from resource if project is not packed to jar
             ClassLoader classLoader = getClass().getClassLoader();
             File file = new File(classLoader.getResource(descriptionFileName).getFile());
-            registerDetails = mapper.readValue(file, RegisterOfInterrestDetails.class);
+            registerDescription = mapper.readValue(file, RegisterOfInterrestDescription.class);
         } catch (Exception e) {
             // read file from resource if project is packt to jar
             InputStream in = getClass().getResourceAsStream("/" + descriptionFileName);
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
             try {
-                registerDetails = mapper.readValue(reader, RegisterOfInterrestDetails.class);
+                registerDescription = mapper.readValue(reader, RegisterOfInterrestDescription.class);
             } catch (IOException e1) {
                 LOGGER.log(Level.SEVERE, "failed parse [" + descriptionFileName + "] from .jar correctly", e1);
             }
         }
 
-        int startAddress = registerDetails.addresses.get("globalState");
-        for (String structFieldName : registerDetails.getGlobalState().keySet()) {
-            addressToRegisterName.put(startAddress, "GlobalState." + structFieldName);
-            String fieldType = registerDetails.globalState.get(structFieldName);
-            startAddress += registerDetails.sizeofTypes.get(fieldType);
+        for (Map.Entry<String, RegisterOfInterrestDescription.StructDefinition> entry : registerDescription
+                .getStructs().entrySet()) {
+
+            RegisterOfInterrestDescription.StructDefinition struct = entry.getValue();
+            String structName = entry.getKey();
+
+            int propertyPos = 0;
+            for (String property : struct.getProperties()) {
+                // construct the address to variable name translation map of all defined structs
+                addressToRegisterName.put(struct.getPropertyAddresses().get(propertyPos), structName + "." +
+                        property);
+                // construct the sram address to type translation map
+                addressToTypeName.put(struct.getPropertyAddresses().get(propertyPos), struct.getPropertyTypes().get
+                        (propertyPos));
+                propertyPos++;
+            }
         }
     }
 
-    public Map<Integer, String> getAddressToRegisterMapping() {
+    /**
+     * @return a predefined mapping of microcontroller addresses to their variable names in source.
+     */
+    public Map<Integer, String> getAddressToRegisterNameMapping() {
         return addressToRegisterName;
     }
 
-    private static class RegisterOfInterrestDetails {
+    /**
+     * Translates the int value to an enum field's name according to the sram address where it is to be stored.
+     *
+     * @param sramAddress the sram address on the microcontroller
+     * @param value       the enum field's value
+     * @return the enum field's name
+     */
+    public String toDetailedType(int sramAddress, int value) {
 
-        private List<String> stateType;
-        private List<String> nodeType;
-        private Map<String, String> globalState;
-        private Map<String, Integer> addresses;
-        private Map<String, Integer> sizeofTypes;
-
-        public Map<String, Integer> getSizeofTypes() {
-            return sizeofTypes;
+        String type = addressToTypeName.get(sramAddress);
+        if (type == null) {
+            return Integer.toHexString(value);
         }
 
-        public void setSizeofTypes(Map<String, Integer> sizeofTypes) {
-            this.sizeofTypes = sizeofTypes;
+        // if type is an enum resolve its name
+        List<String> enumValueList = registerDescription.getEnums().get(type);
+        if (enumValueList != null) {
+            try {
+                return enumValueList.get(value) + " (" + Integer.toHexString(value) + ")";
+            } catch (IndexOutOfBoundsException ioobe) {
+                return Integer.toHexString(value);
+            }
         }
 
-        public Map<String, Integer> getAddresses() {
-            return addresses;
+        if (type.compareTo("bit") == 0) {
+            return String.format("%8s", Integer.toBinaryString(value & 0xff)).replace(' ', '0');
         }
 
-        public void setAddresses(Map<String, Integer> addresses) {
-            this.addresses = addresses;
-        }
-
-        public Map<String, String> getGlobalState() {
-            return globalState;
-        }
-
-        public void setGlobalState(Map<String, String> globalState) {
-            this.globalState = globalState;
-        }
-
-        public List<String> getStateType() {
-            return stateType;
-        }
-
-        public void setStateType(List<String> stateType) {
-            this.stateType = stateType;
-        }
-
-        public List<String> getNodeType() {
-            return nodeType;
-        }
-
-        public void setNodeType(List<String> nodeType) {
-            this.nodeType = nodeType;
-        }
+        return type + " (" + Integer.toHexString(value) + ")";
     }
 }
