@@ -62,8 +62,8 @@ public class OnParticleStateChangeWatch extends Simulator.Watch.Empty {
         Terminal.nextln();
         TermUtil.printThinSeparator(Terminal.MAXLINE);
         for (Map.Entry<Integer, String> entry : stateRegister.getAddressToRegisterNameMapping().entrySet()) {
-            Terminal.println("   " + entry.getValue() + "  " + registerWriteCount[entry.getKey()] +
-                    "            " + registerChangeCount[entry.getKey()]);
+            Terminal.println("  " + entry.getValue() + "  " + registerWriteCount[entry.getKey()] +
+                    "/" + registerChangeCount[entry.getKey()]);
         }
         Terminal.nextln();
     }

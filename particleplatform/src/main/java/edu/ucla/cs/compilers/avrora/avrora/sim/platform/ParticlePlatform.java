@@ -28,14 +28,14 @@ import edu.ucla.cs.compilers.avrora.avrora.core.Program;
 import edu.ucla.cs.compilers.avrora.avrora.sim.Simulation;
 import edu.ucla.cs.compilers.avrora.avrora.sim.Simulator;
 import edu.ucla.cs.compilers.avrora.avrora.sim.clock.ClockDomain;
-import edu.ucla.cs.compilers.avrora.avrora.sim.mcu.ATMega16;
-import edu.ucla.cs.compilers.avrora.avrora.sim.mcu.Microcontroller;
+import edu.ucla.cs.compilers.avrora.avrora.sim.mcu.*;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.smawire.SmaWireLogic;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.smawire.SmaWireState;
 import edu.ucla.cs.compilers.avrora.cck.text.Terminal;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * The <code>Seres</code> class is an implementation of the <code>Platform</code> interface that represents both a
@@ -45,6 +45,7 @@ import java.util.Set;
  */
 public class ParticlePlatform extends Platform {
 
+    private static AtomicInteger nextID = new AtomicInteger(0);
     private static ParticlePlatformConnector platformConnector;
 
     static {
@@ -53,7 +54,7 @@ public class ParticlePlatform extends Platform {
 
     private final Microcontroller mcu;
     private final Simulator sim;
-
+    int id = 0;
     private ParticlePlatform northNeighbor = null;
     private ParticlePlatform southNeighbor = null;
 
@@ -74,6 +75,7 @@ public class ParticlePlatform extends Platform {
         mcu = m;
         sim = m.getSimulator();
         addOffChipDevices();
+        id = nextID.incrementAndGet();
     }
 
     public static ParticlePlatformConnector getPlatformConnector() {
@@ -92,50 +94,60 @@ public class ParticlePlatform extends Platform {
         txNorth.wireOutput.enableOutput();
         txNorth.enableConnect();
         mcu.getPin("PA1").connectOutput(txNorth.wireOutput);
+//        mcu.getPin("PA1").connectInput(txNorth.wireInput);
 
         // PA2 = RXA
         rxNorth = new PinWire(sim, Terminal.COLOR_BLUE, "rx-north", mcu);
         rxNorth.wireInput.enableInput();
         rxNorth.enableConnect();
-        mcu.getPin("PA2").connectInput(rxNorth.wireInput);
+        // is PA2 on ATiny20 platform
+        mcu.getPin("PD2").connectInput(rxNorth.wireInput);
+//        mcu.getPin("PD2").connectOutput(rxNorth.wireOutput);
 
         // PA0 = RXA_SW
         rxSwitchNorth = new PinWire(sim, Terminal.COLOR_YELLOW, "rxSwitch-north", mcu);
         rxSwitchNorth.wireOutput.enableOutput();
-        rxSwitchNorth.enableConnect();
         mcu.getPin("PA0").connectOutput(rxSwitchNorth.wireOutput);
+//        mcu.getPin("PA0").connectInput(rxSwitchNorth.wireInput);
+        rxSwitchNorth.enableConnect();
 
         // south terminals
         // PA4 = TXB
         txSouth = new PinWire(sim, Terminal.COLOR_RED, "tx-south", mcu);
         txSouth.wireOutput.enableOutput();
-        txSouth.enableConnect();
         mcu.getPin("PA4").connectOutput(txSouth.wireOutput);
+//        mcu.getPin("PA4").connectInput(txSouth.wireInput);
+        txSouth.enableConnect();
 
         // PA5 = RXB
         rxSouth = new PinWire(sim, Terminal.COLOR_BLUE, "rx-south", mcu);
         rxSouth.wireInput.enableInput();
+        // is PA5 on ATiny20 platform
+        mcu.getPin("PD3").connectInput(rxSouth.wireInput);
+//        mcu.getPin("PD3").connectOutput(rxSouth.wireOutput);
         rxSouth.enableConnect();
-        mcu.getPin("PA5").connectInput(rxSouth.wireInput);
 
         // PA6 = RXB_SW
         rxSwitchSouth = new PinWire(sim, Terminal.COLOR_YELLOW, "rxSwitch-south", mcu);
         rxSwitchSouth.wireOutput.enableOutput();
-        rxSwitchSouth.enableConnect();
         mcu.getPin("PA6").connectOutput(rxSwitchSouth.wireOutput);
+//        mcu.getPin("PA6").connectInput(rxSwitchSouth.wireInput);
+        rxSwitchSouth.enableConnect();
 
         // signal terminals
         // PA3 = LED
         signalLed = new PinWire(sim, Terminal.COLOR_GREEN, "LED", mcu);
         signalLed.wireOutput.enableOutput();
-        signalLed.enableConnect();
         mcu.getPin("PA3").connectOutput(signalLed.wireOutput);
+//        mcu.getPin("PA3").connectInput(signalLed.wireInput);
+        signalLed.enableConnect();
 
         // PA7 = test-point
         testPoint = new PinWire(sim, Terminal.COLOR_BROWN, "test-point", mcu);
         testPoint.wireOutput.enableOutput();
-        testPoint.enableConnect();
         mcu.getPin("PA7").connectOutput(testPoint.wireOutput);
+//        mcu.getPin("PA7").connectInput(testPoint.wireInput);
+        testPoint.enableConnect();
 
         // connect platform to previous if available so far
         ParticlePlatformConnector.getInstance().addParticleNode(this);
@@ -161,27 +173,31 @@ public class ParticlePlatform extends Platform {
      * Reads neighbours' outputs and feeds them to the current node's input.
      */
     public void propagateSignals() {
-        // propagate outputs from north to local inputs
+        // propagate outputs from north to inputs of south (north to south propagation)
         if (northNeighbor != null) {
             if (northNeighbor.getNorthTx() != null && northNeighbor.getNorthTx().outputReady()) {
                 if (rxSwitchNorth.outputReady()) {
                     if (rxNorth.inputReady()) {
 
-                        northRxLogic.setTx(northNeighbor.getNorthTx().wireInput.read());
+                        northRxLogic.setTx(northNeighbor.getSouthTx().wireInput.read());
                         northRxLogic.setRxSwitch(rxSwitchNorth.wireInput.read());
                         this.rxNorth.wireOutput.write(northRxLogic.isRx());
+//                        System.out.println("propagated: north -> local [" + northRxLogic.isRx() + "] " + id);
                     } else {
                         throw new IllegalStateException("misconfigured north wire: rx");
+//                        System.out.println("skip: !rxNorth.inputReady()");
                     }
                 } else {
                     throw new IllegalStateException("misconfigured north wire: rxSwitch");
+//                    System.out.println("skip: !rxSwitchNorth.outputReady()");
                 }
             } else {
                 throw new IllegalStateException("misconfigured north neighbor's wire: tx");
+//                System.out.println("skip: !northNeighbor.getNorthTx().outputReady()");
             }
         }
 
-        // propagate outputs from south to local inputs
+        // propagate outputs from south to inputs of local (south to north propagation)
         if (southNeighbor != null) {
             if (southNeighbor.getNorthTx() != null && southNeighbor.getNorthTx().outputReady()) {
                 if (rxSwitchSouth.outputReady()) {
@@ -190,13 +206,17 @@ public class ParticlePlatform extends Platform {
                         southRxLogic.setTx(southNeighbor.getNorthTx().wireInput.read());
                         southRxLogic.setRxSwitch(rxSwitchSouth.wireInput.read());
                         this.rxSouth.wireOutput.write(southRxLogic.isRx());
+//                        System.out.println("propagated: south -> local [" + southRxLogic.isRx() + "] " + id);
                     } else {
+//                        System.out.println("skip: !rxSouth.inputReady()");
                         throw new IllegalStateException("misconfigured south wire: rx");
                     }
                 } else {
+//                    System.out.println("skip: !rxSwitchSouth.outputReady()");
                     throw new IllegalStateException("misconfigured south wire: rxSwitch");
                 }
             } else {
+//                System.out.println("skip: !southNeighbor.getNorthTx().outputReady()");
                 throw new IllegalStateException("misconfigured south neighbor's wire: tx");
             }
         }
@@ -252,6 +272,7 @@ public class ParticlePlatform extends Platform {
             // TODO: what is the external clock for?
             cd.newClock("external", 31372);
             return new ParticlePlatform(new ATMega16(id, sim, cd, p));
+//            return new ParticlePlatform(new ATMega128(id, sim, cd, p));
         }
     }
 }

@@ -92,7 +92,7 @@
         <dependency>
             <groupId>com.github.avrora-framework</groupId>
             <artifactId>avrora</artifactId>
-            <version>0.1.45-SNAPSHOT</version>
+            <version>0.1.46-SNAPSHOT</version>
         </dependency>
 
         <dependency>

@@ -31,9 +31,7 @@ public class PinWireProbe implements FiniteStateMachine.Probe {
             return;
         } else {
             StringBuffer buf = printer.getBuffer(20);
-            Terminal.append(Terminal.COLOR_DEFAULT, buf, wire.readName());
-            buf.append(": ");
-            buf.append(modeName[afterState]);
+            Terminal.append(Terminal.COLOR_DEFAULT, buf, "WIRE["+wire.readName() + "] <- " +modeName[afterState]);
             printer.printBuffer(buf);
             particleLogger.log(buf);
         }

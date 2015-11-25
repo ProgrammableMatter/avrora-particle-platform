@@ -25,7 +25,7 @@
 package edu.ucla.cs.compilers.avrora.avrora.sim.platform;
 
 import edu.ucla.cs.compilers.avrora.avrora.sim.Simulator;
-import edu.ucla.cs.compilers.avrora.avrora.sim.clock.RippleSynchronizer;
+import edu.ucla.cs.compilers.avrora.avrora.sim.clock.StepSynchronizer;
 import edu.ucla.cs.compilers.avrora.avrora.sim.clock.Synchronizer;
 
 import java.util.ArrayList;
@@ -52,8 +52,8 @@ public class ParticlePlatformConnector implements WiredPlatformConnector {
 
     private ParticlePlatformConnector() {
         pinEvent = new PinEvent();
-//        synchronizer = new StepSynchronizer(pinEvent);
-        synchronizer = new RippleSynchronizer(8, null);
+        synchronizer = new StepSynchronizer(pinEvent);
+//        synchronizer = new RippleSynchronizer(8, null);
     }
 
     protected static ParticlePlatformConnector getInstance() {

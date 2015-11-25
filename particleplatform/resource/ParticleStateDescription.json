@@ -27,10 +27,20 @@
     ]
   },
   "structs": {
-    /*
-    "signal": {
+    "dirA": {
       "properties": [
-        "(LED=0b00001000 | TP=0b10000000))"
+        "(TP | STH_SW | A5 | STH_TX | LED | A2 | NRTH_TX | NRTH_SW)"
+      ],
+      "propertyTypes": [
+        "bit"
+      ],
+      "propertyAddresses": [
+        58
+      ]
+    },
+    "portA": {
+      "properties": [
+        "(TP | STH_SW | A5 | STH_TX | LED | A2 | NRTH_TX | NRTH_SW)"
       ],
       "propertyTypes": [
         "bit"
@@ -39,23 +49,83 @@
         59
       ]
     },
-    */
+    "dirD": {
+      "properties": [
+        "(D7 | D6 | STH_RX | D4 | D3 | NRTH_RX | D1 | D0)"
+      ],
+      "propertyTypes": [
+        "bit"
+      ],
+      "propertyAddresses": [
+        49
+      ]
+    },
+    "portD": {
+      "properties": [
+        "(D7 | D6 | STH_RX | D4 | D3 | NRTH_RX | D1 | D0)"
+      ],
+      "propertyTypes": [
+        "bit"
+      ],
+      "propertyAddresses": [
+        50
+      ]
+    },
+    "GCIR": {
+      "properties": [
+        "(INT1 | INT0 | INT2 | – | – | – | IVSEL | IVCE)"
+      ],
+      "propertyTypes": [
+        "bit"
+      ],
+      "propertyAddresses": [
+        91
+      ]
+    },
+    "MCUCR": {
+      "properties": [
+        "(SM2 | SE | SM1 | SM0 | ISC11 | ISC10 | ISC01 | ISC00)"
+      ],
+      "propertyTypes": [
+        "bit"
+      ],
+      "propertyAddresses": [
+        85
+      ]
+    },
+    "SREG": {
+      "properties": [
+        "(I | T | H | S | V | N | Z | C)"
+      ],
+      "propertyTypes": [
+        "bit"
+      ],
+      "propertyAddresses": [
+        95
+      ]
+    },
     /* definition of global state struct */
     "globalState": {
       "properties": [
         "state",
         "type",
-        "nodeId"
+        "nodeId",
+        "northRxEvents",
+        "southRxEvents"
       ],
       "propertyTypes": [
         "stateType",
         "nodeType",
+        "unsigned char",
+        "unsigned char",
         "unsigned char"
       ],
       "propertyAddresses": [
         96,
         98,
-        100
+        100,
+        102,
+        104
       ]
     }
   },
