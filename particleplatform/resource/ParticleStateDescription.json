@@ -5,8 +5,11 @@
       "STATE_TYPE_START",
       "STATE_TYPE_ACTIVE",
       "STATE_TYPE_NEIGHBOURS_DISCOVERY",
+      "STATE_TYPE_NEIGHBOURS_DISCOVERED",
+      "STATE_TYPE_DISCOVERY_PULSING",
       "STATE_TYPE_WAITING",
       "STATE_TYPE_RESET",
+      "STATE_TYPE_WAIT_FOR_ENUMERATING",
       "STATE_TYPE_ENUMERATING",
       "STATE_TYPE_ENUMERATED",
       "STATE_TYPE_IDLE",
@@ -16,7 +19,8 @@
       "STATE_TYPE_FORWARD_PKG",
       "STATE_TYPE_SCHEDULE_COMMAND",
       "STATE_TYPE_EXECUTE_COMMAND",
-      "STATE_TYPE_COMMAND_SCHEDULED_ACK"
+      "STATE_TYPE_COMMAND_SCHEDULED_ACK",
+      "STATE_TYPE_ERRONEOUS"
     ],
     /* the NodeType enum */
     "nodeType": [
@@ -104,6 +108,17 @@
         95
       ]
     },
+    "particle_tick": {
+      "properties": [
+        "loopCount"
+      ],
+      "propertyTypes": [
+        "unsigned int"
+      ],
+      "propertyAddresses": [
+        96
+      ]
+    },
     /* definition of global state struct */
     "globalState": {
       "properties": [
@@ -111,30 +126,45 @@
         "type",
         "nodeId",
         "northRxEvents",
-        "southRxEvents"
+        "southRxEvents",
+        "flags( - | - | - | - | - | RECORD_RX_SOUTH | RECORD_RX_NORTH |)",
+        "rxNorthByte1",
+        "rxNorthByte2",
+        "rxSouthByte1",
+        "rxSouthByte2"
       ],
       "propertyTypes": [
         "stateType",
         "nodeType",
         "unsigned char",
         "unsigned char",
-        "unsigned char"
+        "unsigned char",
+        "bit",
+        "byte",
+        "byte",
+        "byte",
+        "byte"
       ],
       "propertyAddresses": [
-        96,
-        98,
-        100,
+        97,
+        99,
+        101,
         102,
-        104
+        103,
+        104,
+        105,
+        106,
+        107,
+        108
       ]
     }
   },
   /* data type size in byte on microcontroller */
   "sizeofTypes": {
-    "stateType": 1,
-    "nodeType": 1,
+    "enum": 2,
+    "stateType": 2,
+    "nodeType": 2,
     "unsigned char": 1,
-    "enum": 1,
     "char": 1
   }
 }

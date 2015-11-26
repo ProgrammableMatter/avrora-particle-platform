@@ -98,9 +98,11 @@ public class ParticleFlashStateRegisterDetails {
         }
 
         if (type.compareTo("bit") == 0) {
-            return String.format("%8s", Integer.toBinaryString(value & 0xff)).replace(' ', '0');
+            return "(0b" + String.format("%8s", Integer.toBinaryString(value & 0xff)).replace(' ', '0') + ")";
+        } else if (type.compareTo("unsigned char") == 0 || type.compareTo("char") == 0 || type.compareTo("int") == 0) {
+            return "(" + value + ")";
         }
 
-        return type + " (" + Integer.toHexString(value) + ")";
+        return type + " (0x" + Integer.toHexString(value) + ")";
     }
 }
