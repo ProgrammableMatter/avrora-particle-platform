@@ -9,8 +9,8 @@
       "STATE_TYPE_DISCOVERY_PULSING",
       "STATE_TYPE_WAITING",
       "STATE_TYPE_RESET",
-      "STATE_TYPE_WAIT_FOR_ENUMERATING",
-      "STATE_TYPE_ENUMERATING",
+      "STATE_TYPE_WAIT_FOR_BEING_ENUMERATED",
+      "STATE_TYPE_ENUMERATING_SOUTH_NEIGHBOUR",
       "STATE_TYPE_ENUMERATED",
       "STATE_TYPE_IDLE",
       "STATE_TYPE_INTERPRETE_COMMAND",
@@ -131,7 +131,8 @@
         "rxNorthByte1",
         "rxNorthByte2",
         "rxSouthByte1",
-        "rxSouthByte2"
+        "rxSouthByte2",
+        "rxBitCounter"
       ],
       "propertyTypes": [
         "stateType",
@@ -143,7 +144,8 @@
         "byte",
         "byte",
         "byte",
-        "byte"
+        "byte",
+        "bit"
       ],
       "propertyAddresses": [
         97,
@@ -155,7 +157,8 @@
         105,
         106,
         107,
-        108
+        108,
+        109
       ]
     }
   },
