@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2015
+ * Raoul Rubien
+ */
+
 package edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor;
 
 import edu.ucla.cs.compilers.avrora.avrora.arch.avr.AVRProperties;
@@ -38,8 +43,8 @@ public class OnParticleStateChangeWatch extends Simulator.Watch.Empty {
         if (data_addr < registerWriteCount.length) {
             registerWriteCount[data_addr]++;
         }
-        int oldRegisterValue = ((AtmelInterpreter.StateImpl) simulator.getInterpreter().getState()).getRegisterByte
-                (data_addr);
+        int oldRegisterValue = ((AtmelInterpreter.StateImpl) simulator.getInterpreter().getState())
+                .getRegisterByte(data_addr);
         if (oldRegisterValue != value) {
             registerChangeCount[data_addr]++;
         }

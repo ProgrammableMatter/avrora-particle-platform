@@ -1,5 +1,6 @@
-/**
- * @author Raoul Rubien 11.2015
+/*
+ * Copyright (c) 2015
+ * Raoul Rubien
  */
 
 package edu.ucla.cs.compilers.avrora.avrora.sim.types;

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2015
+ * Raoul Rubien
+ */
+
 package at.tugraz.ist.avrora.particleplatform;
 
 import edu.ucla.cs.compilers.avrora.avrora.Defaults;

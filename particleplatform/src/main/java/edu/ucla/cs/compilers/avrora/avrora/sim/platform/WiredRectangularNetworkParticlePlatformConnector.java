@@ -1,16 +1,20 @@
+/*
+ * Copyright (c) 2015
+ * Raoul Rubien
+ */
+
 package edu.ucla.cs.compilers.avrora.avrora.sim.platform;
 
 import edu.ucla.cs.compilers.avrora.avrora.sim.clock.Synchronizer;
 
 /**
- * * @author Raoul Rubien 20.11.2015
+ * @author Raoul Rubien 20.11.2015
  */
-public interface WiredRectangularNetworkParticlePlatformConnector
-{
+public interface WiredRectangularNetworkParticlePlatformConnector {
 
     /**
-     * Initialize the connections with a default topology of a chain with
-     * connections on the north and south ports
+     * Initialize the connections with a default topology of a chain with connections on the north and south
+     * ports
      */
     void initializeConnections();
 

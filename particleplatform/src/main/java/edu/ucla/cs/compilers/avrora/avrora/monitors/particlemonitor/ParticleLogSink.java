@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2015
+ * Raoul Rubien
+ */
+
 package edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor;
 
 import edu.ucla.cs.compilers.avrora.cck.util.Option;

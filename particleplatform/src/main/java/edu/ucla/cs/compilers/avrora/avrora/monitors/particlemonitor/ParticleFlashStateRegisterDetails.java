@@ -1,6 +1,12 @@
+/*
+ * Copyright (c) 2015
+ * Raoul Rubien
+ */
+
 package edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor;
 
-import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.registerdetails.RegisterOfInterrestDescription;
+import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.registerdetails
+        .RegisterOfInterrestDescription;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -12,8 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class describes the position of the {@link edu.ucla.cs.compilers.avrora.avrora.sim.platform .ParticlePlatform}
- * internal state.
+ * This class describes the position of the {@link edu.ucla.cs.compilers.avrora.avrora.sim.platform
+ * .ParticlePlatform} internal state.
  *
  * @author Raoul Rubien on 20.11.2015.
  */
@@ -43,7 +49,8 @@ public class ParticleFlashStateRegisterDetails {
             try {
                 registerDescription = mapper.readValue(reader, RegisterOfInterrestDescription.class);
             } catch (IOException e1) {
-                LOGGER.log(Level.SEVERE, "failed parse [" + descriptionFileName + "] from .jar correctly", e1);
+                LOGGER.log(Level.SEVERE, "failed parse [" + descriptionFileName + "] from .jar correctly",
+                        e1);
             }
         }
 
@@ -59,8 +66,8 @@ public class ParticleFlashStateRegisterDetails {
                 addressToRegisterName.put(struct.getPropertyAddresses().get(propertyPos), structName + "." +
                         property);
                 // construct the sram address to type translation map
-                addressToTypeName.put(struct.getPropertyAddresses().get(propertyPos), struct.getPropertyTypes().get
-                        (propertyPos));
+                addressToTypeName.put(struct.getPropertyAddresses().get(propertyPos), struct
+                        .getPropertyTypes().get(propertyPos));
                 propertyPos++;
             }
         }
@@ -74,7 +81,8 @@ public class ParticleFlashStateRegisterDetails {
     }
 
     /**
-     * Translates the int value to an enum field's name according to the sram address where it is to be stored.
+     * Translates the int value to an enum field's name according to the sram address where it is to be
+     * stored.
      *
      * @param sramAddress the sram address on the microcontroller
      * @param value       the enum field's value
@@ -99,7 +107,8 @@ public class ParticleFlashStateRegisterDetails {
 
         if (type.compareTo("bit") == 0) {
             return "(0b" + String.format("%8s", Integer.toBinaryString(value & 0xff)).replace(' ', '0') + ")";
-        } else if (type.compareTo("unsigned char") == 0 || type.compareTo("char") == 0 || type.compareTo("int") == 0) {
+        } else if (type.compareTo("unsigned char") == 0 || type.compareTo("char") == 0 || type.compareTo
+                ("int") == 0) {
             return "(" + value + ")";
         }
 

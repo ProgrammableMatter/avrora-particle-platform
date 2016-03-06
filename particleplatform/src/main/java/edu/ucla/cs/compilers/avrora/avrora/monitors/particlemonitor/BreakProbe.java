@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2015
+ * Raoul Rubien
+ */
+
 package edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor;
 
 import edu.ucla.cs.compilers.avrora.avrora.arch.legacy.LegacyRegister;
@@ -19,7 +24,8 @@ public class BreakProbe extends Simulator.Probe.Empty {
     private final SourceMapping sourceMap;
     private ParticleLogSink particleStateLogger;
 
-    public BreakProbe(Simulator sim, CallStack stack, SourceMapping sourceMap, ParticleLogSink particleStateLogger) {
+    public BreakProbe(Simulator sim, CallStack stack, SourceMapping sourceMap, ParticleLogSink
+            particleStateLogger) {
         simulator = sim;
         this.stack = stack;
         this.sourceMap = sourceMap;

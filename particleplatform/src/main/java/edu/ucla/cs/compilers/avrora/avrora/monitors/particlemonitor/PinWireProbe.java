@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2015
+ * Raoul Rubien
+ */
+
 package edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor;
 
 import edu.ucla.cs.compilers.avrora.avrora.sim.FiniteStateMachine;
@@ -31,7 +36,8 @@ public class PinWireProbe implements FiniteStateMachine.Probe {
             return;
         } else {
             StringBuffer buf = printer.getBuffer(20);
-            Terminal.append(Terminal.COLOR_DEFAULT, buf, "WIRE["+wire.readName() + "] <- " +modeName[afterState]);
+            Terminal.append(Terminal.COLOR_DEFAULT, buf, "WIRE[" + wire.readName() + "] <- " +
+                    modeName[afterState]);
             printer.printBuffer(buf);
             particleLogger.log(buf);
         }
