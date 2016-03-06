@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * This class describes the position of the {@link edu.ucla.cs.compilers.avrora.avrora.sim.platform .ParticlePlatform}
  * internal state.
  *
- * @author Raoul Rubien on 20.11.15.
+ * @author Raoul Rubien on 20.11.2015.
  */
 public class ParticleFlashStateRegisterDetails {
 

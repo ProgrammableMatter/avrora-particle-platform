@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by rubienr on 22.11.15.
+ * @author Raoul Rubien on 22.11.2015.
  */
 public class RegisterOfInterrestDescription {
 

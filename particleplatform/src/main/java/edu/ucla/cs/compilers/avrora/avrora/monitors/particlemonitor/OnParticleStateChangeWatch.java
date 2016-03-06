@@ -11,7 +11,7 @@ import edu.ucla.cs.compilers.avrora.cck.text.Terminal;
 import java.util.Map;
 
 /**
- * @author Raoul Rubien on 20.11.15.
+ * @author Raoul Rubien on 20.11.2015.
  */
 public class OnParticleStateChangeWatch extends Simulator.Watch.Empty {
 

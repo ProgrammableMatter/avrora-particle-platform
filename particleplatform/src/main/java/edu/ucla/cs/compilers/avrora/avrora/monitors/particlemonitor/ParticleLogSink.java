@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 /**
  * Class that accepts logs that are written to {@link #logFile} for external analysis.
  *
- * @author Raoul Rubien on 20.11.15.
+ * @author Raoul Rubien on 20.11.2015.
  */
 public class ParticleLogSink {
 

@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Wrapper for {@link edu.ucla.cs.compilers.avrora.avrora.monitors.ParticlePlatformMonitor.MonitorImpl} instanciation.
  *
- * @author Raoul Rubien on 20.11.15.
+ * @author Raoul Rubien on 20.11.2015.
  */
 public class ParticlePlatformMonitor extends MonitorFactory {
 

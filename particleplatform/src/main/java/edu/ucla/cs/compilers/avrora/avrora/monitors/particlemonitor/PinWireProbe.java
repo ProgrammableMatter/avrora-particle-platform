@@ -6,7 +6,7 @@ import edu.ucla.cs.compilers.avrora.avrora.sim.platform.PinWire;
 import edu.ucla.cs.compilers.avrora.cck.text.Terminal;
 
 /**
- * @author Raoul Rubien on 20.11.15.
+ * @author Raoul Rubien on 20.11.2015.
  */
 public class PinWireProbe implements FiniteStateMachine.Probe {
 

@@ -10,7 +10,7 @@ import edu.ucla.cs.compilers.avrora.cck.text.StringUtil;
 import edu.ucla.cs.compilers.avrora.cck.text.Terminal;
 
 /**
- * @author Raoul Rubien on 20.11.15.
+ * @author Raoul Rubien on 20.11.2015.
  */
 public class BreakProbe extends Simulator.Probe.Empty {
 

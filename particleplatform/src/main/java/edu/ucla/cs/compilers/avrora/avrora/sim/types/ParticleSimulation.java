@@ -1,25 +1,5 @@
 /**
- * Copyright (c) 2004-2005, Regents of the University of California All rights reserved.
- * <p>
- * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
- * following conditions are met:
- * <p>
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following
- * disclaimer.
- * <p>
- * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided with the distribution.
- * <p>
- * Neither the name of the University of California, Los Angeles nor the names of its contributors may be used to
- * endorse or promote products derived from this software without specific prior written permission.
- * <p>
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * @author Raoul Rubien 11.2015
  */
 
 package edu.ucla.cs.compilers.avrora.avrora.sim.types;
@@ -30,41 +10,54 @@ import edu.ucla.cs.compilers.avrora.avrora.sim.Simulation;
 import edu.ucla.cs.compilers.avrora.avrora.sim.SimulatorThread;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatform;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.PlatformFactory;
-import edu.ucla.cs.compilers.avrora.avrora.sim.types.WiredSimulation;
-import edu.ucla.cs.compilers.avrora.cck.text.StringUtil;
 import edu.ucla.cs.compilers.avrora.cck.util.Option;
 import edu.ucla.cs.compilers.avrora.cck.util.Options;
 import edu.ucla.cs.compilers.avrora.cck.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Random;
 
 /**
- * The <code>WiredSimulation</code> class represents a simulation type where multiple nodes, each with a microcontroller
- * are connected together by wires. It supports options from the command line that allow a simulation to be constructed
- * with multiple nodes with multiple different programs.
+ * The {@link ParticleSimulation} class represents a simulation type where multiple nodes, each with a
+ * microcontroller are connected together by wires. It supports options from the command line that allow a
+ * simulation to be constructed with multiple nodes. If two firmwares are specified a master communication
+ * unit is attached to the very first node of the network. The network dimension is specified by (rows x
+ * columns). Nodes are aligned in a matrix manner. The connection strategy is defined in {@link
+ * edu.ucla.cs.compilers.avrora.avrora.sim.platform .ParticlePlatformNetworkConnector}
  *
- * @author Jacob Everist
- *         <p>
- *         TODO: this s a copy of {@link WiredSimulation} because of lack of extensibility.
+ * @author Raoul Rubien 20.11.2015
  */
 public class ParticleSimulation extends Simulation {
 
-    public static String HELP = "This wired network simulation is used for simulating multiple (programmable matter)"
-            + "particle nodes simultaneously. These nodes can communicate with each other over TX/RX wires.";
+    private static final Logger LOGGER = LoggerFactory.getLogger(ParticleSimulation.class);
 
-    public final Option.List NODECOUNT = newOptionList("nodecount", "1", "This option is used to specify the number " +
-            "of nodes to be instantiated. The format is a list of integers, where each integer specifies the " +
-            "number of nodes to instantiate with each program supplied on the command line. For example, " +
-            "when set to \"1,2\" one node will be created with the first program loaded onto it, and two nodes " +
-            "created with the second program loaded onto them.");
-    public final Option.Interval RANDOM_START = newOption("random-start", 0, 0, "This option inserts a random delay " +
+    public static String HELP = "This wired network simulation is used for simulating multiple " +
+            "(programmable matter)" + "particles simultaneously. These nodes communicate by use of wires. " +
+            "The network dimension is specified " +
+            "by -rowcount and -columncount. If two firmwares are specified the network master is also " +
+            "attached to the" +
+            " very first node.";
+    public final Option.Long NODE_ROWS_COUNT = newOption("rowcount", 1, "This option is used to specify the" +
+            " " + "number of rows to be instantiated in the network. Valid values are within [1, 255].");
+
+    public final Option.Long NODE_COLUMNS_COUNT = newOption("columncount", 1, "This option is used to " +
+            "specify " + "the number of columns to be instantiated in the network. Valid values are within " +
+            "[1, 255].");
+
+    public final Option.Interval RANDOM_START = newOption("random-start", 0, 0, "This option inserts a " +
+            "random delay " +
             "before starting each node in order to prevent artificial cycle-level synchronization. The " +
-            "starting delay is pseudo-randomly chosen with uniform distribution over the " + "specified interval, " +
-            "which is measured in clock cycles. If the \"random-seed\" option is set to a non-zero value, then " +
+            "starting delay is pseudo-randomly chosen with uniform distribution over the specified " +
+            "interval, " +
+            "which is measured in clock cycles. If the \"random-seed\" option is set to a non-zero value, " +
+            "then " +
             "its value is used as the seed to the pseudo-random number generator.");
-    public final Option.Long STAGGER_START = newOption("stagger-start", 0, "This option causes the simulator to " +
+    public final Option.Long STAGGER_START = newOption("stagger-start", 0, "This option causes the " +
+            "simulator to " +
             "insert a progressively longer delay before starting each node in order to avoid artificial " +
-            "cycle-level synchronization between nodes. The starting times are staggered by the specified number" +
+            "cycle-level synchronization between nodes. The starting times are staggered by the specified " +
+            "number" +
             " of clock cycles. For example, if this option is given the value X, then node 0 will start at " +
             "time 0, node 1 at time 1*X, node 2 at time 2*X, etc.");
     long stagger;
@@ -75,17 +68,19 @@ public class ParticleSimulation extends Simulation {
         synchronizer = ParticlePlatform.getPlatformConnector().getSynchronizer();
 
         addSection("WIRED SIMULATION OVERVIEW", help);
-        addOptionSection("This simulation type supports simulating multiple nodes that communicate  with each " +
-                "other over wires. There are options to specify how many of each type of node to instantiate, as" +
+        addOptionSection("This simulation type supports simulating multiple nodes that communicate  with " +
+                "each " +
+                "other over wires. There are options to specify how many of each type of node to " +
+                "instantiate, as" +
                 " well as the program to be loaded onto each node.", options);
 
         PLATFORM.setNewDefault("particle");
     }
 
     /**
-     * The <code>process()</code> method processes options and arguments from the command line. In this implementation,
-     * this method accepts multiple programs from the command line as arguments as well as options that describe how
-     * many of each type of node to instantiate.
+     * The {@link #process(Options, String[])} } method processes options and arguments from the command line.
+     * In this implementation, this method accepts multiple programs from the command line as arguments as
+     * well as options that describe how many of each type of node to instantiate.
      *
      * @param o    the options from the command line
      * @param args the arguments from the command line
@@ -96,7 +91,10 @@ public class ParticleSimulation extends Simulation {
         options.process(o);
         processMonitorList();
 
-        if (args.length == 0) Util.userError("Simulation error", "No program specified");
+        if (args.length <= 0 || args.length > 2)
+            Util.userError("Simulation error", "Wrong number of programs specified. Acceptable number is " +
+                    "within [1,2]" +
+                    " but is [" + args.length + "]");
         Main.checkFilesExist(args);
         PlatformFactory pf = getPlatform();
 
@@ -105,9 +103,9 @@ public class ParticleSimulation extends Simulation {
     }
 
     /**
-     * The <code>newNode()</code> method creates a new node in the simulation. In this implementation, a
-     * <code>WiredNode</code> is created that contains, in addition to the simulator, ID, program, etc, a reference to
-     * the <code>Radio</code> instance for the node and a <code>SimulatorThread</code> for the node.
+     * The {@link #newNode(int, PlatformFactory, LoadableProgram)} method creates a new node in the
+     * simulation. In this implementation, a <code>WiredNode</code> is created that additionally stores the
+     * row and column address.
      *
      * @param id the integer identifier for the node
      * @param pf the platform factory to use to instantiate the node
@@ -122,27 +120,40 @@ public class ParticleSimulation extends Simulation {
     @Override
     protected void instantiateNodes() {
         super.instantiateNodes();
-
         ParticlePlatform.getPlatformConnector().initializeConnections();
     }
 
-    private void createNodes(String[] args, PlatformFactory pf) throws Exception {
-        int cntr = 0;
-        for (String str : NODECOUNT.get()) {
-            if (args.length <= cntr) break;
+    private void createNodes(String[] args, PlatformFactory platformFactory) throws Exception {
+        short rows = (NODE_ROWS_COUNT.get() > 255) ? 255 : (short) NODE_ROWS_COUNT.get();
+        short columns = (NODE_COLUMNS_COUNT.get() > 255) ? 255 : (short) NODE_COLUMNS_COUNT.get();
 
-            String pname = args[cntr++];
-            LoadableProgram lp = new LoadableProgram(pname);
-            lp.load();
+        ParticlePlatform.getPlatformConnector().setNetworkDimension(rows, columns);
 
-            // create a number of nodes with the same program
-            int max = StringUtil.evaluateIntegerLiteral(str);
-            for (int node = 0; node < max; node++) {
-                WiredNode n = (WiredNode) createNode(pf, lp);
-                long r = processRandom();
-                long s = processStagger();
-                n.startup = r + s;
+        String nodeFirmwareName = args[0];
+        LoadableProgram loadableNodeFirmware = new LoadableProgram(nodeFirmwareName);
+        loadableNodeFirmware.load();
+
+        // create a number of nodes with the same program
+        for (short c = 1; c <= columns; c++) {
+            for (short r = 1; r <= rows; r++) {
+                // the row column placement it yet not of interest
+                WiredNode wiredNode = (WiredNode) createNode(platformFactory, loadableNodeFirmware);
+                long random = processRandom();
+                long stagger = STAGGER_START.get();
+                wiredNode.startup = random + stagger;
             }
+        }
+        LOGGER.info("created {} nodes for network dimension ({}x{})", rows * columns, rows, columns);
+
+        if (args.length == 2) {
+            String communicationUnitFirmwareName = args[1];
+            LoadableProgram loadableCommunicationUnitFirmware = new LoadableProgram(nodeFirmwareName);
+            loadableCommunicationUnitFirmware.load();
+            WiredNode wiredNode = (WiredNode) createNode(platformFactory, loadableCommunicationUnitFirmware);
+            long random = processRandom();
+            long stagger = STAGGER_START.get();
+            wiredNode.startup = random + stagger;
+            LOGGER.info("communication unit node instanciated");
         }
     }
 
@@ -160,48 +171,33 @@ public class ParticleSimulation extends Simulation {
         return (low + delay);
     }
 
-    long processStagger() {
-        long st = stagger;
-        stagger += STAGGER_START.get();
-        return st;
-    }
-
-    /**
-     * The <code>WiredNode</code> class extends the <code>Node</code> class of a simulation. It extends the
-     * <code>instantiate()</code> method to create a new thread for the node and to attach the sensor data input.
-     */
-    protected class WiredNode extends Node {
+    class WiredNode extends Simulation.Node {
 
         protected long startup;
 
-        public WiredNode(int id, PlatformFactory pf, LoadableProgram p) {
-            super(id, pf, p);
+        public WiredNode(int id, PlatformFactory platformFactory, LoadableProgram loadableProgram) {
+            super(id, platformFactory, loadableProgram);
         }
 
         /**
-         * The <code>instantiate()</code> method of the sensor node extends the default simulation node by creating a
-         * new thread to execute the node as well as getting references to the radio and adding it to the radio model,
-         * adding an optional start up delay for each node, and connecting the node's sensor input to replay or random
-         * data as specified on the command line.
+         * Extends the default simulation node by creating a new thread to execute the node as well as adding
+         * an optional start up delay for each node.
          */
         @Override
         protected void instantiate() {
-            createNode();
-        }
-
-        /**
-         * The <code>remove()</code> method removes this node from the simulation. This method extends the default
-         * simulation remove method by removing the node from the radio air implementation.
-         */
-        @Override
-        protected void remove() {
-            ParticlePlatform.getPlatformConnector().disconnectConnections();
-        }
-
-        private void createNode() {
             thread = new SimulatorThread(this);
             super.instantiate();
             simulator.delay(startup);
+        }
+
+        /**
+         * Removes this node from the simulation. It extends the default simulation remove method by removing
+         * the node from the wire connections.
+         */
+        @Override
+        protected void remove() {
+            ParticlePlatform.getPlatformConnector().disconnectConnections((ParticlePlatform) getPlatform());
+            super.remove();
         }
     }
 }
