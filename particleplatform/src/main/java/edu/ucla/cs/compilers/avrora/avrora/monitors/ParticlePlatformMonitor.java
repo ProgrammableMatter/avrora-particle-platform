@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2016
+ * Raoul Rubien on 20.11.15.
+ */
+
 package edu.ucla.cs.compilers.avrora.avrora.monitors;
 
 import edu.ucla.cs.compilers.avrora.avrora.arch.AbstractInstr;
@@ -18,62 +23,73 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Wrapper for {@link edu.ucla.cs.compilers.avrora.avrora.monitors.ParticlePlatformMonitor.MonitorImpl} instanciation.
+ * Wrapper for {@link edu.ucla.cs.compilers.avrora.avrora.monitors.ParticlePlatformMonitor.MonitorImpl}
+ * instanciation.
  *
  * @author Raoul Rubien on 20.11.2015.
  */
 public class ParticlePlatformMonitor extends MonitorFactory {
 
-    public final Option.List MONITOR_FACETS = newOptionList("particle-facets", "state,wires,break", "This options " +
-            "defines which facets of the monitor are to be activated. \"state\" - internal particle state machine " +
-            "changes; \"wires\" - prints wire changes; \"break\" - watches and outputs information about 'asm" +
+    public final Option.List MONITOR_FACETS = newOptionList("particle-facets", "state,wires,break", "This " +
+            "options " +
+            "defines which facets of the monitor are to be activated. \"state\" - internal particle state " +
+            "machine " +
+            "changes; \"wires\" - prints wire changes; \"break\" - watches and outputs information about " +
+            "'asm" +
             "(\"break\")' statements");
 
-//    public final Option.Bool LOWER_ADDRESS = newOption("low-addresses", false, "When this option is enabled, the " +
-//            "memory monitor will be inserted for lower addresses, " + "recording reads and writes to the general " +
-//            "purpose registers on the AVR and also IO registers " + "through direct and indirect memory reads and " +
+//    public final Option.Bool LOWER_ADDRESS = newOption("low-addresses", false, "When this option is
+// enabled, the " +
+//            "memory monitor will be inserted for lower addresses, " + "recording reads and writes to the
+// general " +
+//            "purpose registers on the AVR and also IO registers " + "through direct and indirect memory
+// reads and " +
 //            "writes.");
-//    public final Option.Bool DUMP_WRITES = newOption("dump-writes", false, "When this option is enabled, the memory " +
-//            "monitor will dump each write access to all " + "instrumented addresses. The address of the instruction " +
+//    public final Option.Bool DUMP_WRITES = newOption("dump-writes", false, "When this option is enabled,
+// the memory " +
+//            "monitor will dump each write access to all " + "instrumented addresses. The address of the
+// instruction " +
 //            "that causes the write is included.");
 
-    public final Option.Bool PARTICE_LOG_FILE_ENABLE = newOption("particle-log-file", false, "When this option is " +
-            "true, the" + ParticlePlatformMonitor.class.getSimpleName() + " writes logs to a temporary file. The new " +
+    public final Option.Bool PARTICE_LOG_FILE_ENABLE = newOption("particle-log-file", false, "When this " +
+            "option is " +
+            "true, the" + ParticlePlatformMonitor.class.getSimpleName() + " writes logs to a temporary file" +
+            ". The new " +
             "file name is" +
             " printed" + "before simulation starts.");
 
     public ParticlePlatformMonitor() {
-        super("The \"" + ParticlePlatformMonitor.class.getSimpleName() + "\" monitor collects information about the "
-                + "writes of the program to the global particle state");
+        super("The \"" + ParticlePlatformMonitor.class.getSimpleName() + "\" monitor collects information " +
+                "about the " + "writes of the program to the global particle state");
     }
 
     @Override
-    public MonitorImpl newMonitor(Simulator s) {
+    public Monitor newMonitor(Simulator s) {
         return new MonitorImpl(s, ParticleLogSink.getInstance(PARTICE_LOG_FILE_ENABLE), MONITOR_FACETS);
     }
 
     /**
-     * Monitor that watches relevant {@link edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatform} state
-     * changes.
-     *
-     * @author Raoul Rubien on 20.11.15.
+     * Monitor that watches relevant {@link edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatform}
+     * state changes.
      */
     public static class MonitorImpl implements edu.ucla.cs.compilers.avrora.avrora.monitors.Monitor {
 
-        private static final ParticleFlashStateRegisterDetails stateRegister = new ParticleFlashStateRegisterDetails();
-        private static AtomicInteger monitorId = new AtomicInteger(0);
-        private final Simulator simulator;
+        protected static final ParticleFlashStateRegisterDetails stateRegister = new
+                ParticleFlashStateRegisterDetails();
+        private static final AtomicInteger monitorId = new AtomicInteger(0);
+        protected final Simulator simulator;
         private final Option.List monitorFacetsOption;
-        ParticleLogSink particleStateLogger;
-        private Map<PinWire, PinWireProbe> wireProbes = new HashMap<PinWire, PinWireProbe>();
-        private HashMap<BreakProbe, Integer> breakProbes = new HashMap<BreakProbe, Integer>();
-        private OnParticleStateChangeWatch onParticleStateChangeWatch;
+        protected ParticleLogSink particleStateLogger;
+        protected OnParticleStateChangeWatch onParticleStateChangeWatch;
+        private Map<PinWire, PinWireProbe> wireProbes = new HashMap<>();
+        private HashMap<BreakProbe, Integer> breakProbes = new HashMap<>();
 
         protected MonitorImpl(Simulator sim, ParticleLogSink particleStateLogger, Option.List monitorFacets) {
             simulator = sim;
             this.particleStateLogger = particleStateLogger;
             monitorFacetsOption = monitorFacets;
-            onParticleStateChangeWatch = new OnParticleStateChangeWatch(simulator, stateRegister, particleStateLogger);
+            onParticleStateChangeWatch = new OnParticleStateChangeWatch(simulator, stateRegister,
+                    particleStateLogger);
             insertWatches();
             synchronized (monitorId) {
                 monitorId.getAndIncrement();
@@ -113,12 +129,14 @@ public class ParticlePlatformMonitor extends MonitorFactory {
 
                     ParticlePlatform particlePlatform = (ParticlePlatform) platform;
                     for (PinWire wire : particlePlatform.getWires()) {
-                        PinWireProbe probe = new PinWireProbe(simulator.getPrinter(), wire, particleStateLogger);
+                        PinWireProbe probe = new PinWireProbe(simulator.getPrinter(), wire,
+                                particleStateLogger);
                         wireProbes.put(wire, probe);
                         wire.insertProbe(probe);
                     }
                 } else {
-                    simulator.getPrinter().println("fatal error: node platform is no instance of particleplatform");
+                    simulator.getPrinter().println("fatal error: node platform is no instance of " +
+                            "particleplatform");
                 }
             }
         }

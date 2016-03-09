@@ -57,16 +57,9 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
     }
 
     /**
-     * @return the number of platforms added so far
-     */
-    public int getPlatformsCount() {
-        return particlePlatforms.size();
-    }
-
-    /**
      * Aligns the instantiated platforms in a matrix manner and connects them. Each column is connected from
      * top to bottom. Each instance of the first row is connected from left to right. If number of
-     * instanciated platforms is (cols * rows) + 1 the extra platform is connected as master communication
+     * instantiated platforms is (cols * rows) + 1 the extra platform is connected as master communication
      * device.
      */
     @Override
@@ -74,16 +67,18 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
         Map<Short, Map<Short, ParticlePlatform>> rowToColumnToPlatform =
                 linearToRectangularPlatformCollection(particlePlatforms);
 
+        LOGGER.debug("trying to build ({},{}) network with {} nodes", maxNetworkRows, maxNetworkColumns,
+                particlePlatforms.size());
         for (short column = 1; column <= maxNetworkColumns; column++) {
             for (short row = 1; row <= maxNetworkColumns; row++) {
 
                 // initialized the platform address in network
                 ParticlePlatform platform = rowToColumnToPlatform.get(row).get(column);
-                platform.setAddress(row, column);
+                platform.setAddress(new PlatformAddress(row, column));
 
                 // connect horizontally
                 if (column > 1 && row == 1) {
-                    LOGGER.debug("connecting ({},{}) to ({},{}) horizontally", row, column - 1, row, column);
+                    LOGGER.debug("connecting ({},{}) to ({},{}) \u2194", row, column - 1, row, column);
                     ParticlePlatform predecessorPlatform = rowToColumnToPlatform.get(row).get((short)
                             (column - 1));
                     ParticlePlatform currentPlatform = rowToColumnToPlatform.get(row).get(column);
@@ -92,7 +87,7 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
 
                 // connect vertically
                 if (row > 1) {
-                    LOGGER.debug("connecting ({},{}) to ({},{}) vertically", row - 1, column, row, column);
+                    LOGGER.debug("connecting ({},{}) to ({},{}) \u2195", row - 1, column, row, column);
                     ParticlePlatform predecessorPlatform = rowToColumnToPlatform.get((short) (row - 1)).get
                             (column);
                     ParticlePlatform currentPlatform = rowToColumnToPlatform.get(row).get(column);
@@ -103,12 +98,12 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
 
         LOGGER.info("connected ({}x{}) network", maxNetworkRows, maxNetworkColumns);
 
-        // in case an extra platform is instanciated the last one is used as the network's communication unit
+        // in case an extra platform is instantiated the last one is used as the network's communication unit
         int numNetworkNodes = maxNetworkRows * maxNetworkColumns;
         if (numNetworkNodes < particlePlatforms.size()) {
-            LOGGER.info("attaching communication unit to network");
-            ParticlePlatform communicationUnit = particlePlatforms.get(numNetworkNodes + 1);
-            communicationUnit.attachSouthNode(rowToColumnToPlatform.get(1).get(1));
+            LOGGER.info("attaching communication unit (0,0) to address(1,1) ↕");
+            ParticlePlatform communicationUnit = particlePlatforms.get(numNetworkNodes);
+            communicationUnit.attachSouthNode(rowToColumnToPlatform.get((short) 1).get((short) 1));
         }
     }
 
@@ -126,11 +121,11 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
 
         while (iterator.hasNext()) {
             PlatformAddress address = linearToAddressMapping(linearIndex);
-            if (!rowToColumnToPlatform.containsKey(address.row)) {
-                rowToColumnToPlatform.put(address.row, new HashMap<Short, ParticlePlatform>());
+            if (!rowToColumnToPlatform.containsKey(address.getRow())) {
+                rowToColumnToPlatform.put(address.getRow(), new HashMap<Short, ParticlePlatform>());
             }
 
-            rowToColumnToPlatform.get(address.row).put(address.column, iterator.next());
+            rowToColumnToPlatform.get(address.getRow()).put(address.getColumn(), iterator.next());
             linearIndex++;
         }
 
@@ -160,8 +155,8 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
     public void disconnectConnections(ParticlePlatform platform) {
 
         if (particlePlatforms.contains(platform)) {
-            LOGGER.debug("disconnecting platform ({},{}) from network", platform.getRow(), platform
-                    .getColumn());
+            LOGGER.debug("disconnecting platform ({},{}) from network", platform.getAddress().getRow(),
+                    platform.getAddress().getColumn());
             platform.detachSouthNode();
             platform.detachEastNode();
             particlePlatforms.remove(platform);
@@ -177,16 +172,6 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
     public void setNetworkDimension(short rows, short columns) {
         this.maxNetworkRows = rows;
         this.maxNetworkColumns = columns;
-    }
-
-    private static class PlatformAddress {
-        public short row;
-        public short column;
-
-        PlatformAddress(short row, short column) {
-            this.row = row;
-            this.column = column;
-        }
     }
 
     /**

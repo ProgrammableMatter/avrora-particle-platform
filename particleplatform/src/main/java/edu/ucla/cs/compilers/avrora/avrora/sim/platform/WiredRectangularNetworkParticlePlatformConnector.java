@@ -24,10 +24,10 @@ public interface WiredRectangularNetworkParticlePlatformConnector {
 
     /**
      * Set the network dimension. It is used to place generated platforms into a rectangular, matrix manner
-     * network
+     * network and for later address assignments.
      *
-     * @param rows
-     * @param columns
+     * @param rows number of rows of the network dimension
+     * @param columns number of columns of the network dimension
      */
     void setNetworkDimension(short rows, short columns);
 }

@@ -22,8 +22,7 @@ public class OnParticleStateChangeWatch extends Simulator.Watch.Empty {
 
     private final ParticleFlashStateRegisterDetails stateRegister;
     private final Simulator simulator;
-    private final int ramSize;
-    private int[] registerWriteCount;
+    protected int[] registerWriteCount;
     private int[] registerChangeCount;
     private ParticleLogSink particleStateLogger;
 
@@ -33,7 +32,7 @@ public class OnParticleStateChangeWatch extends Simulator.Watch.Empty {
         this.stateRegister = stateRegister;
         this.particleStateLogger = particleStateLogger;
         AVRProperties p = (AVRProperties) simulator.getMicrocontroller().getProperties();
-        ramSize = p.sram_size + p.ioreg_size + LegacyState.NUM_REGS;
+        int ramSize = p.sram_size + p.ioreg_size + LegacyState.NUM_REGS;
         registerWriteCount = new int[ramSize];
         registerChangeCount = new int[ramSize];
     }
@@ -49,7 +48,7 @@ public class OnParticleStateChangeWatch extends Simulator.Watch.Empty {
             registerChangeCount[data_addr]++;
         }
 
-        String valueString = "nan";
+        String valueString;
         try {
             valueString = stateRegister.toDetailedType(data_addr, value);
         } catch (Exception e) {

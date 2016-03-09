@@ -6,23 +6,24 @@
 package edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor;
 
 import edu.ucla.cs.compilers.avrora.cck.util.Option;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- * Class that accepts logs that are written to {@link #logFile} for external analysis.
+ * Class that accepts logs that are written to {@link #logFile} for external analysis of monitoring results or
+ * simulation events. It is not meant to be used for logging in general.
  *
  * @author Raoul Rubien on 20.11.2015.
  */
 public class ParticleLogSink {
 
-    private static final Logger LOGGER = Logger.getLogger(ParticleLogSink.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ParticleLogSink.class.getName());
     private static ParticleLogSink Instance;
-
+    private final Object mutex = new Object();
     private boolean isLoggingEnabled = false;
     private File logFile;
     private FileWriter writer;
@@ -30,15 +31,18 @@ public class ParticleLogSink {
     private ParticleLogSink() {
         try {
             logFile = new File(System.getProperty("java.io.tmpdir") + "/particle-states.log");
-            logFile.createNewFile();
+            if (!logFile.createNewFile()) {
+                LOGGER.error("failed to create new log file");
+            }
+
             writer = new FileWriter(logFile);
         } catch (IOException ioe) {
             try {
                 writer.close();
             } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "failed to release resource", e);
+                LOGGER.error("failed to release resource", e);
             }
-            LOGGER.log(Level.SEVERE, "failed to create log file", ioe);
+            LOGGER.error("failed to create log file", ioe);
         }
     }
 
@@ -80,7 +84,7 @@ public class ParticleLogSink {
                             Instance.writer.close();
                         }
                     } catch (IOException e) {
-                        LOGGER.log(Level.SEVERE, "failed to release resource", e);
+                        LOGGER.error("failed to release resource", e);
                     }
                     Instance.writer = null;
                     if (Instance.logFile != null) {
@@ -103,12 +107,12 @@ public class ParticleLogSink {
         }
 
         if (logFile != null) {
-            synchronized (logFile) {
+            synchronized (mutex) {
                 try {
-                    writer.write(line.toString() + '\n');
+                    writer.write(line + '\n');
                     writer.flush(); // flush needed for inotify
                 } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE, "failed to add line to log", e);
+                    LOGGER.error("failed to add line to log", e);
                 }
             }
         }

@@ -7,7 +7,6 @@ package edu.ucla.cs.compilers.avrora.avrora.sim.platform;
 
 import edu.ucla.cs.compilers.avrora.avrora.core.Program;
 import edu.ucla.cs.compilers.avrora.avrora.sim.Simulation;
-import edu.ucla.cs.compilers.avrora.avrora.sim.Simulator;
 import edu.ucla.cs.compilers.avrora.avrora.sim.clock.ClockDomain;
 import edu.ucla.cs.compilers.avrora.avrora.sim.mcu.ATMega16;
 import edu.ucla.cs.compilers.avrora.avrora.sim.mcu.Microcontroller;
@@ -19,154 +18,173 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * The <code>Seres</code> class is an implementation of the <code>Platform</code> interface that represents
- * both a specific microcontroller and the devices connected to it.
+ * This class is an implementation of the {@link Platform} interface that represents both a specific
+ * microcontroller and the devices connected to it such as LEDs and test points as well as special
+ * communication hardware.
  *
  * @author Raoul Rubien 20.11.2015
  */
 public class ParticlePlatform extends Platform {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ParticlePlatform.class);
-    private static AtomicInteger nextID = new AtomicInteger(0);
-    private static ParticlePlatformNetworkConnector platformConnector;
+    private static ParticlePlatformNetworkConnector platformNetworkConnector;
 
     static {
-        platformConnector = ParticlePlatformNetworkConnector.getInstance();
+        platformNetworkConnector = ParticlePlatformNetworkConnector.getInstance();
     }
 
-    private final Microcontroller mcu;
-    private final Simulator sim;
-    short row;
-    short column;
-    int id = 0;
+    private PlatformAddress localAddress;
+    /**
+     * references to neighbours
+     */
     private ParticlePlatform northNeighbor = null;
     private ParticlePlatform southNeighbor = null;
     private ParticlePlatform eastNeighbor = null;
-
+    private ParticlePlatform westNeighbor = null;
+    /**
+     * local SMA wire abstractions for reception
+     */
     private SmaWireLogic northRxLogic = new SmaWireLogic(new SmaWireState());
     private SmaWireLogic southRxLogic = new SmaWireLogic(new SmaWireState());
-
-    private PinWire txNorth;
-    private PinWire rxNorth;
-    private PinWire rxSwitchNorth;
-    private PinWire txSouth;
-    private PinWire rxSouth;
-    private PinWire rxSwitchSouth;
-    private PinWire txEast;
-    private PinWire rxEast;
-    private PinWire rxSwitchEast;
-    private PinWire signalLed;
-    private PinWire testPoint;
+    private SmaWireLogic eastRxLogic = new SmaWireLogic(new SmaWireState());
+    /**
+     * bundles of communication wires per side
+     */
+    private WireBundle northWires = new WireBundle();
+    private WireBundle eastWires = new WireBundle();
+    private WireBundle southWires = new WireBundle();
+    /**
+     * sets of LEDs and test points
+     */
+    private Set<PinWire> signalLeds = new HashSet<>();
+    private Set<PinWire> testPoints = new HashSet<>();
 
     private ParticlePlatform(Microcontroller m) {
         super(m);
-        mcu = m;
-        sim = m.getSimulator();
         addOffChipDevices();
-        id = nextID.incrementAndGet();
     }
 
-    public static ParticlePlatformNetworkConnector getPlatformConnector() {
-        return platformConnector;
+    public static ParticlePlatformNetworkConnector getPlatformNetworkConnector() {
+        return platformNetworkConnector;
+    }
+
+    /**
+     * @return the local address in network as set by {@link #setAddress(PlatformAddress)}
+     */
+    public PlatformAddress getAddress() {
+        return localAddress;
     }
 
     /**
      * Defines the address in network
      *
-     * @param row
-     * @param column
+     * @param address the network address to set
      */
-    public void setAddress(short row, short column) {
-        this.row = row;
-        this.column = column;
+    public void setAddress(PlatformAddress address) {
+        localAddress = address;
     }
 
     /**
-     * @return the row in network as set by {@link #setAddress(short, short)}
-     */
-    public short getRow() {
-        return row;
-    }
-
-    /**
-     * @return the column in network as set by {@link #setAddress(short, short)}
-     */
-    public short getColumn() {
-        return column;
-    }
-
-    /**
-     * Add external off-chip but on platform hardware. Note that only north SMA-Wires are connected to the
-     * chip/platform. The chips south SMA-Wires are the south neighbour's north SMA-Wires.
+     * Add off-chip but on platform components such as LEDs, test points and sma wires. The SMA wire and
+     * MOSFET transistors are abstracted in the {@link SmaWireLogic}. The incoming transmission and local
+     * transmission_switch pin levels are evaluated by the {@link SmaWireLogic} and written to the local
+     * reception pin. Thus in contrary to the real SMA hardware placement, on software platforms the SMA
+     * abstraction resides only on the receiver side.
      */
     protected void addOffChipDevices() {
+        connectCommunicationWires();
+        connectLeds();
+        connectTestPoints();
+        // leave a platform reference at the network connector
+        platformNetworkConnector.addParticlePlatform(this);
+    }
 
+    private void connectTestPoints() {
+        // led name to pin name mapping
+        Set<SimpleComponentMapping> testPointMapping = new HashSet<>();
+        testPointMapping.add(new SimpleComponentMapping("TP1", "PC2", Terminal.COLOR_DEFAULT));
+        testPointMapping.add(new SimpleComponentMapping("TP2", "PA1", Terminal.COLOR_DEFAULT));
+        testPointMapping.add(new SimpleComponentMapping("TP3", "PA5", Terminal.COLOR_DEFAULT));
+
+        for (SimpleComponentMapping testPoint : testPointMapping) {
+            PinWire testPointWire = new PinWire(mcu.getSimulator(), testPoint.color, testPoint.name, mcu);
+            testPointWire.wireOutput.enableOutput();
+            mcu.getPin(testPoint.pin).connectOutput(testPointWire.wireOutput);
+            testPointWire.enableConnect();
+            testPoints.add(testPointWire);
+        }
+    }
+
+    private void connectLeds() {
+        // led name to pin name mapping
+        Set<SimpleComponentMapping> signalLedMapping = new HashSet<>();
+        signalLedMapping.add(new SimpleComponentMapping("HEARTBEAT", "PB1", Terminal.COLOR_GREEN));
+        signalLedMapping.add(new SimpleComponentMapping("STATUS0", "PB4", Terminal.COLOR_YELLOW));
+        signalLedMapping.add(new SimpleComponentMapping("STATUS1", "PB3", Terminal.COLOR_YELLOW));
+        signalLedMapping.add(new SimpleComponentMapping("ERROR", "PA0", Terminal.COLOR_RED));
+
+        for (SimpleComponentMapping ledMapping : signalLedMapping) {
+            PinWire signalLed = new PinWire(mcu.getSimulator(), ledMapping.color, ledMapping.name, mcu);
+            signalLed.wireOutput.enableOutput();
+            mcu.getPin(ledMapping.pin).connectOutput(signalLed.wireOutput);
+            signalLed.enableConnect();
+            signalLeds.add(signalLed);
+        }
+    }
+
+    private void connectCommunicationWires() {
         // north terminals
-        // PA1 = TXA
-        txNorth = new PinWire(sim, Terminal.COLOR_RED, "tx-north", mcu);
-        txNorth.wireOutput.enableOutput();
-        txNorth.enableConnect();
-        mcu.getPin("PA1").connectOutput(txNorth.wireOutput);
-//        mcu.getPin("PA1").connectInput(txNorth.wireInput);
-
-        // PA2 = RXA
-        rxNorth = new PinWire(sim, Terminal.COLOR_BLUE, "rx-north", mcu);
-        rxNorth.wireInput.enableInput();
-        rxNorth.enableConnect();
-        // is PA2 on ATiny20 platform
-        mcu.getPin("PD2").connectInput(rxNorth.wireInput);
-//        mcu.getPin("PD2").connectOutput(rxNorth.wireOutput);
-
-        // PA0 = RXA_SW
-        rxSwitchNorth = new PinWire(sim, Terminal.COLOR_YELLOW, "rxSwitch-north", mcu);
-        rxSwitchNorth.wireOutput.enableOutput();
-        mcu.getPin("PA0").connectOutput(rxSwitchNorth.wireOutput);
-//        mcu.getPin("PA0").connectInput(rxSwitchNorth.wireInput);
-        rxSwitchNorth.enableConnect();
+        // north tx
+        northWires.tx = new PinWire(mcu.getSimulator(), Terminal.COLOR_RED, "tx-north", mcu);
+        northWires.tx.wireOutput.enableOutput();
+        northWires.tx.enableConnect();
+        mcu.getPin("PC0").connectOutput(northWires.tx.wireOutput);
+        // north rx
+        northWires.rx = new PinWire(mcu.getSimulator(), Terminal.COLOR_BLUE, "rx-north", mcu);
+        northWires.rx.wireInput.enableInput();
+        northWires.rx.enableConnect();
+        mcu.getPin("PB2").connectInput(northWires.rx.wireInput);
+        // north switch (pwr/rx)
+        northWires.rxSwitch = new PinWire(mcu.getSimulator(), Terminal.COLOR_YELLOW, "rxSwitch-north", mcu);
+        northWires.rxSwitch.wireOutput.enableOutput();
+        mcu.getPin("PC4").connectOutput(northWires.rxSwitch.wireOutput);
+        northWires.rxSwitch.enableConnect();
 
         // south terminals
-        // PA4 = TXB
-        txSouth = new PinWire(sim, Terminal.COLOR_RED, "tx-south", mcu);
-        txSouth.wireOutput.enableOutput();
-        mcu.getPin("PA4").connectOutput(txSouth.wireOutput);
-//        mcu.getPin("PA4").connectInput(txSouth.wireInput);
-        txSouth.enableConnect();
+        // south tx
+        southWires.tx = new PinWire(mcu.getSimulator(), Terminal.COLOR_RED, "tx-south", mcu);
+        southWires.tx.wireOutput.enableOutput();
+        mcu.getPin("PA3").connectOutput(southWires.tx.wireOutput);
+        southWires.tx.enableConnect();
+        // south rx
+        southWires.rx = new PinWire(mcu.getSimulator(), Terminal.COLOR_BLUE, "rx-south", mcu);
+        southWires.rx.wireInput.enableInput();
+        mcu.getPin("PD2").connectInput(southWires.rx.wireInput);
+        southWires.rx.enableConnect();
+        // south switch (pwr/rx)
+        southWires.rxSwitch = new PinWire(mcu.getSimulator(), Terminal.COLOR_YELLOW, "rxSwitch-south", mcu);
+        southWires.rxSwitch.wireOutput.enableOutput();
+        mcu.getPin("PA2").connectOutput(southWires.rxSwitch.wireOutput);
+        southWires.rxSwitch.enableConnect();
 
-        // PA5 = RXB
-        rxSouth = new PinWire(sim, Terminal.COLOR_BLUE, "rx-south", mcu);
-        rxSouth.wireInput.enableInput();
-        // is PA5 on ATiny20 platform
-        mcu.getPin("PD3").connectInput(rxSouth.wireInput);
-//        mcu.getPin("PD3").connectOutput(rxSouth.wireOutput);
-        rxSouth.enableConnect();
-
-        // PA6 = RXB_SW
-        rxSwitchSouth = new PinWire(sim, Terminal.COLOR_YELLOW, "rxSwitch-south", mcu);
-        rxSwitchSouth.wireOutput.enableOutput();
-        mcu.getPin("PA6").connectOutput(rxSwitchSouth.wireOutput);
-//        mcu.getPin("PA6").connectInput(rxSwitchSouth.wireInput);
-        rxSwitchSouth.enableConnect();
-
-        // signal terminals
-        // PA3 = LED
-        signalLed = new PinWire(sim, Terminal.COLOR_GREEN, "LED", mcu);
-        signalLed.wireOutput.enableOutput();
-        mcu.getPin("PA3").connectOutput(signalLed.wireOutput);
-//        mcu.getPin("PA3").connectInput(signalLed.wireInput);
-        signalLed.enableConnect();
-
-        // PA7 = test-point
-        testPoint = new PinWire(sim, Terminal.COLOR_BROWN, "test-point", mcu);
-        testPoint.wireOutput.enableOutput();
-        mcu.getPin("PA7").connectOutput(testPoint.wireOutput);
-//        mcu.getPin("PA7").connectInput(testPoint.wireInput);
-        testPoint.enableConnect();
-
-        // connect platform to previous if available so far
-        platformConnector.addParticlePlatform(this);
+        // east terminals
+        // east tx
+        eastWires.tx = new PinWire(mcu.getSimulator(), Terminal.COLOR_RED, "tx-east", mcu);
+        eastWires.tx.wireOutput.enableOutput();
+        mcu.getPin("PA7").connectOutput(eastWires.tx.wireOutput);
+        eastWires.tx.enableConnect();
+        // east rx
+        eastWires.rx = new PinWire(mcu.getSimulator(), Terminal.COLOR_BLUE, "rx-east", mcu);
+        eastWires.rx.wireInput.enableInput();
+        mcu.getPin("PD3").connectInput(eastWires.rx.wireInput);
+        eastWires.rx.enableConnect();
+        // east switch (pwr/rx)
+        eastWires.rxSwitch = new PinWire(mcu.getSimulator(), Terminal.COLOR_YELLOW, "rxSwitch-east", mcu);
+        eastWires.rxSwitch.wireOutput.enableOutput();
+        mcu.getPin("PA6").connectOutput(eastWires.rxSwitch.wireOutput);
+        eastWires.rxSwitch.enableConnect();
     }
 
     /**
@@ -174,14 +192,21 @@ public class ParticlePlatform extends Platform {
      */
     public Set<PinWire> getWires() {
         Set<PinWire> wires = new HashSet<>(10);
-        wires.add(txNorth);
-        wires.add(rxNorth);
-        wires.add(rxSwitchNorth);
-        wires.add(txSouth);
-        wires.add(rxSouth);
-        wires.add(rxSwitchSouth);
-        wires.add(signalLed);
-        wires.add(testPoint);
+        wires.add(northWires.tx);
+        wires.add(northWires.rx);
+        wires.add(northWires.rxSwitch);
+
+        wires.add(southWires.tx);
+        wires.add(southWires.rx);
+        wires.add(southWires.rxSwitch);
+
+        for (PinWire signalLed : signalLeds) {
+            wires.add(signalLed);
+        }
+
+        for (PinWire testPoint : testPoints) {
+            wires.add(testPoint);
+        }
         return wires;
     }
 
@@ -189,65 +214,163 @@ public class ParticlePlatform extends Platform {
      * Reads neighbours' outputs and feeds them to the current node's input.
      */
     public void propagateSignals() {
-        // propagate outputs from north to inputs of south (north to south propagation)
-        if (northNeighbor != null) {
-            if (northNeighbor.getNorthTx() != null && northNeighbor.getNorthTx().outputReady()) {
-                if (rxSwitchNorth.outputReady()) {
-                    if (rxNorth.inputReady()) {
 
-                        northRxLogic.setTx(northNeighbor.getSouthTx().wireInput.read());
-                        northRxLogic.setRxSwitch(rxSwitchNorth.wireInput.read());
-                        this.rxNorth.wireOutput.write(northRxLogic.isRx());
-                        LOGGER.debug("propagated: north -> local [{}] {}", northRxLogic.isRx(), id);
-                    } else {
-                        LOGGER.debug("skip: !rxNorth.inputReady()");
-                        throw new IllegalStateException("misconfigured north wire: rx");
-                    }
-                } else {
-                    LOGGER.debug("skip: !rxSwitchNorth.outputReady()");
-                    throw new IllegalStateException("misconfigured north wire: rxSwitch");
-                }
-            } else {
-                LOGGER.debug("skip: !northNeighbor.getNorthTx().outputReady()");
-                throw new IllegalStateException("misconfigured north neighbor's wire: tx");
+        if (northNeighbor != null) {
+            if (westNeighbor != null) {
+                LOGGER.warn("network wiring mismatch: north and west communication cannot occur " +
+                        "simultaneously");
             }
+            propagateNorthNeighbourToLocal();
+        } else if (westNeighbor != null) {
+            propagateWestNeighbourToLocal();
         }
 
-        // propagate outputs from south to inputs of local (south to north propagation)
         if (southNeighbor != null) {
-            if (southNeighbor.getNorthTx() != null && southNeighbor.getNorthTx().outputReady()) {
-                if (rxSwitchSouth.outputReady()) {
-                    if (rxSouth.inputReady()) {
+            propagateSouthToLocal();
+        }
 
-                        southRxLogic.setTx(southNeighbor.getNorthTx().wireInput.read());
-                        southRxLogic.setRxSwitch(rxSwitchSouth.wireInput.read());
-                        this.rxSouth.wireOutput.write(southRxLogic.isRx());
-                        LOGGER.debug("propagated: south -> local [{}] {}", southRxLogic.isRx(), id);
-                    } else {
-                        LOGGER.debug("skip: !rxSouth.inputReady()");
-                        throw new IllegalStateException("misconfigured south wire: rx");
-                    }
-                } else {
-                    LOGGER.debug("skip: !rxSwitchSouth.outputReady()");
-                    throw new IllegalStateException("misconfigured south wire: rxSwitch");
-                }
-            } else {
-                LOGGER.debug("skip: !southNeighbor.getNorthTx().outputReady()");
-                throw new IllegalStateException("misconfigured south neighbor's wire: tx");
-            }
+        if (eastNeighbor != null) {
+            propagateEastNeighbourToLocal();
         }
     }
 
+    /**
+     * Propagate output signals from the south neighbour to local inputs. In detail signals are fetched at the
+     * south neighbour's north communication port and forwarded to the local south port.
+     */
+    private void propagateSouthToLocal() {
+        if (southNeighbor.getNorthTx() != null && southNeighbor.getNorthTx().outputReady()) {
+            if (southWires.rxSwitch.outputReady()) {
+                if (southWires.rx.inputReady()) {
+
+                    southRxLogic.setTxSignal(southNeighbor.getNorthTx().wireInput.read());
+                    southRxLogic.setRxSwitchSignal(this.getSouthRxSwitch().wireInput.read());
+                    this.southWires.rx.wireOutput.write(southRxLogic.evaluateRxSignal());
+                    LOGGER.debug("propagated [{}] from remote at south {} to local {}", southRxLogic
+                            .evaluateRxSignal(), southNeighbor.getAddress(), localAddress);
+                } else {
+                    LOGGER.debug("skip: !inputReady()");
+                    throw new IllegalStateException("misconfigured south wire: rx");
+                }
+            } else {
+                LOGGER.debug("skip: !outputReady()");
+                throw new IllegalStateException("misconfigured south wire: rx-switch");
+            }
+        } else {
+            LOGGER.debug("skip: !outputReady()");
+            throw new IllegalStateException("misconfigured south neighbor's wire: tx");
+        }
+    }
+
+    /**
+     * Propagate output signals from the east neighbour to local inputs. Since there is no dedicated west
+     * communication port, signals are fetched from the east neighbours north port and forwarded to the local
+     * east port.
+     */
+    private void propagateEastNeighbourToLocal() {
+        if (eastNeighbor.getWestTx() != null && eastNeighbor.getWestTx().outputReady()) {
+            if (eastWires.rxSwitch.outputReady()) {
+                if (eastWires.rx.inputReady()) {
+
+                    eastRxLogic.setTxSignal(eastNeighbor.getWestTx().wireInput.read());
+                    eastRxLogic.setRxSwitchSignal(this.getEastRxSwitch().wireInput.read());
+                    this.eastWires.rx.wireOutput.write(eastRxLogic.evaluateRxSignal());
+                    LOGGER.debug("propagated [{}] from remote at east {} to local {}", eastRxLogic
+                            .evaluateRxSignal(), eastNeighbor.getAddress(), localAddress);
+                } else {
+                    LOGGER.debug("skip: !inputReady()");
+                    throw new IllegalStateException("misconfigured east wire: rx");
+                }
+            } else {
+                LOGGER.debug("skip: !outputReady()");
+                throw new IllegalStateException("misconfigured east wire: rx-switch");
+            }
+        } else {
+            LOGGER.debug("skip: !outputReady()");
+            throw new IllegalStateException("misconfigured east neighbor's wire: tx");
+        }
+    }
+
+    /**
+     * Propagate output signals from the west neighbour to local inputs. Since there is no dedicated west
+     * communication port, signals are fetched from the west neighbours east port and forwarded to the local
+     * north port.
+     */
+    private void propagateWestNeighbourToLocal() {
+        if (westNeighbor.getEastTx() != null && westNeighbor.getEastTx().outputReady()) {
+            if (northWires.rxSwitch.outputReady()) {
+                if (northWires.rx.inputReady()) {
+
+                    northRxLogic.setTxSignal(westNeighbor.getEastTx().wireInput.read());
+                    northRxLogic.setRxSwitchSignal(this.getWestRxSwitch().wireInput.read());
+                    this.northWires.rx.wireOutput.write(northRxLogic.evaluateRxSignal());
+                    LOGGER.debug("propagated [{}] from remote at west {} to local {}", northRxLogic
+                            .evaluateRxSignal(), westNeighbor.getAddress(), localAddress);
+                } else {
+                    LOGGER.debug("skip: !inputReady()");
+                    throw new IllegalStateException("misconfigured west wire: rx");
+                }
+            } else {
+                LOGGER.debug("skip: !outputReady()");
+                throw new IllegalStateException("misconfigured west wire: rx-switch");
+            }
+        } else {
+            LOGGER.debug("skip: !outputReady()");
+            throw new IllegalStateException("misconfigured west neighbor's wire: tx");
+        }
+    }
+
+    /**
+     * Propagate output signals from the north neighbour to local inputs. In detail signals are fetched at the
+     * north neighbour's south communication port and forwarded to the local north port.
+     */
+    private void propagateNorthNeighbourToLocal() {
+        if (northNeighbor.getNorthTx() != null && northNeighbor.getNorthTx().outputReady()) {
+            if (northWires.rxSwitch.outputReady()) {
+                if (northWires.rx.inputReady()) {
+
+                    northRxLogic.setTxSignal(northNeighbor.getSouthTx().wireInput.read());
+                    northRxLogic.setRxSwitchSignal(this.getNorthRxSwitch().wireInput.read());
+                    this.northWires.rx.wireOutput.write(northRxLogic.evaluateRxSignal());
+                    LOGGER.debug("propagated [{}] from remote at north {} to local {}", northRxLogic
+                            .evaluateRxSignal(), northNeighbor.getAddress(), localAddress);
+                } else {
+                    LOGGER.debug("skip: !inputReady()");
+                    throw new IllegalStateException("misconfigured north wire: rx");
+                }
+            } else {
+                LOGGER.debug("skip: !outputReady()");
+                throw new IllegalStateException("misconfigured north wire: rx-switch");
+            }
+        } else {
+            LOGGER.debug("skip: !outputReady()");
+            throw new IllegalStateException("misconfigured north neighbor's wire: tx");
+        }
+    }
+
+    /**
+     * Attaches the south neighbour locally and a back reference at the south neighbour to this node.
+     *
+     * @param southNeighbor the south side neighbour
+     */
     public void attachSouthNode(ParticlePlatform southNeighbor) {
         this.southNeighbor = southNeighbor;
         this.southNeighbor.attachNorthNode(this);
     }
 
+    /**
+     * Attaches the east neighbour locally and a back reference at the east neighbour to this node.
+     *
+     * @param eastNeighbor the east side neighbour
+     */
     public void attachEastNode(ParticlePlatform eastNeighbor) {
         this.eastNeighbor = eastNeighbor;
         this.eastNeighbor.attachWestNode(this);
     }
 
+    /**
+     * Detaches the local reference to the south node and the south's node back reference.
+     */
     public void detachSouthNode() {
         if (this.southNeighbor != null) {
             this.southNeighbor.detachNorthNode();
@@ -255,10 +378,12 @@ public class ParticlePlatform extends Platform {
         }
     }
 
+    /**
+     * Detaches the local reference to the east node and the east's node back reference.
+     */
     public void detachEastNode() {
         if (this.eastNeighbor != null) {
             this.eastNeighbor.detachWestNode();
-
             this.eastNeighbor = null;
         }
     }
@@ -274,51 +399,85 @@ public class ParticlePlatform extends Platform {
      * @param westNode the node to the west side
      */
     private void attachWestNode(ParticlePlatform westNode) {
-        this.northNeighbor = westNode;
+        this.westNeighbor = westNode;
     }
 
     private void detachWestNode() {
-        this.northNeighbor = null;
+        this.westNeighbor = null;
     }
 
     private void detachNorthNode() {
         this.northNeighbor = null;
     }
 
+    /**
+     * @return the transmission wire meant for the north communication port
+     */
     public PinWire getNorthTx() {
-        return txNorth;
+        return northWires.tx;
     }
 
-    public PinWire getNorthRx() {
-        return rxNorth;
-    }
-
-    public PinWire getEastTx() {
-        return txEast;
-    }
-
-    public PinWire getEastRx() {
-        return rxEast;
-    }
-
-    public PinWire getSouthRx() {
-        return rxSouth;
-    }
-
+    /**
+     * @return the transmission wire meant for the south communication port
+     */
     public PinWire getSouthTx() {
-        return txSouth;
+        return southWires.tx;
     }
 
-    public PinWire getNorthRxSwitch() {
-        return rxSwitchNorth;
+    /**
+     * @return the transmission wire meant for the east communication port
+     */
+    public PinWire getEastTx() {
+        return eastWires.tx;
     }
 
-    public PinWire getEastRxSwitch() {
-        return rxSwitchEast;
+    /**
+     * @return The transmission wire meant for the west communication port. Since there is no dedicated west
+     * communication port, this communication is passed via the north communication port.
+     */
+    public PinWire getWestTx() {
+        return northWires.tx;
     }
 
-    public PinWire getSouthRxSwitch() {
-        return rxSwitchSouth;
+    private PinWire getNorthRxSwitch() {
+        return northWires.rxSwitch;
+    }
+
+    private PinWire getSouthRxSwitch() {
+        return southWires.rxSwitch;
+    }
+
+    private PinWire getEastRxSwitch() {
+        return eastWires.rxSwitch;
+    }
+
+    private PinWire getWestRxSwitch() {
+        return northWires.rxSwitch;
+    }
+
+    /**
+     * The mapping class is for convenience when defining multiple simple components such as LEDs, test points
+     * etc.
+     */
+    private static class SimpleComponentMapping {
+        public String name;
+        public String pin;
+        public int color;
+
+        public SimpleComponentMapping(String name, String pin, int color) {
+            this.name = name;
+            this.color = color;
+            this.pin = pin;
+        }
+    }
+
+    /**
+     * Class for convenience. Bundles all wires of a communication port/side.
+     */
+    private static class WireBundle {
+        private PinWire tx;
+        private PinWire rx;
+        private PinWire rxSwitch;
     }
 
     public static class Factory implements PlatformFactory {

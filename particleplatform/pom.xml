@@ -17,13 +17,11 @@
     <scm>
         <url>https://github.com/ProgrammableMatter/avrora-particle-platform</url>
         <connection>scm:git:git@github.com:avrora-framework/avrora-particle-platform.git</connection>
-        <developerConnection>scm:git:git@github.com:avrora-framework/avrora-particle-platform.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:avrora-framework/avrora-particle-platform.git
+        </developerConnection>
     </scm>
 
     <build>
-
-
-
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -33,7 +31,7 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-            <!--
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -41,12 +39,12 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>at.tugraz.ist.avrora.particleplatform.Main</mainClass>
+                            <mainClass>at.tugraz.iti.avrora.particleplatform.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
-            -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -54,7 +52,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>at.tugraz.ist.avrora.particleplatform.Main</mainClass>
+                            <mainClass>at.tugraz.iti.avrora.particleplatform.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -73,8 +71,12 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
+        <testResources>
+            <testResource>
+                <directory>src/test/resource/</directory>
+            </testResource>
+        </testResources>
     </build>
 
     <dependencies>
@@ -88,7 +90,7 @@
         <dependency>
             <groupId>com.github.avrora-framework</groupId>
             <artifactId>avrora</artifactId>
-            <version>0.1.46-SNAPSHOT</version>
+            <version>0.1.48-SNAPSHOT</version>
         </dependency>
 
         <dependency>

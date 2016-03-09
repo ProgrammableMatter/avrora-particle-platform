@@ -1,7 +1,7 @@
 {
   "enums": {
-    /* the StateType enum */
-    "stateType": [
+    /* StateType enum describes the node state */
+    "StateType": [
       "STATE_TYPE_START",
       "STATE_TYPE_ACTIVE",
       "STATE_TYPE_NEIGHBOURS_DISCOVERY",
@@ -22,8 +22,8 @@
       "STATE_TYPE_COMMAND_SCHEDULED_ACK",
       "STATE_TYPE_ERRONEOUS"
     ],
-    /* the NodeType enum */
-    "nodeType": [
+    /* NodeType enum describes the node type regarding to it's connectivity */
+    "NodeType": [
       "NODE_TYPE_ORPHAN",
       "NODE_TYPE_HEAD",
       "NODE_TYPE_INTER_NODE",
@@ -31,120 +31,252 @@
     ]
   },
   "structs": {
-    "dirA": {
+    /* state in direction register of port A */
+    "A.dir": {
       "properties": [
-        "(TP | STH_SW | A5 | STH_TX | LED | A2 | NRTH_TX | NRTH_SW)"
+        /* names of the port wires, this string will be printed after the port value */
+        "(EAST_TX | EAST_SW | TP3 | PA4 | STH_TX | STH_SW | TP2 | ERROR)"
       ],
+      /* how to print the port value */
       "propertyTypes": [
+        /* format as bit, will print as 0bxxxxxxxx */
         "bit"
       ],
       "propertyAddresses": [
+        /* address in sram of the register */
         58
       ]
     },
-    "portA": {
+    /* state in register of port (output) A  */
+    "A.out": {
       "properties": [
-        "(TP | STH_SW | A5 | STH_TX | LED | A2 | NRTH_TX | NRTH_SW)"
+        "(EAST_TX | EAST_SW | TP3 | PA4 | STH_TX | STH_SW | TP2 | ERROR)"
       ],
       "propertyTypes": [
+        /* format as bit */
         "bit"
       ],
       "propertyAddresses": [
+        /* address in sram of the register */
         59
       ]
     },
-    "dirD": {
+    /* state in direction register of port B */
+    "B.dir": {
       "properties": [
-        "(D7 | D6 | STH_RX | D4 | D3 | NRTH_RX | D1 | D0)"
+        /* names of the port wires, this string will be printed after the port value */
+        "(B7 | B6 | B5 | STAT0 | STAT1 | NRTH_RX | HTBEAT | B0)"
       ],
+      /* how to print the port value */
       "propertyTypes": [
+        /* format as bit, will print as 0bxxxxxxxx */
         "bit"
       ],
       "propertyAddresses": [
+        /* address in sram of the register */
+        55
+      ]
+    },
+    /* state in register of port (output) B  */
+    "B.out": {
+      "properties": [
+        "(B7 | B6 | B5 | STAT0 | STAT1 | NRTH_RX | HTBEAT | B0)"
+      ],
+      "propertyTypes": [
+        /* format as bit */
+        "bit"
+      ],
+      "propertyAddresses": [
+        /* address in sram of the register */
+        56
+      ]
+    },
+    /* state in register of pin (input) B  */
+    "B.in": {
+      "properties": [
+        "(B7 | B6 | B5 | STAT0 | STAT1 | NRTH_RX | HTBEAT | B0)"
+      ],
+      "propertyTypes": [
+        /* format as bit */
+        "bit"
+      ],
+      "propertyAddresses": [
+        /* address in sram of the register */
+        54
+      ]
+    },
+    /* state in direction register of port C */
+    "C.dir": {
+      "properties": [
+        /* names of the port wires, this string will be printed after the port value */
+        "(C7  | C6 | C5 | NRTH_SW | C3 | TP1 | C1 | NRTH_TX)"
+      ],
+      /* how to print the port value */
+      "propertyTypes": [
+        /* format as bit, will print as 0bxxxxxxxx */
+        "bit"
+      ],
+      "propertyAddresses": [
+        /* address in sram of the register */
+        52
+      ]
+    },
+    /* state in register of port (output) C  */
+    "C.out": {
+      "properties": [
+        "(C7  | C6 | C5 | NRTH_SW | C3 | TP1 | C1 | NRTH_TX)"
+      ],
+      "propertyTypes": [
+        /* format as bit */
+        "bit"
+      ],
+      "propertyAddresses": [
+        /* address in sram of the register */
+        53
+      ]
+    },
+    /* state in direction register of port D*/
+    "D.dir": {
+      "properties": [
+        "(D7 | D6 | D5 | D4 | EAST_RX | STH_RX | D1 | D0)"
+      ],
+      "propertyTypes": [
+        /* format as bit */
+        "bit"
+      ],
+      "propertyAddresses": [
+        /* register address in stram */
         49
       ]
     },
-    "portD": {
+    /* state in register of port (output) D */
+    "D.out": {
       "properties": [
-        "(D7 | D6 | STH_RX | D4 | D3 | NRTH_RX | D1 | D0)"
+        "(D7 | D6 | D5 | D4 | EAST_RX | STH_RX | D1 | D0)"
       ],
       "propertyTypes": [
+        /* format as bit */
         "bit"
       ],
       "propertyAddresses": [
+        /* register start address in sram */
         50
       ]
     },
-    "GCIR": {
+    /* state in register of pin (input) D */
+    "D.in": {
       "properties": [
-        "(INT1 | INT0 | INT2 | – | – | – | IVSEL | IVCE)"
+        "(D7 | D6 | D5 | D4 | EAST_RX | STH_RX | D1 | D0)"
       ],
       "propertyTypes": [
+        /* format as bit */
         "bit"
       ],
       "propertyAddresses": [
+        /* register start address in sram */
+        48
+      ]
+    },
+    /* state in general interrupt control register */
+    "GICR": {
+      "properties": [
+        "(INT1 | INT0 | INT2 | - | - | - | IVSEL | IVCE)"
+      ],
+      "propertyTypes": [
+        /* format as bit */
+        "bit"
+      ],
+      "propertyAddresses": [
+        /* register address in sram */
         91
       ]
     },
+    /* state in MCU control register*/
     "MCUCR": {
       "properties": [
         "(SM2 | SE | SM1 | SM0 | ISC11 | ISC10 | ISC01 | ISC00)"
       ],
       "propertyTypes": [
+        /* format as bit */
         "bit"
       ],
       "propertyAddresses": [
+        /* register address in sram */
         85
       ]
     },
+    /* status register */
     "SREG": {
       "properties": [
         "(I | T | H | S | V | N | Z | C)"
       ],
       "propertyTypes": [
+        /* format as bit */
         "bit"
       ],
       "propertyAddresses": [
+        /* register address in sram */
         95
       ]
     },
-    "particle_tick": {
-      "properties": [
-        "loopCount"
-      ],
-      "propertyTypes": [
-        "unsigned char"
-      ],
-      "propertyAddresses": [
-        96
-      ]
-    },
-    /* definition of global state struct */
+    /* global status struct*/
     "globalState": {
       "properties": [
+        /* StateType - 2 bytes enum */
         "state",
+        /* NodeType - 2 bytes enum */
         "type",
-        "nodeId",
-        "northRxEvents",
-        "southRxEvents",
-        "flags( - | - | - | - | - | RECORD_RX_SOUTH | RECORD_RX_NORTH |)",
-        "rxNorthByte1",
-        "rxNorthByte2",
-        "rxSouthByte1",
-        "rxSouthByte2",
-        "rxBitCounter"
+        /* next packed struct is NodeId */
+        "row",
+        "column",
+        /* next packed struct is RxBitBuffer */
+        "northBytes[0]",
+        "northBytes[1]",
+        "southBytes[0]",
+        "southBytes[1]",
+        "eastBytes[0]",
+        "eastBytes[1]",
+        "(northBitCount[3:0] | southBitCount[7:4])",
+        "( eastBitCount[3:0] |             -[7:4])",
+        /* next packed struct is RxDiscoveryPulseCounter */
+        "rxDiscoveryPulseCounter(north[3:0] | south[7:4])",
+        "rxDiscoveryPulseCounter( east[3:0] |     -[7:4])",
+        "rxDiscoveryPulseCounter(loopCount)",
+        /* next packed struct is RxInterruptFlankStates */
+        "rxInterruptFlankStates( north | south | east | isInitialized | - | - | - | - )"
       ],
       "propertyTypes": [
-        "stateType",
-        "nodeType",
+        /* StateType */
+        "StateType",
+        /* NodeType */
+        "NodeType",
+        /* NodeId - row */
         "unsigned char",
+        /* column */
         "unsigned char",
-        "unsigned char",
-        "bit",
-        "byte",
-        "byte",
-        "byte",
-        "byte",
+        /* RxBitBuffer - unsigned char northBytes[0] */
+        "hex",
+        /* unsigned char northBytes[1] */
+        "hex",
+        /* unsigned char southBytes[0] */
+        "hex",
+        /* unsigned char southBytes[1] */
+        "hex",
+        /* unsigned char eastBytes[0] */
+        "hex",
+        /* unsigned char eastBytes[1] */
+        "hex",
+        /* (northBitCount[3:0] | southBitCount[7:4]) */
+        "hex",
+        /* (eastBitCount[3:0] | -[7:3]) */
+        "hex",
+        /* RxDiscoveryPulseCounter - north counter | south counter */
+        "hex",
+        /* east counter | - */
+        "hex",
+        /* loopCount */
+        "hex",
+        /* rx interrupt flank states ( north | south | east | isInitialized | - | - | - | - ) */
         "bit"
       ],
       "propertyAddresses": [
@@ -158,16 +290,23 @@
         106,
         107,
         108,
-        109
+        109,
+        110,
+        111,
+        112,
+        113,
+        114
       ]
     }
   },
-  /* data type size in byte on microcontroller */
+  /* data type size bytes to be interpreted */
   "sizeofTypes": {
     "enum": 2,
-    "stateType": 2,
-    "nodeType": 2,
+    "StateType": 2,
+    "NodeType": 2,
     "unsigned char": 1,
-    "char": 1
+    "char": 1,
+    "bit": 1,
+    "hex": 1
   }
 }

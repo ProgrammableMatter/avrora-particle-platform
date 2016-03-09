@@ -32,9 +32,7 @@ public class PinWireProbe implements FiniteStateMachine.Probe {
 
     @Override
     public void fireAfterTransition(int beforeState, int afterState) {
-        if (beforeState == afterState) {
-            return;
-        } else {
+        if (beforeState != afterState) {
             StringBuffer buf = printer.getBuffer(20);
             Terminal.append(Terminal.COLOR_DEFAULT, buf, "WIRE[" + wire.readName() + "] <- " +
                     modeName[afterState]);

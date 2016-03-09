@@ -5,7 +5,7 @@ import edu.ucla.cs.compilers.avrora.avrora.sim.mcu.Microcontroller.Pin.Output;
 
 /**
  * Implements the {@link Output} interface and wraps
- * {@link SmaWireLogic#setTx(boolean)}. The "*Output" suffix is seen
+ * {@link SmaWireLogic#setTxSignal(boolean)}. The "*Output" suffix is seen
  * from the viewpoint of an {@link edu.ucla.cs.compilers.avrora.avrora.sim.mcu.Microcontroller.Pin.Output}. In other
  * words this class provides the input interface for the microcontroller's output.
  *
@@ -23,6 +23,6 @@ class SmaWireLogicTxOutput
 
     @Override
     public void write(boolean level) {
-        smaWireLogic.setTx(level);
+        smaWireLogic.setTxSignal(level);
     }
 }

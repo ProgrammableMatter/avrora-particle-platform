@@ -1,12 +1,11 @@
 package edu.ucla.cs.compilers.avrora.avrora.sim.platform.smawire;
 
 /**
- * This class implements the logic above the underlying states of
- * {@link SmaWireState} and relates to the network in between of
- * IC2B and IC3A only but it is also vice versa
- * re-usable for IC2A and IC3B.
+ * This class implements the logic above the underlying states of {@link SmaWireState}. It depicts only the
+ * one way communication of the electrical network in between Q-NORTH1 and Q-SOUTH1. To achieve a two way
+ * communication two independent instances are required.
  *
- * @author Raoul Rubien
+ * @author Raoul Rubien 2015
  */
 public class SmaWireLogic {
 
@@ -16,16 +15,12 @@ public class SmaWireLogic {
         this.state = state;
     }
 
-    public SmaWireState getState() {
-        return state;
-    }
-
     /**
-     * Sets the logic input level (of this {@link SmaWireLogic} instance) of the PWR/TX_B net.
+     * Sets the logic input level (of this {@link SmaWireLogic} instance) of the PWR/TX wire.
      *
      * @param logicLevel the transmission level from the viewpoint of the microcontroller
      */
-    public void setTx(boolean logicLevel) {
+    public void setTxSignal(boolean logicLevel) {
         if (logicLevel != state.isTx()) {
             state.setTx(logicLevel);
             evaluate();
@@ -33,11 +28,11 @@ public class SmaWireLogic {
     }
 
     /**
-     * Sets the logic input level (of this {@link SmaWireLogic} instance) of the SW_PWR/RX_A net.
+     * Sets the logic input level (of this {@link SmaWireLogic} instance) of the SW_PWR/RX wire.
      *
-     * @param logicLevel the receive switch level from the viewpoint of the microcontroller
+     * @param logicLevel the switch level from the viewpoint of the microcontroller
      */
-    public void setRxSwitch(boolean logicLevel) {
+    public void setRxSwitchSignal(boolean logicLevel) {
         if (logicLevel != state.isRxSwitch()) {
             state.setRxSwitch(logicLevel);
             evaluate();
@@ -51,33 +46,33 @@ public class SmaWireLogic {
     }
 
     /**
-     * Combines the state of {@link SmaWireState} with the logic of the MosFet
-     * ICs using their implementation {@link #ic2b(boolean, boolean)} and
-     * {@link SmaWireLogic#ic3a(boolean)}.
+     * Combines the state of {@link SmaWireState} with the logic of the MosFet ICs using their implementation
+     * {@link #receptionTransistorImpl(boolean, boolean)} and {@link
+     * SmaWireLogic#transmissionTransistorImpl(boolean)}.
      */
     private void evaluate() {
-        updateRx(ic2b(state.isRxSwitch(), ic3a(state.isTx())));
+        updateRx(receptionTransistorImpl(state.isRxSwitch(), transmissionTransistorImpl(state.isTx())));
     }
 
     /**
-     * IC3A implementation. The output of that IC is active low, but pulled up
-     * by the other PCB if inactive. The same implementation can be re-used for IC2A.
+     * IC3A implementation. The output of that IC is active low, but pulled up by the other PCB if inactive.
+     * The same implementation can be re-used for IC2A.
      *
-     * @param pwr_tx according to electric schema the PWR/TX_B net
+     * @param pwr_tx according to electric schema the PWR/TX net
      * @return the output; active low; inverted tx_txSwitch; according to electric schema the TXB terminal
      */
-    private boolean ic3a(boolean pwr_tx) {
+    private boolean transmissionTransistorImpl(boolean pwr_tx) {
         return !pwr_tx;
     }
 
     /**
      * IC2B implementation. The same implementation can be re-uses for IC3B.
      *
-     * @param switchPwr_rx according to electric schema the SW_PWR/RX_A
+     * @param switchPwr_rx according to electric schema the SW_PWR/RX
      * @param rx           according to the schema the RXA terminal
-     * @return the output; rx; according to the schema the RX_A net
+     * @return the output; rx; according to the schema the RX net
      */
-    private boolean ic2b(boolean switchPwr_rx, boolean rx) {
+    private boolean receptionTransistorImpl(boolean switchPwr_rx, boolean rx) {
         if (!switchPwr_rx) // if gate = 0V then MosFet is active and overrides tx with VCC
         {
             return true; // VCC
@@ -86,12 +81,12 @@ public class SmaWireLogic {
     }
 
     /**
-     * This method evaluates the logic output in regard to the inputs of
-     * {@link #setRxSwitch(boolean)} and {@link #setTx(boolean)}.
+     * This method evaluates the logic output in regard to the inputs of {@link #setRxSwitchSignal(boolean)}
+     * and {@link #setTxSignal(boolean)}.
      *
-     * @return the SmaWire output that is connected to the RX_A net (to the microcontroller intput)
+     * @return the SmaWire output that is connected to the RX net (to the microcontroller intput)
      */
-    public boolean isRx() {
+    public boolean evaluateRxSignal() {
         return state.isRx();
     }
 }

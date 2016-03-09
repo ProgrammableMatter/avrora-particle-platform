@@ -61,12 +61,11 @@ public class ParticleSimulation extends Simulation {
             "number" +
             " of clock cycles. For example, if this option is given the value X, then node 0 will start at " +
             "time 0, node 1 at time 1*X, node 2 at time 2*X, etc.");
-    long stagger;
 
     public ParticleSimulation() {
         super("wired", HELP, null);
 
-        synchronizer = ParticlePlatform.getPlatformConnector().getSynchronizer();
+        synchronizer = ParticlePlatform.getPlatformNetworkConnector().getSynchronizer();
 
         addSection("WIRED SIMULATION OVERVIEW", help);
         addOptionSection("This simulation type supports simulating multiple nodes that communicate  with " +
@@ -79,9 +78,9 @@ public class ParticleSimulation extends Simulation {
     }
 
     /**
-     * The {@link #process(Options, String[])} } method processes options and arguments from the command line.
-     * In this implementation, this method accepts multiple programs from the command line as arguments as
-     * well as options that describe how many of each type of node to instantiate.
+     * The method processes options and arguments from the command line. In this implementation, this method
+     * accepts multiple programs from the command line as arguments as well as options that describe how many
+     * of each type of node to instantiate.
      *
      * @param o    the options from the command line
      * @param args the arguments from the command line
@@ -104,9 +103,8 @@ public class ParticleSimulation extends Simulation {
     }
 
     /**
-     * The {@link #newNode(int, PlatformFactory, LoadableProgram)} method creates a new node in the
-     * simulation. In this implementation, a <code>WiredNode</code> is created that additionally stores the
-     * row and column address.
+     * The method creates a new node in the simulation. In this implementation, a <code>WiredNode</code> is
+     * created that additionally stores the row and column address.
      *
      * @param id the integer identifier for the node
      * @param pf the platform factory to use to instantiate the node
@@ -121,14 +119,14 @@ public class ParticleSimulation extends Simulation {
     @Override
     protected void instantiateNodes() {
         super.instantiateNodes();
-        ParticlePlatform.getPlatformConnector().initializeConnections();
+        ParticlePlatform.getPlatformNetworkConnector().initializeConnections();
     }
 
     private void createNodes(String[] args, PlatformFactory platformFactory) throws Exception {
         short rows = (NODE_ROWS_COUNT.get() > 255) ? 255 : (short) NODE_ROWS_COUNT.get();
         short columns = (NODE_COLUMNS_COUNT.get() > 255) ? 255 : (short) NODE_COLUMNS_COUNT.get();
 
-        ParticlePlatform.getPlatformConnector().setNetworkDimension(rows, columns);
+        ParticlePlatform.getPlatformNetworkConnector().setNetworkDimension(rows, columns);
 
         String nodeFirmwareName = args[0];
         LoadableProgram loadableNodeFirmware = new LoadableProgram(nodeFirmwareName);
@@ -148,7 +146,8 @@ public class ParticleSimulation extends Simulation {
 
         if (args.length == 2) {
             String communicationUnitFirmwareName = args[1];
-            LoadableProgram loadableCommunicationUnitFirmware = new LoadableProgram(nodeFirmwareName);
+            LoadableProgram loadableCommunicationUnitFirmware = new LoadableProgram
+                    (communicationUnitFirmwareName);
             loadableCommunicationUnitFirmware.load();
             WiredNode wiredNode = (WiredNode) createNode(platformFactory, loadableCommunicationUnitFirmware);
             long random = processRandom();
@@ -197,7 +196,8 @@ public class ParticleSimulation extends Simulation {
          */
         @Override
         protected void remove() {
-            ParticlePlatform.getPlatformConnector().disconnectConnections((ParticlePlatform) getPlatform());
+            ParticlePlatform.getPlatformNetworkConnector().disconnectConnections((ParticlePlatform)
+                    getPlatform());
             super.remove();
         }
     }
