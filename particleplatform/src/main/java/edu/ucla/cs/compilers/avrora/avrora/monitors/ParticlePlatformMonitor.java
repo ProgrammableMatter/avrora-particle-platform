@@ -76,24 +76,31 @@ public class ParticlePlatformMonitor extends MonitorFactory {
 
         protected static final ParticleFlashStateRegisterDetails stateRegister = new
                 ParticleFlashStateRegisterDetails();
-        private static final AtomicInteger monitorId = new AtomicInteger(0);
+        private static final AtomicInteger monitorIdCounter = new AtomicInteger(0);
         protected final Simulator simulator;
         private final Option.List monitorFacetsOption;
         protected ParticleLogSink particleStateLogger;
         protected OnParticleStateChangeWatch onParticleStateChangeWatch;
-        private Map<PinWire, PinWireProbe> wireProbes = new HashMap<>();
-        private HashMap<BreakProbe, Integer> breakProbes = new HashMap<>();
+        protected Map<PinWire, PinWireProbe> wireProbes = new HashMap<>();
+        private int monitorId = 0;
+        private Map<BreakProbe, Integer> breakProbes = new HashMap<>();
 
         protected MonitorImpl(Simulator sim, ParticleLogSink particleStateLogger, Option.List monitorFacets) {
             simulator = sim;
             this.particleStateLogger = particleStateLogger;
             monitorFacetsOption = monitorFacets;
-            onParticleStateChangeWatch = new OnParticleStateChangeWatch(simulator, stateRegister,
-                    particleStateLogger);
+            onParticleStateChangeWatch = newOnStateChangeWatch();
             insertWatches();
-            synchronized (monitorId) {
-                monitorId.getAndIncrement();
+            synchronized (monitorIdCounter) {
+                monitorId = monitorIdCounter.getAndIncrement();
             }
+        }
+
+        /**
+         * @return default state change watch instance
+         */
+        protected OnParticleStateChangeWatch newOnStateChangeWatch() {
+            return new OnParticleStateChangeWatch(simulator, stateRegister, particleStateLogger);
         }
 
         private void insertWatches() {
@@ -124,13 +131,12 @@ public class ParticlePlatformMonitor extends MonitorFactory {
 
             if (monitorFacetsOption.get().contains("wires")) {
                 // insert {@link ParticlePlatform}'s {@PinWire}s' probes.
-                Platform platform = simulator.getSimulation().getNode(monitorId.get()).getPlatform();
+                Platform platform = simulator.getSimulation().getNode(monitorId).getPlatform();
                 if (platform instanceof ParticlePlatform) {
 
                     ParticlePlatform particlePlatform = (ParticlePlatform) platform;
                     for (PinWire wire : particlePlatform.getWires()) {
-                        PinWireProbe probe = new PinWireProbe(simulator.getPrinter(), wire,
-                                particleStateLogger);
+                        PinWireProbe probe = newPinWireProbe(wire);
                         wireProbes.put(wire, probe);
                         wire.insertProbe(probe);
                     }
@@ -139,6 +145,15 @@ public class ParticlePlatformMonitor extends MonitorFactory {
                             "particleplatform");
                 }
             }
+        }
+
+        /**
+         * Constructs a new pin wire probe
+         * @param wire the wire to be watched
+         * @return a pin wire probe
+         */
+        protected PinWireProbe newPinWireProbe(PinWire wire) {
+            return new PinWireProbe(simulator.getPrinter(), wire, particleStateLogger);
         }
 
         /**
@@ -163,8 +178,15 @@ public class ParticlePlatformMonitor extends MonitorFactory {
                 for (Map.Entry<PinWire, PinWireProbe> entry : wireProbes.entrySet()) {
                     entry.getKey().removeProbe(entry.getValue());
                 }
-                wireProbes.clear();
+                clearWireProbes();
             }
+        }
+
+        /**
+         * clears map of wire probes
+         */
+        protected void clearWireProbes() {
+            wireProbes.clear();
         }
 
         @Override

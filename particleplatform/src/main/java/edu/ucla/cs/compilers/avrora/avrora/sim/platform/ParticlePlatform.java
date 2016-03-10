@@ -104,9 +104,9 @@ public class ParticlePlatform extends Platform {
     private void connectTestPoints() {
         // led name to pin name mapping
         Set<SimpleComponentMapping> testPointMapping = new HashSet<>();
-        testPointMapping.add(new SimpleComponentMapping("TP1", "PC2", Terminal.COLOR_DEFAULT));
-        testPointMapping.add(new SimpleComponentMapping("TP2", "PA1", Terminal.COLOR_DEFAULT));
-        testPointMapping.add(new SimpleComponentMapping("TP3", "PA5", Terminal.COLOR_DEFAULT));
+        testPointMapping.add(new SimpleComponentMapping("TP1", "PC2", Terminal.COLOR_PURPLE));
+        testPointMapping.add(new SimpleComponentMapping("TP2", "PA1", Terminal.COLOR_PURPLE));
+        testPointMapping.add(new SimpleComponentMapping("TP3", "PA5", Terminal.COLOR_PURPLE));
 
         for (SimpleComponentMapping testPoint : testPointMapping) {
             PinWire testPointWire = new PinWire(mcu.getSimulator(), testPoint.color, testPoint.name, mcu);
@@ -199,6 +199,10 @@ public class ParticlePlatform extends Platform {
         wires.add(southWires.tx);
         wires.add(southWires.rx);
         wires.add(southWires.rxSwitch);
+
+        wires.add(eastWires.tx);
+        wires.add(eastWires.rx);
+        wires.add(eastWires.rxSwitch);
 
         for (PinWire signalLed : signalLeds) {
             wires.add(signalLed);
