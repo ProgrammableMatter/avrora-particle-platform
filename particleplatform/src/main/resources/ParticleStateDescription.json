@@ -25,9 +25,12 @@
     /* NodeType enum describes the node type regarding to it's connectivity */
     "NodeType": [
       "NODE_TYPE_ORPHAN",
+      "NODE_TYPE_ORIGIN",
+      "NODE_TYPE_INTER_HEAD",
       "NODE_TYPE_HEAD",
       "NODE_TYPE_INTER_NODE",
-      "NODE_TYPE_TAIL"
+      "NODE_TYPE_TAIL",
+      "NODE_TYPE_INVALID"
     ]
   },
   "structs": {
@@ -205,6 +208,76 @@
         91
       ]
     },
+    /* state in timer/counter interrupt flag register */
+    "TIFR": {
+      "properties": [
+        "(OCF2 | TOV2 | ICF1 | OCF1A | OCF1B | TOV1 | OCF0 | TOV0)"
+      ],
+      "propertyTypes": [
+        /* format as bit */
+        "bit"
+      ],
+      "propertyAddresses": [
+        /* register address in sram */
+        88
+      ]
+    },
+    /* state in timer compare register 1A */
+    "TCCR1A": {
+      "properties": [
+        "(COM1A1 | COM1A0 | COM1B1 | COM1B0 | OCF1B | FOC1A | WGM11 | WGM10)"
+      ],
+      "propertyTypes": [
+        /* format as bit */
+        "bit"
+      ],
+      "propertyAddresses": [
+        /* register address in sram */
+        79
+      ]
+    },
+    /* state in timer compare register 1B */
+    "TCCR1B": {
+      "properties": [
+        "(ICNC1 | ICES1 | - | WGM13 | WGM12 | CS12 | CS11 | CS10)"
+      ],
+      "propertyTypes": [
+        /* format as bit */
+        "bit"
+      ],
+      "propertyAddresses": [
+        /* register address in sram */
+        78
+      ]
+    },
+    /* state in timer/counter1 compare register high byte */
+    "OCR1AH": {
+      "properties": [
+        ""
+      ],
+      "propertyTypes": [
+        /* format as bit */
+        "hex"
+      ],
+      "propertyAddresses": [
+        /* register address in sram */
+        75
+      ]
+    },
+    /* state in timer/counter1 compare register low byte */
+    "OCR1AL": {
+      "properties": [
+        ""
+      ],
+      "propertyTypes": [
+        /* format as bit */
+        "hex"
+      ],
+      "propertyAddresses": [
+        /* register address in sram */
+        74
+      ]
+    },
     /* state in MCU control register*/
     "MCUCR": {
       "properties": [
@@ -217,6 +290,48 @@
       "propertyAddresses": [
         /* register address in sram */
         85
+      ]
+    },
+    /* state in MCU control and status register */
+    "MCUCSR": {
+      "properties": [
+        "(JTD | ISC2 | - | JTRF | WDRF | BORF | EXTRF | PORF)"
+      ],
+      "propertyTypes": [
+        /* format as bit */
+        "bit"
+      ],
+      "propertyAddresses": [
+        /* register address in sram */
+        84
+      ]
+    },
+    /* state in timer/counter interrupt mask register */
+    "TIMSK": {
+      "properties": [
+        "(OCIE2 | TOIE2 | TICIE1 | OCIE1A | OCIE1B | TOIE1 | OCIE0 | TOIE0)"
+      ],
+      "propertyTypes": [
+        /* format as bit */
+        "bit"
+      ],
+      "propertyAddresses": [
+        /* register address in sram */
+        89
+      ]
+    },
+    /* state in general interrupt flag register*/
+    "GIFR": {
+      "properties": [
+        "(INTF1 | INTF0 | INTF2 | - | - | - | - | -)"
+      ],
+      "propertyTypes": [
+        /* format as bit */
+        "bit"
+      ],
+      "propertyAddresses": [
+        /* register address in sram */
+        90
       ]
     },
     /* status register */
@@ -250,11 +365,11 @@
         "southBytes[1]",
         "eastBytes[0]",
         "eastBytes[1]",
-        "(northBitCount[3:0] | southBitCount[7:4])",
-        "( eastBitCount[3:0] |             -[7:4])",
+        "(southBitCount[7:4] | northBitCount[3:0])",
+        "(-[7:4] | eastBitCount[3:0])",
         /* next packed struct is RxDiscoveryPulseCounter */
-        "rxDiscoveryPulseCounter(north[3:0] | south[7:4])",
-        "rxDiscoveryPulseCounter( east[3:0] |     -[7:4])",
+        "rxDiscoveryPulseCounter(south[7:4] | north[3:0])",
+        "rxDiscoveryPulseCounter(-[7:4] | east[3:0])",
         "rxDiscoveryPulseCounter(loopCount)",
         /* next packed struct is RxInterruptFlankStates */
         "rxInterruptFlankStates( north | south | east | isInitialized | - | - | - | - )"
