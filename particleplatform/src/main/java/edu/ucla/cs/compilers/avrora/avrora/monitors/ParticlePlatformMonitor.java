@@ -53,10 +53,9 @@ public class ParticlePlatformMonitor extends MonitorFactory {
 
     public final Option.Bool PARTICE_LOG_FILE_ENABLE = newOption("particle-log-file", false, "When this " +
             "option is " +
-            "true, the" + ParticlePlatformMonitor.class.getSimpleName() + " writes logs to a temporary file" +
-            ". The new " +
-            "file name is" +
-            " printed" + "before simulation starts.");
+            "true, the" + ParticlePlatformMonitor.class.getSimpleName() + " appends logs to a temporary " +
+            "file" +
+            ". The file location is: " + ParticleLogSink.getInstance().getAbsoluteFileName());
 
     public ParticlePlatformMonitor() {
         super("The \"" + ParticlePlatformMonitor.class.getSimpleName() + "\" monitor collects information " +
@@ -65,7 +64,7 @@ public class ParticlePlatformMonitor extends MonitorFactory {
 
     @Override
     public Monitor newMonitor(Simulator s) {
-        return new MonitorImpl(s, ParticleLogSink.getInstance(PARTICE_LOG_FILE_ENABLE), MONITOR_FACETS);
+        return new MonitorImpl(s, ParticleLogSink.getInstance(PARTICE_LOG_FILE_ENABLE.get()), MONITOR_FACETS);
     }
 
     /**

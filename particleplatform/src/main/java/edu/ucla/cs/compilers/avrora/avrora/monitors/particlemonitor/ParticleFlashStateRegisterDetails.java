@@ -62,9 +62,14 @@ public class ParticleFlashStateRegisterDetails {
 
             int propertyPos = 0;
             for (String property : struct.getProperties()) {
-                // construct the address to variable name translation map of all defined structs
-                addressToRegisterName.put(struct.getPropertyAddresses().get(propertyPos), structName + "." +
-                        property);
+                // construct the address to variable name translation map of all defined structures
+                if (property.length() > 0) {
+                    addressToRegisterName.put(struct.getPropertyAddresses().get(propertyPos), structName +
+                            "." +
+                            property);
+                } else {
+                    addressToRegisterName.put(struct.getPropertyAddresses().get(propertyPos), structName);
+                }
                 // construct the sram address to type translation map
                 addressToTypeName.put(struct.getPropertyAddresses().get(propertyPos), struct
                         .getPropertyTypes().get(propertyPos));
@@ -82,8 +87,8 @@ public class ParticleFlashStateRegisterDetails {
 
     /**
      * Translates the int value to an enum field's name according to the sram address where it is to be
-     * stored. Note I: compile with "-fshort-enums" for 8bit enums. Note II: values of byte are in (-128, ..., 127)
-     * but enums in (0, ..., 255). Note III: current implementation evaluates only 1-byte fields.
+     * stored. Note I: compile with "-fshort-enums" for 8bit enums. Note II: values of byte are in (-128, ...,
+     * 127) but enums in (0, ..., 255). Note III: current implementation evaluates only 1-byte fields.
      *
      * @param sramAddress the sram address on the microcontroller
      * @param value       The enum field's value.
@@ -109,12 +114,19 @@ public class ParticleFlashStateRegisterDetails {
 
         if (type.compareTo("bit") == 0) {
             return "(0b" + String.format("%8s", Integer.toBinaryString(value & 0xff)).replace(' ', '0') + ")";
-        } else if (type.compareTo("unsigned char") == 0 ||
-                type.compareTo("char") == 0 ||
-                type.compareTo("int") == 0) {
+        } else if (type.compareTo("unsigned char") == 0) {
+            return "(" + Byte.toUnsignedInt(value) + ")";
+        } else if (type.compareTo("int") == 0) {
             return "(" + value + ")";
+        } else if (type.compareTo("char") == 0) {
+            String asCharRepresentation = "";
+            if ((char) value == '\n') {
+                asCharRepresentation = "\\n";
+            } else {
+                asCharRepresentation = Character.toString((char) value);
+            }
+            return "('" + asCharRepresentation + "')";
         }
-
         return type + " (0x" + Integer.toHexString(value) + ")";
     }
 }

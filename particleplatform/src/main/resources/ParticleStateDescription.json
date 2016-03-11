@@ -177,6 +177,20 @@
         48
       ]
     },
+    /* UDR usart i/o register */
+    "UDR": {
+      "properties": [
+        ""
+      ],
+      "propertyTypes": [
+        /* format as char */
+        "char"
+      ],
+      "propertyAddresses": [
+        /* register address in sram */
+        44
+      ]
+    },
     /* state in general interrupt control register */
     "GICR": {
       "properties": [
@@ -302,11 +316,19 @@
   /* data type size bytes to be interpreted */
   "sizeofTypes": {
     "enum": 2,
+    /* evaluates to StateType enum names */
     "StateType": 2,
+    /* evaluates to NodeType enum Names */
     "NodeType": 2,
+    /*evaluates to 8bit unsigned base 10 */
     "unsigned char": 1,
+    /*evaluates to 8bit base 10 */
+    "int": 1,
+    /* evaluates to ascii character */
     "char": 1,
+    /* evaluates to 0bXXXXXXXX */
     "bit": 1,
+    /* evaluates to 0xXX */
     "hex": 1
   }
 }

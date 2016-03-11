@@ -1,7 +1,7 @@
 Simulation
 ==========
 The particle platform simulation is built on top of the **Avrora framework**.
-It simulates nodes of a network of foldable chains, that can be used for 
+It simulates nodes of a network of fold-able chains, that can be used for
 shape shifting displays or to build programmable matter in general as
 presented by **Matteo Lasagni** in **Force-Guiding Particle Chains for Shape-Shifting Displays** ([http://arxiv.org/abs/1402.2507](http://arxiv.org/abs/1402.2507)).
 The simulation constructs and connects multiple nodes to a network that allows bidirectional
@@ -123,11 +123,12 @@ be used as type later on. Each list entry corresponds to one enum value:
 * propertiyTypes (how the value is to be interpreted/printed),
 * propertyAddresses (start address of property)
 
-Properties are generally 1 byte width except of enums. Structs cannot be
-nested. Nested structs must be resolved byte by byte
+Properties are generally 1 byte width except of enums. Structures cannot be
+nested. Nested structures must be resolved byte by byte.
 
 **sizeofTypes:** not implemented/used yet
 
+### Short example (see full [example](https://github.com/ProgrammableMatter/avrora-particle-platform/blob/master/particleplatform/src/main/resources/ParticleStateDescription.json))
         {
           // define enums
           "enums": {
@@ -167,6 +168,7 @@ nested. Nested structs must be resolved byte by byte
           }
         }
 
+
 Obtaining property address for ParticleStateDescriptoin.json 
 ------------------------------------------------------------
 
@@ -179,3 +181,10 @@ As an example address of the symbol **ParticleAttributes**
 is: 
 
     0x00800061 - 0x00800000 = 97
+
+Future Work
+===========
+
+* For communication from/to particle nodes the Avrora's [serial monitor](http://compilers.cs.ucla.edu/avrora/help/serial.html)
+(*edu.ucla.cs.compilers.avrora.avrora.monitors.SerialMonitor*) may be utilized.
+* [Energy profiling](http://compilers.cs.ucla.edu/avrora/help/energy-profile.html) is to be implemented for the platform's off chip devices.

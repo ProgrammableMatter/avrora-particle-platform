@@ -5,7 +5,6 @@
 
 package edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor;
 
-import edu.ucla.cs.compilers.avrora.cck.util.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,15 +26,17 @@ public class ParticleLogSink {
     private boolean isLoggingEnabled = false;
     private File logFile;
     private FileWriter writer;
+    private String absoluteFileName = "";
 
     private ParticleLogSink() {
         try {
-            logFile = new File(System.getProperty("java.io.tmpdir") + "/particle-states.log");
+            absoluteFileName = System.getProperty("java.io.tmpdir") + "/particle-states.log";
+            logFile = new File(absoluteFileName);
             if (!logFile.createNewFile()) {
                 LOGGER.error("failed to create new log file");
             }
 
-            writer = new FileWriter(logFile);
+            writer = new FileWriter(logFile, true);
         } catch (IOException ioe) {
             try {
                 writer.close();
@@ -57,7 +58,7 @@ public class ParticleLogSink {
      * @param isParticleLogFileEnabled whether further logging of this instance should be suppressed or not
      * @return the current instance or a newly created one
      */
-    public static ParticleLogSink getInstance(Option.Bool isParticleLogFileEnabled) {
+    public static ParticleLogSink getInstance(boolean isParticleLogFileEnabled) {
 
         if (Instance == null) {
             synchronized (LOGGER) {
@@ -66,8 +67,21 @@ public class ParticleLogSink {
                 }
             }
         }
-        Instance.isLoggingEnabled = isParticleLogFileEnabled.get();
+        Instance.isLoggingEnabled = isParticleLogFileEnabled;
         return Instance;
+    }
+
+    /**
+     * convenience method for {@link #getInstance(boolean)}
+     *
+     * @return see {@link #getInstance(boolean)}
+     */
+    public static ParticleLogSink getInstance() {
+        if (Instance != null) {
+            return getInstance(Instance.isLoggingEnabled);
+        } else {
+            return getInstance(true);
+        }
     }
 
     /**
@@ -110,15 +124,18 @@ public class ParticleLogSink {
             synchronized (mutex) {
                 try {
                     writer.write(line + '\n');
-                    writer.flush(); // flush needed for inotify
+                    writer.flush(); // flush for inotify
                 } catch (IOException e) {
-                    LOGGER.error("failed to add line to log", e);
+                    LOGGER.error("failed appending line to log", e);
                 }
             }
         }
     }
 
+    /**
+     * @return the file name including the absolute path
+     */
     public String getAbsoluteFileName() {
-        return logFile.getAbsoluteFile().toString();
+        return absoluteFileName;
     }
 }

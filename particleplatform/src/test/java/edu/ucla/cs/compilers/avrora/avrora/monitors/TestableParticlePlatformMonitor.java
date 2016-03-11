@@ -45,8 +45,7 @@ public class TestableParticlePlatformMonitor extends ParticlePlatformMonitor {
      */
     @Override
     public Monitor newMonitor(Simulator s) {
-        testableMonitorImplementation = new TestableMonitorImpl(s, ParticleLogSink.getInstance
-                (PARTICE_LOG_FILE_ENABLE), MONITOR_FACETS);
+        testableMonitorImplementation = new TestableMonitorImpl(s, ParticleLogSink.getInstance(PARTICE_LOG_FILE_ENABLE.get()), MONITOR_FACETS);
         return testableMonitorImplementation;
     }
 
