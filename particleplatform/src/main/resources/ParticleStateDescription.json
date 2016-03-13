@@ -306,6 +306,48 @@
         84
       ]
     },
+    /* state in Timer/Counter0 (8 Bits) register */
+    "TCNT0": {
+      "properties": [
+        ""
+      ],
+      "propertyTypes": [
+        /* format as int */
+        "int"
+      ],
+      "propertyAddresses": [
+        /* register address in sram */
+        82
+      ]
+    },
+    /* state in timer/counter1 - counter register high byte register */
+    "TCNT1H": {
+      "properties": [
+        ""
+      ],
+      "propertyTypes": [
+        /* format as hex */
+        "hex"
+      ],
+      "propertyAddresses": [
+        /* register address in sram */
+        77
+      ]
+    },
+    /* state in timer/counter1 - counter register low byte register */
+    "TCNT1L": {
+      "properties": [
+        ""
+      ],
+      "propertyTypes": [
+        /* format as hex */
+        "hex"
+      ],
+      "propertyAddresses": [
+        /* register address in sram */
+        76
+      ]
+    },
     /* state in timer/counter interrupt mask register */
     "TIMSK": {
       "properties": [

@@ -32,6 +32,10 @@ import java.util.regex.Pattern;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
+/**
+ * Starts a one node simulation and evaluates registers afterwards to test of chip (but on platform) device
+ * connectivity.
+ */
 public class ParticlePlatformTest {
 
     static final Options mainOptions = new Options();
@@ -76,7 +80,6 @@ public class ParticlePlatformTest {
     }
 
     private static void run_setupAndWrite2LedStatus0_simulation() {
-
         // for serial terminal use: -monitors=...,serial -terminal -devices=0:0:/tmp/in.txt:/tmp/out.txt
         // -waitForConnection=true
         String cliArgs = "-banner=false -status-timing=true -verbose=all -seconds-precision=11 " +
@@ -101,6 +104,10 @@ public class ParticlePlatformTest {
         } catch (Exception e) {
             assertTrue("failed to get arguments", false);
         }
+    }
+
+    private static String[] toLines(String text) {
+        return text.split("\\\\n");
     }
 
     @Test
@@ -208,7 +215,7 @@ public class ParticlePlatformTest {
     public void test_writesToUdrCrrectlyReassembled() {
         String udrText = rebuildTextFromUdrWrites();
         int occurrences = 0;
-        for (String l : udrText.split("\\\\n")) {
+        for (String l : toLines(udrText)) {
             if (l.toLowerCase().contains("test")) {
                 occurrences++;
             }
@@ -221,13 +228,23 @@ public class ParticlePlatformTest {
         String udrText = rebuildTextFromUdrWrites();
         Set<String> erroneousFragments = newErroneousFragments();
 
-        for (String l : udrText.split("\\\\n")) {
+        for (String l : toLines(udrText)) {
             String lowerCase = l.toLowerCase();
             for (String erroneousFragment : erroneousFragments) {
                 if (lowerCase.contains(erroneousFragment)) {
                     assertTrue("error: found [" + erroneousFragment + "] in line [" + l + "]", false);
                 }
             }
+        }
+    }
+
+    /**
+     * No test but prints extracted text written to UDR.
+     */
+    @Test
+    public void test_rebuildTextFromUdrWrites() {
+        for (String l : toLines(rebuildTextFromUdrWrites())) {
+            System.out.println(l);
         }
     }
 
@@ -251,8 +268,10 @@ public class ParticlePlatformTest {
 
         StringBuilder udrMessageBuilder = new StringBuilder();
 
-        String lineRegexp = "^\\s*(\\d+)\\s*(\\d:\\d\\d:\\d\\d.\\d+)\\s*(\\w+)\\[(.+)\\]\\s*<-\\s*([^\\s]*)" +
-                "" + "\\s*$";
+//        String lineRegexp = "^\\s*(\\d+)\\s*(\\d:\\d\\d:\\d\\d.\\d+)\\s*(\\w+)\\[(.+)\\]\\s*<-\\s*
+// ([^\\s]*)" +
+//                "" + "\\s*$";
+        String lineRegexp = "^\\s*(\\d+)\\s*(\\d:\\d\\d:\\d\\d.\\d+)\\s*(\\w+)\\[(.+)\\]\\s*<-\\s*(.*)\\s*$";
         String udrValueRegexp = "^\\s*\\('(.*)'\\)\\s*$"; // ('\n') or ('x') x in [.]
 
         Pattern linePattern = Pattern.compile(lineRegexp);

@@ -31,6 +31,11 @@ public class ParticleFlashStateRegisterDetails {
     private Map<Integer, String> addressToTypeName = new HashMap<>();
     private RegisterOfInterrestDescription registerDescription = null;
 
+    /**
+     * Reads description from {@link #descriptionFileName} file.
+     *
+     * @throws Exception if file cannot be read or interpreted
+     */
     public ParticleFlashStateRegisterDetails() {
 
         ObjectMapper mapper = new ObjectMapper();
@@ -42,7 +47,7 @@ public class ParticleFlashStateRegisterDetails {
             File file = new File(classLoader.getResource(descriptionFileName).getFile());
             registerDescription = mapper.readValue(file, RegisterOfInterrestDescription.class);
         } catch (Exception e) {
-            // read file from resource if project is packt to jar
+            // read file from resource if project is packed to jar
             InputStream in = getClass().getResourceAsStream("/" + descriptionFileName);
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
@@ -106,7 +111,7 @@ public class ParticleFlashStateRegisterDetails {
         List<String> enumValueList = registerDescription.getEnums().get(type);
         if (enumValueList != null) {
             try {
-                return enumValueList.get(value) + " (" + Integer.toHexString(value) + ")";
+                return enumValueList.get(value) + " 0x" + Integer.toHexString(value) + "";
             } catch (IndexOutOfBoundsException ioobe) {
                 return Integer.toHexString(value);
             }

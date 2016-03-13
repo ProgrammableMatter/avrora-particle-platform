@@ -35,6 +35,12 @@ public class ParticlePlatform extends Platform {
         platformNetworkConnector = ParticlePlatformNetworkConnector.getInstance();
     }
 
+    /**
+     * bundles of communication wires per side
+     */
+    private final WireBundle northWires = new WireBundle();
+    private final WireBundle eastWires = new WireBundle();
+    private final WireBundle southWires = new WireBundle();
     private PlatformAddress localAddress;
     /**
      * references to neighbours
@@ -50,12 +56,6 @@ public class ParticlePlatform extends Platform {
     private SmaWireLogic southRxLogic = new SmaWireLogic(new SmaWireState());
     private SmaWireLogic eastRxLogic = new SmaWireLogic(new SmaWireState());
     /**
-     * bundles of communication wires per side
-     */
-    private WireBundle northWires = new WireBundle();
-    private WireBundle eastWires = new WireBundle();
-    private WireBundle southWires = new WireBundle();
-    /**
      * sets of LEDs and test points
      */
     private Set<PinWire> signalLeds = new HashSet<>();
@@ -66,6 +66,9 @@ public class ParticlePlatform extends Platform {
         addOffChipDevices();
     }
 
+    /**
+     * @return the platform network connector singleton instance
+     */
     public static ParticlePlatformNetworkConnector getPlatformNetworkConnector() {
         return platformNetworkConnector;
     }
@@ -78,7 +81,7 @@ public class ParticlePlatform extends Platform {
     }
 
     /**
-     * Defines the address in network
+     * Defines the address in network.
      *
      * @param address the network address to set
      */
@@ -120,10 +123,10 @@ public class ParticlePlatform extends Platform {
     private void connectLeds() {
         // led name to pin name mapping
         Set<SimpleComponentMapping> signalLedMapping = new HashSet<>();
-        signalLedMapping.add(new SimpleComponentMapping("HEARTBEAT", "PB1", Terminal.COLOR_GREEN));
-        signalLedMapping.add(new SimpleComponentMapping("STATUS0", "PB4", Terminal.COLOR_YELLOW));
-        signalLedMapping.add(new SimpleComponentMapping("STATUS1", "PB3", Terminal.COLOR_YELLOW));
-        signalLedMapping.add(new SimpleComponentMapping("ERROR", "PA0", Terminal.COLOR_RED));
+        signalLedMapping.add(new SimpleComponentMapping("HEARTBEAT", "PB1", Terminal.COLOR_PURPLE));
+        signalLedMapping.add(new SimpleComponentMapping("STATUS0", "PB4", Terminal.COLOR_PURPLE));
+        signalLedMapping.add(new SimpleComponentMapping("STATUS1", "PB3", Terminal.COLOR_PURPLE));
+        signalLedMapping.add(new SimpleComponentMapping("ERROR", "PA0", Terminal.COLOR_PURPLE));
 
         for (SimpleComponentMapping ledMapping : signalLedMapping) {
             PinWire signalLed = new PinWire(mcu.getSimulator(), ledMapping.color, ledMapping.name, mcu);
@@ -137,51 +140,52 @@ public class ParticlePlatform extends Platform {
     private void connectCommunicationWires() {
         // north terminals
         // north tx
-        northWires.tx = new PinWire(mcu.getSimulator(), Terminal.COLOR_RED, "tx-north", mcu);
+        northWires.tx = new PinWire(mcu.getSimulator(), Terminal.COLOR_PURPLE, "tx-north", mcu);
         northWires.tx.wireOutput.enableOutput();
         northWires.tx.enableConnect();
+
         mcu.getPin("PC0").connectOutput(northWires.tx.wireOutput);
         // north rx
-        northWires.rx = new PinWire(mcu.getSimulator(), Terminal.COLOR_BLUE, "rx-north", mcu);
+        northWires.rx = new PinWire(mcu.getSimulator(), Terminal.COLOR_PURPLE, "rx-north", mcu);
         northWires.rx.wireInput.enableInput();
         northWires.rx.enableConnect();
         mcu.getPin("PB2").connectInput(northWires.rx.wireInput);
         // north switch (pwr/rx)
-        northWires.rxSwitch = new PinWire(mcu.getSimulator(), Terminal.COLOR_YELLOW, "rxSwitch-north", mcu);
+        northWires.rxSwitch = new PinWire(mcu.getSimulator(), Terminal.COLOR_PURPLE, "rxSwitch-north", mcu);
         northWires.rxSwitch.wireOutput.enableOutput();
         mcu.getPin("PC4").connectOutput(northWires.rxSwitch.wireOutput);
         northWires.rxSwitch.enableConnect();
 
         // south terminals
         // south tx
-        southWires.tx = new PinWire(mcu.getSimulator(), Terminal.COLOR_RED, "tx-south", mcu);
+        southWires.tx = new PinWire(mcu.getSimulator(), Terminal.COLOR_PURPLE, "tx-south", mcu);
         southWires.tx.wireOutput.enableOutput();
         mcu.getPin("PA3").connectOutput(southWires.tx.wireOutput);
         southWires.tx.enableConnect();
         // south rx
-        southWires.rx = new PinWire(mcu.getSimulator(), Terminal.COLOR_BLUE, "rx-south", mcu);
+        southWires.rx = new PinWire(mcu.getSimulator(), Terminal.COLOR_PURPLE, "rx-south", mcu);
         southWires.rx.wireInput.enableInput();
         mcu.getPin("PD2").connectInput(southWires.rx.wireInput);
         southWires.rx.enableConnect();
         // south switch (pwr/rx)
-        southWires.rxSwitch = new PinWire(mcu.getSimulator(), Terminal.COLOR_YELLOW, "rxSwitch-south", mcu);
+        southWires.rxSwitch = new PinWire(mcu.getSimulator(), Terminal.COLOR_PURPLE, "rxSwitch-south", mcu);
         southWires.rxSwitch.wireOutput.enableOutput();
         mcu.getPin("PA2").connectOutput(southWires.rxSwitch.wireOutput);
         southWires.rxSwitch.enableConnect();
 
         // east terminals
         // east tx
-        eastWires.tx = new PinWire(mcu.getSimulator(), Terminal.COLOR_RED, "tx-east", mcu);
+        eastWires.tx = new PinWire(mcu.getSimulator(), Terminal.COLOR_PURPLE, "tx-east", mcu);
         eastWires.tx.wireOutput.enableOutput();
         mcu.getPin("PA7").connectOutput(eastWires.tx.wireOutput);
         eastWires.tx.enableConnect();
         // east rx
-        eastWires.rx = new PinWire(mcu.getSimulator(), Terminal.COLOR_BLUE, "rx-east", mcu);
+        eastWires.rx = new PinWire(mcu.getSimulator(), Terminal.COLOR_PURPLE, "rx-east", mcu);
         eastWires.rx.wireInput.enableInput();
         mcu.getPin("PD3").connectInput(eastWires.rx.wireInput);
         eastWires.rx.enableConnect();
         // east switch (pwr/rx)
-        eastWires.rxSwitch = new PinWire(mcu.getSimulator(), Terminal.COLOR_YELLOW, "rxSwitch-east", mcu);
+        eastWires.rxSwitch = new PinWire(mcu.getSimulator(), Terminal.COLOR_PURPLE, "rxSwitch-east", mcu);
         eastWires.rxSwitch.wireOutput.enableOutput();
         mcu.getPin("PA6").connectOutput(eastWires.rxSwitch.wireOutput);
         eastWires.rxSwitch.enableConnect();
@@ -250,8 +254,8 @@ public class ParticlePlatform extends Platform {
                     southRxLogic.setTxSignal(southNeighbor.getNorthTx().wireInput.read());
                     southRxLogic.setRxSwitchSignal(this.getSouthRxSwitch().wireInput.read());
                     this.southWires.rx.wireOutput.write(southRxLogic.evaluateRxSignal());
-                    LOGGER.debug("propagated [{}] from remote at south {} to local {}", southRxLogic
-                            .evaluateRxSignal(), southNeighbor.getAddress(), localAddress);
+//                    LOGGER.debug("propagated [{}] from remote at south {} to local {}", southRxLogic
+//                            .evaluateRxSignal(), southNeighbor.getAddress(), localAddress);
                 } else {
                     LOGGER.debug("skip: !inputReady()");
                     throw new IllegalStateException("misconfigured south wire: rx");
@@ -279,8 +283,8 @@ public class ParticlePlatform extends Platform {
                     eastRxLogic.setTxSignal(eastNeighbor.getWestTx().wireInput.read());
                     eastRxLogic.setRxSwitchSignal(this.getEastRxSwitch().wireInput.read());
                     this.eastWires.rx.wireOutput.write(eastRxLogic.evaluateRxSignal());
-                    LOGGER.debug("propagated [{}] from remote at east {} to local {}", eastRxLogic
-                            .evaluateRxSignal(), eastNeighbor.getAddress(), localAddress);
+//                    LOGGER.debug("propagated [{}] from remote at east {} to local {}", eastRxLogic
+//                            .evaluateRxSignal(), eastNeighbor.getAddress(), localAddress);
                 } else {
                     LOGGER.debug("skip: !inputReady()");
                     throw new IllegalStateException("misconfigured east wire: rx");
@@ -308,8 +312,8 @@ public class ParticlePlatform extends Platform {
                     northRxLogic.setTxSignal(westNeighbor.getEastTx().wireInput.read());
                     northRxLogic.setRxSwitchSignal(this.getWestRxSwitch().wireInput.read());
                     this.northWires.rx.wireOutput.write(northRxLogic.evaluateRxSignal());
-                    LOGGER.debug("propagated [{}] from remote at west {} to local {}", northRxLogic
-                            .evaluateRxSignal(), westNeighbor.getAddress(), localAddress);
+//                    LOGGER.debug("propagated [{}] from remote at west {} to local {}", northRxLogic
+//                            .evaluateRxSignal(), westNeighbor.getAddress(), localAddress);
                 } else {
                     LOGGER.debug("skip: !inputReady()");
                     throw new IllegalStateException("misconfigured west wire: rx");
@@ -336,8 +340,8 @@ public class ParticlePlatform extends Platform {
                     northRxLogic.setTxSignal(northNeighbor.getSouthTx().wireInput.read());
                     northRxLogic.setRxSwitchSignal(this.getNorthRxSwitch().wireInput.read());
                     this.northWires.rx.wireOutput.write(northRxLogic.evaluateRxSignal());
-                    LOGGER.debug("propagated [{}] from remote at north {} to local {}", northRxLogic
-                            .evaluateRxSignal(), northNeighbor.getAddress(), localAddress);
+//                    LOGGER.debug("propagated [{}] from remote at north {} to local {}", northRxLogic
+//                            .evaluateRxSignal(), northNeighbor.getAddress(), localAddress);
                 } else {
                     LOGGER.debug("skip: !inputReady()");
                     throw new IllegalStateException("misconfigured north wire: rx");
@@ -464,9 +468,9 @@ public class ParticlePlatform extends Platform {
      * etc.
      */
     private static class SimpleComponentMapping {
-        public String name;
-        public String pin;
-        public int color;
+        private String name;
+        private String pin;
+        private int color;
 
         public SimpleComponentMapping(String name, String pin, int color) {
             this.name = name;

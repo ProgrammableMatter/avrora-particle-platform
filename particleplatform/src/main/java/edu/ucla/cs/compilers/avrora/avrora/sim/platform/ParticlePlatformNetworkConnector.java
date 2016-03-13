@@ -48,6 +48,28 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
     }
 
     /**
+     * Maps a linear position to a rectangular matrix position. Rows come first, then columns. Example: Given
+     * a matrix with 4 rows; linear positions [0,1,2,3] are mapped to 1st column's indices [1,2,3,4] linear
+     * positions [4,5,6,7] are mapped to 2nd column's indices [5,6,7,8]
+     *
+     * @param position    the linear position to map starting with at index 0
+     * @param networkRows number of rows
+     * @return the (row x column) position starting with (1 x 1)
+     * @throws IllegalArgumentException if the mapped address (m x n) | (m > Short.MAX_VALUE ∨ n >
+     *                                  Short.MAX_VALUE ∨ )
+     */
+    protected static PlatformAddress linearToAddressMappingImpl(int position, short networkRows) {
+
+        int row = (position % networkRows + 1);
+        int column = (int) ((Math.floor((position) / networkRows) + 1));
+
+        if (row > Short.MAX_VALUE || column > Short.MAX_VALUE) {
+            throw new IllegalArgumentException();
+        }
+        return new PlatformAddress((short) row, (short) column);
+    }
+
+    /**
      * Stores a particle platform reference for later connection initialization.
      *
      * @param particle the reference to store
@@ -70,7 +92,7 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
         LOGGER.debug("trying to build ({},{}) network with {} nodes", maxNetworkRows, maxNetworkColumns,
                 particlePlatforms.size());
         for (short column = 1; column <= maxNetworkColumns; column++) {
-            for (short row = 1; row <= maxNetworkColumns; row++) {
+            for (short row = 1; row <= maxNetworkRows; row++) {
 
                 // initialized the platform address in network
                 ParticlePlatform platform = rowToColumnToPlatform.get(row).get(column);
@@ -133,17 +155,13 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
     }
 
     /**
-     * Maps a linear position to a rectangular matrix position. Rows come first, then columns. Example: Given
-     * a matrix with m rows; linear positions [0,1,2,3] are mapped to 1st column's indices [1,2,3,4] linear
-     * positions [4,5,6,7] are mapped to 2nd column's indices [5,6,7,8]
+     * Convenience method for see {@link #linearToAddressMappingImpl(int, short)}
      *
-     * @param position the linear position to map
-     * @return the (row x column) position starting with (1 x 1)
+     * @param position see {@link #linearToAddressMappingImpl(int, short)}
+     * @return see {@link #linearToAddressMappingImpl(int, short)}
      */
     private PlatformAddress linearToAddressMapping(int position) {
-        short row = (short) (position % maxNetworkRows + 1);
-        short column = (short) (Math.floor(position / maxNetworkRows) + 1);
-        return new PlatformAddress(row, column);
+        return linearToAddressMappingImpl(position, maxNetworkRows);
     }
 
     /**
