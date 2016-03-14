@@ -37,7 +37,31 @@ public class ParticleFlashStateRegisterDetails {
      * @throws Exception if file cannot be read or interpreted
      */
     public ParticleFlashStateRegisterDetails() {
+        readDescriptoin();
+        mapAddressToTypeName();
+    }
 
+    private void mapAddressToTypeName() {
+        for (Map.Entry<String, RegisterOfInterrestDescription.StructDefinition> entry : registerDescription
+                .getStructs().entrySet()) {
+
+            RegisterOfInterrestDescription.StructDefinition struct = entry.getValue();
+            String structName = entry.getKey();
+
+            int propertyPos = 0;
+            for (String property : struct.getProperties()) {
+                // construct the address to variable name translation map of all defined structures
+                String readableProperty = (property.length() > 0) ? structName + "." + property : structName;
+                addressToRegisterName.put(struct.getPropertyAddresses().get(propertyPos), readableProperty);
+                // construct the sram address to type translation map
+                addressToTypeName.put(struct.getPropertyAddresses().get(propertyPos), struct
+                        .getPropertyTypes().get(propertyPos));
+                propertyPos++;
+            }
+        }
+    }
+
+    private void readDescriptoin() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
 
@@ -56,29 +80,6 @@ public class ParticleFlashStateRegisterDetails {
             } catch (IOException e1) {
                 LOGGER.log(Level.SEVERE, "failed parse [" + descriptionFileName + "] from .jar correctly",
                         e1);
-            }
-        }
-
-        for (Map.Entry<String, RegisterOfInterrestDescription.StructDefinition> entry : registerDescription
-                .getStructs().entrySet()) {
-
-            RegisterOfInterrestDescription.StructDefinition struct = entry.getValue();
-            String structName = entry.getKey();
-
-            int propertyPos = 0;
-            for (String property : struct.getProperties()) {
-                // construct the address to variable name translation map of all defined structures
-                if (property.length() > 0) {
-                    addressToRegisterName.put(struct.getPropertyAddresses().get(propertyPos), structName +
-                            "." +
-                            property);
-                } else {
-                    addressToRegisterName.put(struct.getPropertyAddresses().get(propertyPos), structName);
-                }
-                // construct the sram address to type translation map
-                addressToTypeName.put(struct.getPropertyAddresses().get(propertyPos), struct
-                        .getPropertyTypes().get(propertyPos));
-                propertyPos++;
             }
         }
     }
@@ -104,34 +105,60 @@ public class ParticleFlashStateRegisterDetails {
 
         String type = addressToTypeName.get(sramAddress);
         if (type == null) {
-            return Integer.toHexString(value);
+            return "0x" + Integer.toHexString(value & 0xFF);
         }
 
         // if type is an enum resolve its name
         List<String> enumValueList = registerDescription.getEnums().get(type);
         if (enumValueList != null) {
             try {
-                return enumValueList.get(value) + " 0x" + Integer.toHexString(value) + "";
+                return "(" + enumValueList.get(value) + ")"; // + " 0x" + Integer.toHexString(value);
             } catch (IndexOutOfBoundsException ioobe) {
-                return Integer.toHexString(value);
+                return "(" + Integer.toHexString(value) + ")";
             }
         }
 
-        if (type.compareTo("bit") == 0) {
-            return "(0b" + String.format("%8s", Integer.toBinaryString(value & 0xff)).replace(' ', '0') + ")";
-        } else if (type.compareTo("unsigned char") == 0) {
-            return "(" + Byte.toUnsignedInt(value) + ")";
-        } else if (type.compareTo("int") == 0) {
-            return "(" + value + ")";
-        } else if (type.compareTo("char") == 0) {
-            String asCharRepresentation = "";
-            if ((char) value == '\n') {
-                asCharRepresentation = "\\n";
-            } else {
-                asCharRepresentation = Character.toString((char) value);
-            }
-            return "('" + asCharRepresentation + "')";
+        String detailedType;
+        switch (type) {
+            case "bit":
+                detailedType = "0b" + String.format("%8s", Integer.toBinaryString(value & 0xFF)).replace('
+                ', '0');
+                break;
+
+            case "unsignd char":
+                detailedType = "" + Byte.toUnsignedInt(value);
+                break;
+
+            case "char":
+                String asCharRepresentation = "";
+                if ((char) value == '\n') {
+                    asCharRepresentation = "\\n";
+                } else if (!isPrintableChar((char) value)) {
+                    asCharRepresentation = "<unprintable>";
+                } else {
+                    asCharRepresentation = Character.toString((char) value);
+                }
+                detailedType = "'" + asCharRepresentation + "'";
+                break;
+            case "int":
+                detailedType = "" + value;
+                break;
+
+            default:
+                detailedType = "0x" + Integer.toHexString(value & 0xFF);
+                break;
         }
-        return type + " (0x" + Integer.toHexString(value) + ")";
+        return "(" + detailedType + ")";
+    }
+
+    /**
+     * @param c the character under inspection
+     * @return true if c is a printable character
+     */
+    private boolean isPrintableChar(char c) {
+        Character.UnicodeBlock block = Character.UnicodeBlock.of(c);
+        return (!Character.isISOControl(c)) &&
+                block != null &&
+                block != Character.UnicodeBlock.SPECIALS;
     }
 }
