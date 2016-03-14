@@ -20,8 +20,8 @@ import java.util.Map;
  */
 public class OnParticleStateChangeWatch extends Simulator.Watch.Empty {
 
-    private final ParticleFlashStateRegisterDetails stateRegister;
-    private final Simulator simulator;
+    protected final ParticleFlashStateRegisterDetails stateRegister;
+    protected final Simulator simulator;
     protected int[] registerWriteCount;
     private int[] registerChangeCount;
     private ParticleLogSink particleStateLogger;
@@ -37,6 +37,14 @@ public class OnParticleStateChangeWatch extends Simulator.Watch.Empty {
         registerChangeCount = new int[ramSize];
     }
 
+    /**
+     * The <code>fireBeforeWrite()</code> method is called before the data address is written by the program.
+     * In the implementation of the Empty watch, this method does nothing.
+     *
+     * @param state     the state of the simulation
+     * @param data_addr the address of the data being referenced
+     * @param value     the value being written to the memory location
+     */
     @Override
     public void fireBeforeWrite(State state, int data_addr, byte value) {
         if (data_addr < registerWriteCount.length) {
