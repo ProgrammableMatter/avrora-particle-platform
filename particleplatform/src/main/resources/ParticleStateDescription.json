@@ -7,10 +7,10 @@
       "STATE_TYPE_NEIGHBOURS_DISCOVERY",
       "STATE_TYPE_NEIGHBOURS_DISCOVERED",
       "STATE_TYPE_DISCOVERY_PULSING",
-      "STATE_TYPE_WAITING",
       "STATE_TYPE_RESET",
       "STATE_TYPE_WAIT_FOR_BEING_ENUMERATED",
       "STATE_TYPE_ENUMERATING_SOUTH_NEIGHBOUR",
+      "STATE_TYPE_ENUMERATING_EAST_NEIGHBOUR",
       "STATE_TYPE_ENUMERATED",
       "STATE_TYPE_IDLE",
       "STATE_TYPE_INTERPRETE_COMMAND",
@@ -27,7 +27,6 @@
       "NODE_TYPE_ORPHAN",
       "NODE_TYPE_ORIGIN",
       "NODE_TYPE_INTER_HEAD",
-      "NODE_TYPE_HEAD",
       "NODE_TYPE_INTER_NODE",
       "NODE_TYPE_TAIL",
       "NODE_TYPE_INVALID"
@@ -411,7 +410,7 @@
         "(-[7:4] | eastBitCount[3:0])",
         /* next packed struct is RxDiscoveryPulseCounter */
         "rxDiscoveryPulseCounter(south[7:4] | north[3:0])",
-        "rxDiscoveryPulseCounter(-[7:4] | east[3:0])",
+        "rxDiscoveryPulseCounter(- | isEastConnected | isSouthConnected | isNorthConnected | east[3:0])",
         "rxDiscoveryPulseCounter(loopCount)",
         /* next packed struct is RxInterruptFlankStates */
         "rxInterruptFlankStates( north | south | east | isInitialized | - | - | - | - )"
@@ -437,10 +436,10 @@
         "hex",
         /* unsigned char eastBytes[1] */
         "hex",
-        /* (northBitCount[3:0] | southBitCount[7:4]) */
+        /* (southBitCount[7:4] | northBitCount[3:0] ) */
         "hex",
-        /* (eastBitCount[3:0] | -[7:3]) */
-        "hex",
+        /* (- | isEastConnected | isSouthConnected | isNorthConnected | east[3:0])" */
+        "bin",
         /* RxDiscoveryPulseCounter - north counter | south counter */
         "hex",
         /* east counter | - */
@@ -451,8 +450,9 @@
         "bit"
       ],
       "propertyAddresses": [
-        97,
-        99,
+        96,
+        98,
+        100,
         101,
         102,
         103,
@@ -465,8 +465,7 @@
         110,
         111,
         112,
-        113,
-        114
+        113
       ]
     }
   },
