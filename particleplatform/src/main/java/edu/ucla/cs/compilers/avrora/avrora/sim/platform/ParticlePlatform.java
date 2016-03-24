@@ -28,13 +28,13 @@ import java.util.Set;
  */
 public class ParticlePlatform extends Platform {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ParticlePlatform.class);
     private static ParticlePlatformNetworkConnector platformNetworkConnector;
 
     static {
         platformNetworkConnector = ParticlePlatformNetworkConnector.getInstance();
     }
 
+    private final Logger logger = LoggerFactory.getLogger(ParticlePlatform.class);
     /**
      * bundles of communication wires per side
      */
@@ -225,7 +225,7 @@ public class ParticlePlatform extends Platform {
 
         if (northNeighbor != null) {
             if (westNeighbor != null) {
-                LOGGER.warn("network wiring mismatch: north and west communication cannot occur " +
+                logger.warn("network wiring mismatch: north and west communication cannot occur " +
                         "simultaneously");
             }
             propagateNorthNeighbourToLocal();
@@ -257,15 +257,15 @@ public class ParticlePlatform extends Platform {
 //                    LOGGER.debug("propagated [{}] from remote at south {} to local {}", southRxLogic
 //                            .evaluateRxSignal(), southNeighbor.getAddress(), localAddress);
                 } else {
-                    LOGGER.debug("skip: !inputReady()");
+                    logger.debug("skip: !inputReady()");
                     throw new IllegalStateException("misconfigured south wire: rx");
                 }
             } else {
-                LOGGER.debug("skip: !outputReady()");
+                logger.debug("skip: !outputReady()");
                 throw new IllegalStateException("misconfigured south wire: rx-switch");
             }
         } else {
-            LOGGER.debug("skip: !outputReady()");
+            logger.debug("skip: !outputReady()");
             throw new IllegalStateException("misconfigured south neighbor's wire: tx");
         }
     }
@@ -286,15 +286,15 @@ public class ParticlePlatform extends Platform {
 //                    LOGGER.debug("propagated [{}] from remote at east {} to local {}", eastRxLogic
 //                            .evaluateRxSignal(), eastNeighbor.getAddress(), localAddress);
                 } else {
-                    LOGGER.debug("skip: !inputReady()");
+                    logger.debug("skip: !inputReady()");
                     throw new IllegalStateException("misconfigured east wire: rx");
                 }
             } else {
-                LOGGER.debug("skip: !outputReady()");
+                logger.debug("skip: !outputReady()");
                 throw new IllegalStateException("misconfigured east wire: rx-switch");
             }
         } else {
-            LOGGER.debug("skip: !outputReady()");
+            logger.debug("skip: !outputReady()");
             throw new IllegalStateException("misconfigured east neighbor's wire: tx");
         }
     }
@@ -315,15 +315,15 @@ public class ParticlePlatform extends Platform {
 //                    LOGGER.debug("propagated [{}] from remote at west {} to local {}", northRxLogic
 //                            .evaluateRxSignal(), westNeighbor.getAddress(), localAddress);
                 } else {
-                    LOGGER.debug("skip: !inputReady()");
+                    logger.debug("skip: !inputReady()");
                     throw new IllegalStateException("misconfigured west wire: rx");
                 }
             } else {
-                LOGGER.debug("skip: !outputReady()");
+                logger.debug("skip: !outputReady()");
                 throw new IllegalStateException("misconfigured west wire: rx-switch");
             }
         } else {
-            LOGGER.debug("skip: !outputReady()");
+            logger.debug("skip: !outputReady()");
             throw new IllegalStateException("misconfigured west neighbor's wire: tx");
         }
     }
@@ -343,15 +343,15 @@ public class ParticlePlatform extends Platform {
 //                    LOGGER.debug("propagated [{}] from remote at north {} to local {}", northRxLogic
 //                            .evaluateRxSignal(), northNeighbor.getAddress(), localAddress);
                 } else {
-                    LOGGER.debug("skip: !inputReady()");
+                    logger.debug("skip: !inputReady()");
                     throw new IllegalStateException("misconfigured north wire: rx");
                 }
             } else {
-                LOGGER.debug("skip: !outputReady()");
+                logger.debug("skip: !outputReady()");
                 throw new IllegalStateException("misconfigured north wire: rx-switch");
             }
         } else {
-            LOGGER.debug("skip: !outputReady()");
+            logger.debug("skip: !outputReady()");
             throw new IllegalStateException("misconfigured north neighbor's wire: tx");
         }
     }

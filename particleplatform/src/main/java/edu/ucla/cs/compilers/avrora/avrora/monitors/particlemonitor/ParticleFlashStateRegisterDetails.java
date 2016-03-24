@@ -6,7 +6,7 @@
 package edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor;
 
 import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.registerdetails
-        .RegisterOfInterrestDescription;
+        .RegisterOfInterestDescription;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class describes the position of the {@link edu.ucla.cs.compilers.avrora.avrora.sim.platform
@@ -25,60 +27,106 @@ import java.util.logging.Logger;
  */
 public class ParticleFlashStateRegisterDetails {
 
-    private static final Logger LOGGER = Logger.getLogger(ParticleFlashStateRegisterDetails.class.getName());
-    private static final String descriptionFileName = "ParticleStateDescription.json";
+    private static final String descriptionFileName = "ParticleRegisterDescription.json";
+    private final Logger logger = Logger.getLogger(ParticleFlashStateRegisterDetails.class.getName());
     private Map<Integer, String> addressToRegisterName = new HashMap<>();
     private Map<Integer, String> addressToTypeName = new HashMap<>();
-    private RegisterOfInterrestDescription registerDescription = null;
+    private RegisterOfInterestDescription registerDescription = null;
 
     /**
      * Reads description from {@link #descriptionFileName} file.
-     *
-     * @throws Exception if file cannot be read or interpreted
      */
     public ParticleFlashStateRegisterDetails() {
-        readDescriptoin();
+        readDescription();
         mapAddressToTypeName();
     }
 
     private void mapAddressToTypeName() {
-        for (Map.Entry<String, RegisterOfInterrestDescription.StructDefinition> entry : registerDescription
+        for (Map.Entry<String, List<RegisterOfInterestDescription.StructProperties>> entry : registerDescription
                 .getStructs().entrySet()) {
 
-            RegisterOfInterrestDescription.StructDefinition struct = entry.getValue();
+            List<RegisterOfInterestDescription.StructProperties> properties = entry.getValue();
             String structName = entry.getKey();
 
-            int propertyPos = 0;
-            for (String property : struct.getProperties()) {
+            for (RegisterOfInterestDescription.StructProperties property : properties) {
+
                 // construct the address to variable name translation map of all defined structures
-                String readableProperty = (property.length() > 0) ? structName + "." + property : structName;
-                addressToRegisterName.put(struct.getPropertyAddresses().get(propertyPos), readableProperty);
-                // construct the sram address to type translation map
-                addressToTypeName.put(struct.getPropertyAddresses().get(propertyPos), struct
-                        .getPropertyTypes().get(propertyPos));
-                propertyPos++;
+                String readableProperty = (property.getProperty().length() > 0) ? structName + "." +
+                        property.getProperty() : structName;
+                addressToRegisterName.put(toIntegerAddress(property.getAddress(), registerDescription
+                        .getLabels()), readableProperty);
+
+                // construct the SRAM address to type translation map
+                addressToTypeName.put(toIntegerAddress(property.getAddress(), registerDescription.getLabels
+                        ()), property.getType());
             }
         }
     }
 
-    private void readDescriptoin() {
+    /**
+     * Translates from address in string form to integer address according to the specified address labels. An
+     * arbitrary address may occur as <b>"^([a-zA-Z]*)([+]*)([0-9]*)$"</b>:<br/> "60" address at byte 60<br/>
+     * "label+60" - address at byte 60 after "label"<br/> "label" - address "label"<br/>
+     *
+     * @param address       the address as specified above
+     * @param addressLabels label name to address mapping
+     * @return the resolved address value as int
+     * @throws IllegalArgumentException if the address cannot be parsed or the label cannot be found
+     */
+    private int toIntegerAddress(String address, Map<String, Integer> addressLabels) throws
+            IllegalArgumentException {
+        Pattern labelPattern = Pattern.compile("^([a-zA-Z]*)([+]*)([0-9]*)$");
+        Matcher m = labelPattern.matcher(address);
+
+        if (m.matches()) {
+            String label = m.group(1);
+            Integer labelValue = null;
+            if (label != null) {
+                labelValue = addressLabels.get(label);
+            }
+
+            String offset = m.group(3);
+            Integer offsetValue = null;
+            if (offset != null) {
+                offsetValue = Integer.parseInt(offset);
+            }
+
+            String operator = m.group(2);
+            if (labelValue != null && operator != null && offsetValue != null) {
+                return labelValue + offsetValue;
+            } else if (labelValue != null) {
+                return labelValue;
+            } else if (offsetValue != null) {
+                return offsetValue;
+            }
+        }
+
+        throw new IllegalArgumentException("cannot resolve address [" + address + "]");
+    }
+
+    private void readDescription() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
 
         try {
             // read file from resource if project is not packed to jar
             ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource(descriptionFileName).getFile());
-            registerDescription = mapper.readValue(file, RegisterOfInterrestDescription.class);
+            java.net.URL url = classLoader.getResource(descriptionFileName);
+            if (url != null) {
+                File file = new File(url.getFile());
+                registerDescription = mapper.readValue(file, RegisterOfInterestDescription.class);
+            } else {
+                throw new Exception();
+            }
         } catch (Exception e) {
             // read file from resource if project is packed to jar
             InputStream in = getClass().getResourceAsStream("/" + descriptionFileName);
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
             try {
-                registerDescription = mapper.readValue(reader, RegisterOfInterrestDescription.class);
+                registerDescription = mapper.readValue(reader, RegisterOfInterestDescription.class);
             } catch (IOException e1) {
-                LOGGER.log(Level.SEVERE, "failed parse [" + descriptionFileName + "] from .jar correctly",
+                logger.log(Level.SEVERE, "failed parse [" + descriptionFileName + "] from .jar correctly",
                         e1);
             }
         }
@@ -100,9 +148,7 @@ public class ParticleFlashStateRegisterDetails {
      * @param value       The enum field's value.
      */
     public String toDetailedType(int sramAddress, byte value) {
-
-        // TODO: also use the RegisterOfInterrestDescription.getSizeofTypes() to determine the field size
-
+        // TODO: also use the RegisterOfInterestDescription.getSizeofTypes() to determine the field size
         String type = addressToTypeName.get(sramAddress);
         if (type == null) {
             return "0x" + Integer.toHexString(value & 0xFF);
@@ -121,16 +167,15 @@ public class ParticleFlashStateRegisterDetails {
         String detailedType;
         switch (type) {
             case "bit":
-                detailedType = "0b" + String.format("%8s", Integer.toBinaryString(value & 0xFF)).replace('
-                ', '0');
+                detailedType = "0b" + String.format("%8s", Integer.toBinaryString(value & 0xFF)).replace(/**/' ', '0');
                 break;
 
-            case "unsignd char":
+            case "unsigned char":
                 detailedType = "" + Byte.toUnsignedInt(value);
                 break;
 
             case "char":
-                String asCharRepresentation = "";
+                String asCharRepresentation;
                 if ((char) value == '\n') {
                     asCharRepresentation = "\\n";
                 } else if (!isPrintableChar((char) value)) {

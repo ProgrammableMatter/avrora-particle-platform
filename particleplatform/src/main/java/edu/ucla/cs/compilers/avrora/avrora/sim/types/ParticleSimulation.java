@@ -31,8 +31,6 @@ import java.util.Random;
  */
 public class ParticleSimulation extends Simulation {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ParticleSimulation.class);
-
     public static String HELP = "This wired network simulation is used for simulating multiple " +
             "(programmable matter)" + "particles simultaneously. These nodes communicate by use of wires. " +
             "The network dimension is specified " +
@@ -41,11 +39,9 @@ public class ParticleSimulation extends Simulation {
             " very first node.";
     public final Option.Long NODE_ROWS_COUNT = newOption("rowcount", 1, "This option is used to specify the" +
             " " + "number of rows to be instantiated in the network. Valid values are within [1, 255].");
-
     public final Option.Long NODE_COLUMNS_COUNT = newOption("columncount", 1, "This option is used to " +
             "specify " + "the number of columns to be instantiated in the network. Valid values are within " +
             "[1, 255].");
-
     public final Option.Interval RANDOM_START = newOption("random-start", 0, 0, "This option inserts a " +
             "random delay " +
             "before starting each node in order to prevent artificial cycle-level synchronization. The " +
@@ -61,6 +57,7 @@ public class ParticleSimulation extends Simulation {
             "number" +
             " of clock cycles. For example, if this option is given the value X, then node 0 will start at " +
             "time 0, node 1 at time 1*X, node 2 at time 2*X, etc.");
+    private final Logger logger = LoggerFactory.getLogger(ParticleSimulation.class);
 
     public ParticleSimulation() {
         super("wired", HELP, null);
@@ -142,7 +139,7 @@ public class ParticleSimulation extends Simulation {
                 wiredNode.startup = random + stagger;
             }
         }
-        LOGGER.info("created {} nodes for network dimension ({}x{})", rows * columns, rows, columns);
+        logger.info("created {} nodes for network dimension ({}x{})", rows * columns, rows, columns);
 
         if (args.length == 2) {
             String communicationUnitFirmwareName = args[1];
@@ -153,7 +150,7 @@ public class ParticleSimulation extends Simulation {
             long random = processRandom();
             long stagger = STAGGER_START.get();
             wiredNode.startup = random + stagger;
-            LOGGER.info("communication unit node instanciated");
+            logger.info("communication unit node instanciated");
         }
     }
 

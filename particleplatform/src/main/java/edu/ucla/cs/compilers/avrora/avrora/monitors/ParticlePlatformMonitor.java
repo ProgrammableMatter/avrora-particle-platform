@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Wrapper for {@link edu.ucla.cs.compilers.avrora.avrora.monitors.ParticlePlatformMonitor.MonitorImpl}
- * instanciation.
+ * instantiation.
  *
  * @author Raoul Rubien on 20.11.2015.
  */
@@ -37,8 +37,13 @@ public class ParticlePlatformMonitor extends MonitorFactory {
             "changes; \"wires\" - prints wire changes; \"break\" - watches and outputs information about " +
             "'asm" +
             "(\"break\")' statements");
+    public final Option.Bool PARTICLE_LOG_FILE_ENABLE = newOption("particle-log-file", false, "When this " +
+            "option is " +
+            "true, the" + ParticlePlatformMonitor.class.getSimpleName() + " appends logs to a temporary " +
+            "file" +
+            ". The file location is: " + ParticleLogSink.getInstance().getAbsoluteFileName());
 
-//    public final Option.Bool LOWER_ADDRESS = newOption("low-addresses", false, "When this option is
+    //    public final Option.Bool LOWER_ADDRESS = newOption("low-addresses", false, "When this option is
 // enabled, the " +
 //            "memory monitor will be inserted for lower addresses, " + "recording reads and writes to the
 // general " +
@@ -51,12 +56,6 @@ public class ParticlePlatformMonitor extends MonitorFactory {
 // instruction " +
 //            "that causes the write is included.");
 
-    public final Option.Bool PARTICE_LOG_FILE_ENABLE = newOption("particle-log-file", false, "When this " +
-            "option is " +
-            "true, the" + ParticlePlatformMonitor.class.getSimpleName() + " appends logs to a temporary " +
-            "file" +
-            ". The file location is: " + ParticleLogSink.getInstance().getAbsoluteFileName());
-
     public ParticlePlatformMonitor() {
         super("The \"" + ParticlePlatformMonitor.class.getSimpleName() + "\" monitor collects information " +
                 "about the " + "writes of the program to the global particle state");
@@ -64,7 +63,8 @@ public class ParticlePlatformMonitor extends MonitorFactory {
 
     @Override
     public Monitor newMonitor(Simulator s) {
-        return new MonitorImpl(s, ParticleLogSink.getInstance(PARTICE_LOG_FILE_ENABLE.get()), MONITOR_FACETS);
+        return new MonitorImpl(s, ParticleLogSink.getInstance(PARTICLE_LOG_FILE_ENABLE.get()),
+                MONITOR_FACETS);
     }
 
     /**
@@ -78,6 +78,7 @@ public class ParticlePlatformMonitor extends MonitorFactory {
         private static final AtomicInteger monitorIdCounter = new AtomicInteger(0);
         protected final Simulator simulator;
         private final Option.List monitorFacetsOption;
+        //        private final Logger logger = LoggerFactory.getLogger(ParticlePlatform.class);
         protected ParticleLogSink particleStateLogger;
         protected OnParticleStateChangeWatch onParticleStateChangeWatch;
         protected Map<PinWire, PinWireProbe> wireProbes = new HashMap<>();
@@ -103,6 +104,23 @@ public class ParticlePlatformMonitor extends MonitorFactory {
         }
 
         private void insertWatches() {
+
+//            if (isAddressOutOfBounds()) {
+//                try {
+//                    logger.debug("omitted watches for platform {}", ((ParticlePlatform) simulator
+//                            .getSimulation().getNode(monitorId).getPlatform()).getAddress());
+//                } catch (ClassCastException cce) {
+//                    // don't care
+//                }
+//                return;
+//            } else {
+//                try {
+//                    logger.debug("inserting watches for platform {}", ((ParticlePlatform) simulator
+//                            .getSimulation().getNode(monitorId).getPlatform()).getAddress());
+//                } catch (ClassCastException cce) {
+//                    logger.error("failed to determine platform type");
+//                }
+//            }
 
             if (monitorFacetsOption.get().contains("state")) {
                 // insert state change/write watch
@@ -140,14 +158,14 @@ public class ParticlePlatformMonitor extends MonitorFactory {
                         wire.insertProbe(probe);
                     }
                 } else {
-                    simulator.getPrinter().println("fatal error: node platform is no instance of " +
-                            "particleplatform");
+                    simulator.getPrinter().println("fatal error: node platform is no instance of " + ParticlePlatform.class.getName());
                 }
             }
         }
 
         /**
          * Constructs a new pin wire probe
+         *
          * @param wire the wire to be watched
          * @return a pin wire probe
          */
@@ -205,5 +223,28 @@ public class ParticlePlatformMonitor extends MonitorFactory {
 
             onParticleStateChangeWatch.report();
         }
+
+//        /**
+//         * The usual address range of a particle platform is <b> 1 <= row <= Short.MAX_VALUE</b>  and <b>
+// 1 <=
+//         * column <= Short.MAX_VALUE</b>. Reserved addresses with <b>row=0</b> or <b>column=0</b> do not
+//         * belong to a regular particle network and are used for special devices such as a bust master
+//         * device.
+//         *
+//         * @return true if the address is out of bounds, else false
+//         */
+//        public boolean isAddressOutOfBounds() {
+//            try {
+//                ParticlePlatform platform = (ParticlePlatform) simulator.getSimulation().getNode(monitorId)
+//                        .getPlatform();
+//                PlatformAddress deviceAddress = platform.getAddress();
+//                if (deviceAddress.getRow() < 1 || deviceAddress.getColumn() < 1) {
+//                    return true;
+//                }
+//            } catch (ClassCastException cce) {
+//                // don't cate
+//            }
+//            return false;
+//        }
     }
 }
