@@ -17,6 +17,8 @@ import edu.ucla.cs.compilers.avrora.avrora.sim.platform.Platform;
 import edu.ucla.cs.compilers.avrora.cck.text.TermUtil;
 import edu.ucla.cs.compilers.avrora.cck.text.Terminal;
 import edu.ucla.cs.compilers.avrora.cck.util.Option;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,8 +77,10 @@ public class ParticlePlatformMonitor extends MonitorFactory {
 
         protected static final ParticleFlashStateRegisterDetails stateRegister = new
                 ParticleFlashStateRegisterDetails();
+        private static final AtomicInteger count = new AtomicInteger(0);
         private static final AtomicInteger monitorIdCounter = new AtomicInteger(0);
         protected final Simulator simulator;
+        private final Logger logger = LoggerFactory.getLogger(MonitorImpl.class);
         private final Option.List monitorFacetsOption;
         //        private final Logger logger = LoggerFactory.getLogger(ParticlePlatform.class);
         protected ParticleLogSink particleStateLogger;
@@ -94,6 +98,9 @@ public class ParticlePlatformMonitor extends MonitorFactory {
             synchronized (monitorIdCounter) {
                 monitorId = monitorIdCounter.getAndIncrement();
             }
+
+            logger.debug("instantiated number [{}] of type [{}]", count.incrementAndGet(), MonitorImpl
+                    .class.getSimpleName());
         }
 
         /**
@@ -158,7 +165,8 @@ public class ParticlePlatformMonitor extends MonitorFactory {
                         wire.insertProbe(probe);
                     }
                 } else {
-                    simulator.getPrinter().println("fatal error: node platform is no instance of " + ParticlePlatform.class.getName());
+                    simulator.getPrinter().println("fatal error: node platform is no instance of " +
+                            ParticlePlatform.class.getName());
                 }
             }
         }

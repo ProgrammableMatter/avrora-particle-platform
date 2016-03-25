@@ -13,6 +13,7 @@ import edu.ucla.cs.compilers.avrora.cck.text.StringUtil;
 import edu.ucla.cs.compilers.avrora.cck.util.Option;
 import edu.ucla.cs.compilers.avrora.cck.util.Options;
 import edu.ucla.cs.compilers.avrora.cck.util.Util;
+import org.slf4j.Logger;
 
 import java.io.File;
 
@@ -22,6 +23,8 @@ import static junit.framework.TestCase.assertTrue;
  * Created by rubienr on 13.03.16.
  */
 public class ParticlePlatformTestUtils {
+
+    private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ParticlePlatformTestUtils.class);
 
     public static void registerDefaultTestExtensions() {
         Defaults.addPlatform("particle", ParticlePlatform.Factory.class);
@@ -102,8 +105,11 @@ public class ParticlePlatformTestUtils {
      */
     public static String getFilePath(String fileName) {
         try {
-            return getResourceFilePath(fileName);
+            String logFile = getResourceFilePath(fileName);
+            LOGGER.debug("requested file alternative [{}] found for [{}]", logFile, fileName);
+            return logFile;
         } catch (Throwable t) {
+            LOGGER.debug("requested file [{}] has no alternative", fileName);
             return fileName;
         }
     }
@@ -145,4 +151,5 @@ public class ParticlePlatformTestUtils {
             assertTrue("failed to get arguments", false);
         }
     }
+
 }

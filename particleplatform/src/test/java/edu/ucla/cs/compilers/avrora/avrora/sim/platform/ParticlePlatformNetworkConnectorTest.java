@@ -5,7 +5,12 @@
 
 package edu.ucla.cs.compilers.avrora.avrora.sim.platform;
 
+import edu.ucla.cs.compilers.avrora.avrora.TestLogger;
+import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +18,16 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 
 public class ParticlePlatformNetworkConnectorTest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ParticlePlatformNetworkConnectorTest.class);
+
+    @Rule
+    public TestLogger testLogger = new TestLogger(LOGGER);
+
+    @BeforeClass
+    public static void startSimulation() {
+        LOGGER.debug("BEFORE CLASS: {}", ParticlePlatformNetworkConnectorTest.class.getSimpleName());
+    }
 
     @Test
     public void test_LinearToAddressMappingImpl_expectValidMapping() throws Exception {

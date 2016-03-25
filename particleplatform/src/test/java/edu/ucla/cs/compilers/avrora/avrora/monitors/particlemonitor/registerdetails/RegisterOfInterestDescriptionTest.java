@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import java.io.File;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -32,8 +33,41 @@ public class RegisterOfInterestDescriptionTest {
             ClassLoader classLoader = getClass().getClassLoader();
             File file = new File(descriptionFileName);
             registerDescription = mapper.readValue(file, RegisterOfInterestDescription.class);
+            int foo = 1;
         } catch (Exception e) {
             assertTrue(false);
         }
+
+        assertNotNull(registerDescription);
+        assertTrue(registerDescription.getEnums().containsKey("StateType"));
+        assertTrue(registerDescription.getEnums().containsKey("NodeType"));
+        assertTrue(registerDescription.getStructs().containsKey("A.in"));
+        assertTrue(registerDescription.getStructs().containsKey("A.dir"));
+        assertTrue(registerDescription.getStructs().containsKey("A.out"));
+        assertTrue(registerDescription.getStructs().containsKey("B.in"));
+        assertTrue(registerDescription.getStructs().containsKey("B.dir"));
+        assertTrue(registerDescription.getStructs().containsKey("B.out"));
+        assertTrue(registerDescription.getStructs().containsKey("C.in"));
+        assertTrue(registerDescription.getStructs().containsKey("C.dir"));
+        assertTrue(registerDescription.getStructs().containsKey("C.out"));
+        assertTrue(registerDescription.getStructs().containsKey("D.in"));
+        assertTrue(registerDescription.getStructs().containsKey("D.dir"));
+        assertTrue(registerDescription.getStructs().containsKey("D.out"));
+        assertTrue(registerDescription.getStructs().containsKey("UDR"));
+        assertTrue(registerDescription.getStructs().containsKey("GICR"));
+        assertTrue(registerDescription.getStructs().containsKey("TCCR1A"));
+        assertTrue(registerDescription.getStructs().containsKey("TCCR1B"));
+        assertTrue(registerDescription.getStructs().containsKey("OCR1AH"));
+        assertTrue(registerDescription.getStructs().containsKey("OCR1AL"));
+        assertTrue(registerDescription.getStructs().containsKey("MCUCR"));
+        assertTrue(registerDescription.getStructs().containsKey("MCUCSR"));
+        assertTrue(registerDescription.getStructs().containsKey("TCNT0"));
+        assertTrue(registerDescription.getStructs().containsKey("TCNT1H"));
+        assertTrue(registerDescription.getStructs().containsKey("TCNT1L"));
+        assertTrue(registerDescription.getStructs().containsKey("TIMSK"));
+        assertTrue(registerDescription.getStructs().containsKey("GIFR"));
+        assertTrue(registerDescription.getStructs().containsKey("SREG"));
+        assertNotNull(registerDescription.getLabels());
+        assertNotNull(registerDescription.getSizeofTypes());
     }
 }

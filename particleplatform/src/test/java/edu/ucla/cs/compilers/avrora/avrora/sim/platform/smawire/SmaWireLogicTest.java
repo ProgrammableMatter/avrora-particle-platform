@@ -1,17 +1,34 @@
 package edu.ucla.cs.compilers.avrora.avrora.sim.platform.smawire;
 
+import edu.ucla.cs.compilers.avrora.avrora.TestLogger;
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertEquals;
 
 public class SmaWireLogicTest {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SmaWireLogicTest.class);
+    @Rule
+    public TestLogger testLogger = new TestLogger(LOGGER);
+    @Rule
+    public TestName testName = new TestName();
     private SmaWireState state = new SmaWireState();
     private SmaWireLogic logic = new SmaWireLogic(state);
 
+    @BeforeClass
+    public static void startSimulation() {
+        LOGGER.debug("BEFORE CLASS: {}", SmaWireLogicTest.class.getSimpleName());
+    }
+
     @Before
     public void resetState() {
+        LOGGER.debug("BEFORE TEST: {}", testName.getMethodName());
         state.reset();
     }
 

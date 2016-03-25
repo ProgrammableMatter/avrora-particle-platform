@@ -5,6 +5,7 @@
 
 package edu.ucla.cs.compilers.avrora.avrora.sim.platform;
 
+import edu.ucla.cs.compilers.avrora.avrora.TestLogger;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.TestableParticlePlatformMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.TestableParticlePlatformMonitor.TestableMonitorImpl;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.ParticleLogSink;
@@ -14,7 +15,10 @@ import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.TestablePinW
 import edu.ucla.cs.compilers.avrora.cck.util.Option;
 import edu.ucla.cs.compilers.avrora.cck.util.Options;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.HashSet;
@@ -34,14 +38,17 @@ import static junit.framework.TestCase.assertTrue;
 public class ParticlePlatformTest {
 
     static final Options mainOptions = new Options();
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ParticlePlatformTest.class);
     private static TestableMonitorImpl monitor;
     private static Map<PinWire, TestablePinWireProbe> probes;
     private static TestableOnParticleStateChangeWatch watch;
     private static int[] registerToWriteCount;
+    @Rule
+    public TestLogger testLogger = new TestLogger(LOGGER);
 
     @BeforeClass
     public static void startSimulation() {
+        LOGGER.debug("BEFORE CLASS: {}", ParticlePlatformTest.class.getSimpleName());
         ParticlePlatformTestUtils.registerDefaultTestExtensions();
         Option.Str action = ParticlePlatformTestUtils.setUpDefaultSimulationOptions(mainOptions);
         ParticlePlatformTestUtils.startSimulation(mainOptions, action);
@@ -173,8 +180,10 @@ public class ParticlePlatformTest {
     public void test_assertNoErrorsInLogfile() {
         String udrText = rebuildTextFromUdrWrites();
         Set<String> erroneousFragments = newErroneousFragments();
+        String[] lines = toLines(udrText);
+        assertTrue(lines.length > 0);
 
-        for (String l : toLines(udrText)) {
+        for (String l : lines) {
             String lowerCase = l.toLowerCase();
             for (String erroneousFragment : erroneousFragments) {
                 if (lowerCase.contains(erroneousFragment)) {
@@ -189,7 +198,9 @@ public class ParticlePlatformTest {
      */
     @Test
     public void test_rebuildTextFromUdrWrites() {
-        for (String l : toLines(rebuildTextFromUdrWrites())) {
+        String[] lines = toLines(rebuildTextFromUdrWrites());
+        assertTrue(lines.length > 0);
+        for (String l : lines) {
             System.out.println(l);
         }
     }

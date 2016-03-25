@@ -13,9 +13,9 @@
       "STATE_TYPE_ENUMERATING_EAST_NEIGHBOUR",
       "STATE_TYPE_ENUMERATED",
       "STATE_TYPE_IDLE",
-      "STATE_TYPE_INTERPRETE_COMMAND",
-      "STATE_TYPE_RX_A",
-      "STATE_TYPE_RX_B",
+      "STATE_TYPE_INTERPRET_COMMAND",
+      "STATE_TYPE_TX_START",
+      "STATE_TYPE_TX_DONE",
       "STATE_TYPE_FORWARD_PKG",
       "STATE_TYPE_SCHEDULE_COMMAND",
       "STATE_TYPE_EXECUTE_COMMAND",
@@ -29,10 +29,19 @@
       "NODE_TYPE_INTER_HEAD",
       "NODE_TYPE_INTER_NODE",
       "NODE_TYPE_TAIL",
-      "NODE_TYPE_INVALID"
+      "NODE_TYPE_INVALID",
+      "NODE_TYPE_MASTER"
     ]
   },
   "structs": {
+    /* state in register of pin (input) A  */
+    "A.in": [
+      {
+        "property": "(EAST_TX | EAST_SW | TP3 | PA4 | STH_TX | STH_SW | TP2 | ERROR)",
+        "type": "bit",
+        "address": 57
+      }
+    ],
     /* state in direction register of port A */
     "A.dir": [
       {
@@ -47,6 +56,14 @@
         "property": "(EAST_TX | EAST_SW | TP3 | PA4 | STH_TX | STH_SW | TP2 | ERROR)",
         "type": "bit",
         "address": 59
+      }
+    ],
+    /* state in register of pin (input) B  */
+    "B.in": [
+      {
+        "property": "(B7 | B6 | B5 | STAT0 | STAT1 | NRTH_RX | HTBEAT | B0)",
+        "type": "bit",
+        "address": 54
       }
     ],
     /* state in direction register of port B */
@@ -65,12 +82,12 @@
         "address": 56
       }
     ],
-    /* state in register of pin (input) B  */
-    "B.in": [
+    /* state in register of pin (input) C  */
+    "C.in": [
       {
-        "property": "(B7 | B6 | B5 | STAT0 | STAT1 | NRTH_RX | HTBEAT | B0)",
+        "property": "(C7  | C6 | C5 | NRTH_SW | C3 | TP1 | C1 | NRTH_TX)",
         "type": "bit",
-        "address": 54
+        "address": 51
       }
     ],
     /* state in direction register of port C */
@@ -237,22 +254,22 @@
     /* global status struct*/
     "globalState": [
       {
-        "property": "state",
+        "property": "node.state",
         "type": "StateType",
         "address": "globalStateBase+0"
       },
       {
-        "property": "type",
+        "property": "node.type",
         "type": "NodeType",
         "address": "globalStateBase+2"
       },
       {
-        "property": "address.row",
+        "property": "node.address.row",
         "type": "unsigned char",
         "address": "globalStateBase+4"
       },
       {
-        "property": "address.column",
+        "property": "node.address.column",
         "type": "unsigned char",
         "address": "globalStateBase+5"
       },
