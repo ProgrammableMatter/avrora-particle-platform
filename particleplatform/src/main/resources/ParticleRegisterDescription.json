@@ -2,6 +2,7 @@
   "enums": {
     /* StateType enum describes the node state */
     "StateType": [
+      "STATE_TYPE_UNDEFINED",
       "STATE_TYPE_START",
       "STATE_TYPE_ACTIVE",
       "STATE_TYPE_NEIGHBOURS_DISCOVERY",
@@ -20,7 +21,8 @@
       "STATE_TYPE_SCHEDULE_COMMAND",
       "STATE_TYPE_EXECUTE_COMMAND",
       "STATE_TYPE_COMMAND_SCHEDULED_ACK",
-      "STATE_TYPE_ERRONEOUS"
+      "STATE_TYPE_ERRONEOUS",
+      "STATE_TYPE_STALE"
     ],
     /* NodeType enum describes the node type regarding to it's connectivity */
     "NodeType": [
