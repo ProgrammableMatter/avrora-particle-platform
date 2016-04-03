@@ -75,18 +75,25 @@ public class ParticlePlatformMonitor extends MonitorFactory {
      */
     public static class MonitorImpl implements edu.ucla.cs.compilers.avrora.avrora.monitors.Monitor {
 
-        protected static final ParticleFlashStateRegisterDetails stateRegister = new
-                ParticleFlashStateRegisterDetails();
-        private static final AtomicInteger count = new AtomicInteger(0);
-        private static final AtomicInteger monitorIdCounter = new AtomicInteger(0);
+        protected static final ParticleFlashStateRegisterDetails stateRegister;
+        private static final AtomicInteger monitorIdCounter;
+
+        static {
+            stateRegister = new ParticleFlashStateRegisterDetails();
+            monitorIdCounter = new AtomicInteger(0);
+        }
+
         protected final Simulator simulator;
         private final Logger logger = LoggerFactory.getLogger(MonitorImpl.class);
         private final Option.List monitorFacetsOption;
-        //        private final Logger logger = LoggerFactory.getLogger(ParticlePlatform.class);
+        /**
+         * The id correlates with the node position in the nodes array of {@link
+         * edu.ucla.cs.compilers.avrora.avrora.sim.Simulation#nodes}.
+         */
+        private final int monitorId;
         protected ParticleLogSink particleStateLogger;
         protected OnParticleStateChangeWatch onParticleStateChangeWatch;
         protected Map<PinWire, PinWireProbe> wireProbes = new HashMap<>();
-        private int monitorId = 0;
         private Map<BreakProbe, Integer> breakProbes = new HashMap<>();
 
         protected MonitorImpl(Simulator sim, ParticleLogSink particleStateLogger, Option.List monitorFacets) {
@@ -94,13 +101,14 @@ public class ParticlePlatformMonitor extends MonitorFactory {
             this.particleStateLogger = particleStateLogger;
             monitorFacetsOption = monitorFacets;
             onParticleStateChangeWatch = newOnStateChangeWatch();
-            insertWatches();
+
             synchronized (monitorIdCounter) {
                 monitorId = monitorIdCounter.getAndIncrement();
             }
 
-            logger.debug("instantiated number [{}] of type [{}]", count.incrementAndGet(), MonitorImpl
-                    .class.getSimpleName());
+            insertWatches();
+            logger.debug("instantiated number [{}] of type [{}]", monitorId, MonitorImpl.class
+                    .getSimpleName());
         }
 
         /**
@@ -111,24 +119,6 @@ public class ParticlePlatformMonitor extends MonitorFactory {
         }
 
         private void insertWatches() {
-
-//            if (isAddressOutOfBounds()) {
-//                try {
-//                    logger.debug("omitted watches for platform {}", ((ParticlePlatform) simulator
-//                            .getSimulation().getNode(monitorId).getPlatform()).getAddress());
-//                } catch (ClassCastException cce) {
-//                    // don't care
-//                }
-//                return;
-//            } else {
-//                try {
-//                    logger.debug("inserting watches for platform {}", ((ParticlePlatform) simulator
-//                            .getSimulation().getNode(monitorId).getPlatform()).getAddress());
-//                } catch (ClassCastException cce) {
-//                    logger.error("failed to determine platform type");
-//                }
-//            }
-
             if (monitorFacetsOption.get().contains("state")) {
                 // insert state change/write watch
                 for (int registerAddress : stateRegister.getAddressToRegisterNameMapping().keySet()) {
