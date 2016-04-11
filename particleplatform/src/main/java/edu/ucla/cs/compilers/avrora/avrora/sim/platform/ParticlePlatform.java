@@ -492,9 +492,9 @@ public class ParticlePlatform extends Platform {
 
         @Override
         public Platform newPlatform(int id, Simulation sim, Program p) {
-            ClockDomain cd = new ClockDomain(7999860);
-            // TODO: what is the external clock for?
-            cd.newClock("external", 31372);
+            ClockDomain cd = new ClockDomain(8000000);
+            // in case of a timer counter uses the external clock source on T0 pin as clock source
+            cd.newClock("external", 1);
             return new ParticlePlatform(new ATMega16(id, sim, cd, p));
         }
     }

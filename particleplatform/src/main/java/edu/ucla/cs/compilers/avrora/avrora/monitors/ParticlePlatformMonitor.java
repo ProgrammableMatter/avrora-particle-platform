@@ -11,6 +11,7 @@ import edu.ucla.cs.compilers.avrora.avrora.core.Program;
 import edu.ucla.cs.compilers.avrora.avrora.core.SourceMapping;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.*;
 import edu.ucla.cs.compilers.avrora.avrora.sim.Simulator;
+import edu.ucla.cs.compilers.avrora.avrora.sim.output.SimPrinter;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatform;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.PinWire;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.Platform;
@@ -84,6 +85,7 @@ public class ParticlePlatformMonitor extends MonitorFactory {
         }
 
         protected final Simulator simulator;
+        private final SimPrinter printer;
         private final Logger logger = LoggerFactory.getLogger(MonitorImpl.class);
         private final Option.List monitorFacetsOption;
         /**
@@ -98,6 +100,7 @@ public class ParticlePlatformMonitor extends MonitorFactory {
 
         protected MonitorImpl(Simulator sim, ParticleLogSink particleStateLogger, Option.List monitorFacets) {
             simulator = sim;
+            printer = sim.getPrinter();
             this.particleStateLogger = particleStateLogger;
             monitorFacetsOption = monitorFacets;
             onParticleStateChangeWatch = newOnStateChangeWatch();
@@ -155,7 +158,7 @@ public class ParticlePlatformMonitor extends MonitorFactory {
                         wire.insertProbe(probe);
                     }
                 } else {
-                    simulator.getPrinter().println("fatal error: node platform is no instance of " +
+                    printer.println("fatal error: node platform is no instance of " +
                             ParticlePlatform.class.getName());
                 }
             }
@@ -168,7 +171,7 @@ public class ParticlePlatformMonitor extends MonitorFactory {
          * @return a pin wire probe
          */
         protected PinWireProbe newPinWireProbe(PinWire wire) {
-            return new PinWireProbe(simulator.getPrinter(), wire, particleStateLogger);
+            return new PinWireProbe(printer, wire, particleStateLogger);
         }
 
         /**

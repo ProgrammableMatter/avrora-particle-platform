@@ -6,7 +6,7 @@
 package edu.ucla.cs.compilers.avrora.avrora.sim.platform;
 
 import edu.ucla.cs.compilers.avrora.avrora.sim.Simulator;
-import edu.ucla.cs.compilers.avrora.avrora.sim.clock.StepSynchronizer;
+import edu.ucla.cs.compilers.avrora.avrora.sim.clock.BarrierSynchronizer;
 import edu.ucla.cs.compilers.avrora.avrora.sim.clock.Synchronizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,8 +35,9 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
 
     private ParticlePlatformNetworkConnector() {
         PinEvent pinEvent = new PinEvent();
-        synchronizer = new StepSynchronizer(pinEvent);
-        // synchronizer = new RippleSynchronizer(8, null);
+//        synchronizer = new StepSynchronizer(pinEvent);
+//        synchronizer = new RippleSynchronizer(8, pinEvent);
+        synchronizer = new BarrierSynchronizer(8, pinEvent);
     }
 
     /**
@@ -192,14 +193,13 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
     }
 
     /**
-     * Propagates events to neighboured nodes.
+     * Propagates events from neighbours to local node.
      *
      * @author Raoul Rubien
      */
     protected class PinEvent implements Simulator.Event {
         @Override
         public void fire() {
-            // iterator over PinLinks
             for (ParticlePlatform node : particlePlatforms) {
                 node.propagateSignals();
             }
