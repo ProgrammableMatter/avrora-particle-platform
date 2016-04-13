@@ -36,11 +36,12 @@ public class ReceptionTest {
         LOGGER.debug("BEFORE CLASS: {}", ReceptionTest.class.getSimpleName());
         ParticlePlatformTestUtils.registerDefaultTestExtensions();
         String communicationUnitFirmware = System.getProperty("user.home") + "/" +
-                ".CLion12/system/cmake/generated/c14d54a/c14d54a/Debug/manchester-code-tx-simulation/main" +
-                "/ManchesterCodeTxSimulation.elf";
+                ".CLion2016.1/system/cmake/generated/avr-c14d54a/c14d54a/Debug/manchester-code-tx" +
+                "-simulation/main/ManchesterCodeTxSimulation.elf";
         String firmware = System.getProperty("user.home") + "/" +
-                ".CLion12/system/cmake/generated/c14d54a/c14d54a/Debug/particle-reception-simulation/main" +
-                "/ParticleReceptionSimulation.elf";
+                "" +
+                ".CLion2016.1/system/cmake/generated/avr-c14d54a/c14d54a/Debug/particle-reception" +
+                "-simulation/main/ParticleReceptionSimulation.elf";
 
         short rows = 1;
         short colummns = 1;
