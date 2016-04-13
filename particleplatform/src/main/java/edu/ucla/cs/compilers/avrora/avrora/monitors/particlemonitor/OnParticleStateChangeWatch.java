@@ -13,7 +13,10 @@ import edu.ucla.cs.compilers.avrora.avrora.sim.State;
 import edu.ucla.cs.compilers.avrora.cck.text.TermUtil;
 import edu.ucla.cs.compilers.avrora.cck.text.Terminal;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * @author Raoul Rubien on 20.11.2015.
@@ -70,12 +73,27 @@ public class OnParticleStateChangeWatch extends Simulator.Watch.Empty {
 
     public void report() {
         TermUtil.printSeparator("Particle state profiling results for node " + simulator.getID());
-        Terminal.printGreen("   Address      Writes      Changes");
+        Terminal.printGreen("Address Name      Writes/Changes");
         Terminal.nextln();
         TermUtil.printThinSeparator(Terminal.MAXLINE);
-        for (Map.Entry<Integer, String> entry : stateRegister.getAddressToRegisterNameMapping().entrySet()) {
-            Terminal.println("  " + entry.getValue() + "  " + registerWriteCount[entry.getKey()] +
+
+        Set<Map.Entry<Integer, String>> addressToRegisterName = stateRegister
+                .getAddressToRegisterNameMapping().entrySet();
+        Map<String, String> registerNames = new TreeMap<>();
+        Map<String, String> registerWrites = new HashMap<>();
+
+        for (Map.Entry<Integer, String> entry : addressToRegisterName) {
+            String address = "0x" + String.format("%04X", entry.getKey());
+            registerNames.put(address, entry.getValue());
+            registerWrites.put(address, registerWriteCount[entry.getKey()] +
                     "/" + registerChangeCount[entry.getKey()]);
+        }
+
+        for (Map.Entry<String, String> entry : registerNames.entrySet()) {
+            Terminal.printGreen(entry.getKey());
+            Terminal.print(": " + entry.getValue() + "  ");
+            Terminal.printBrightCyan(registerWrites.get(entry.getKey()));
+            Terminal.nextln();
         }
         Terminal.nextln();
     }
