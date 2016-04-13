@@ -34,7 +34,7 @@ public class ParticlePlatformNetworkTest {
         LOGGER.debug("BEFORE CLASS: {}", ParticlePlatformNetworkTest.class.getSimpleName());
         ParticlePlatformTestUtils.registerDefaultTestExtensions();
         String firmware = System.getProperty("user.home") + "/" +
-                ".CLion12/system/cmake/generated/c14d54a/c14d54a/Debug/particle-simulation/main" +
+                ".CLion2016.1/system/cmake/generated/c14d54a/c14d54a/Debug/particle-simulation/main" +
                 "/ParticleSimulation.elf";
         rows = 2;
         short colummns = 2;
