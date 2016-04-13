@@ -39,7 +39,7 @@
     /* state in register of pin (input) A  */
     "A.in": [
       {
-        "property": "(EAST_TX | EAST_SW | TP3 | PA4 | STH_TX | STH_SW | TP2 | ERROR)",
+        "property": "(EAST_TX | EAST_SW | TP3 | PA4 | SOUTH_TX | STOUH_SW | TP2 | ERROR)",
         "type": "bit",
         "address": 57
       }
@@ -47,7 +47,7 @@
     /* state in direction register of port A */
     "A.dir": [
       {
-        "property": "(EAST_TX | EAST_SW | TP3 | PA4 | STH_TX | STH_SW | TP2 | ERROR)",
+        "property": "(EAST_TX | EAST_SW | TP3 | PA4 | SOUTH_TX | SOUTH_SW | TP2 | ERROR)",
         "type": "bit",
         "address": 58
       }
@@ -55,7 +55,7 @@
     /* state in register of port (output) A  */
     "A.out": [
       {
-        "property": "(EAST_TX | EAST_SW | TP3 | PA4 | STH_TX | STH_SW | TP2 | ERROR)",
+        "property": "(EAST_TX | EAST_SW | TP3 | PA4 | SOUTH_TX | SOUTH_SW | TP2 | ERROR)",
         "type": "bit",
         "address": 59
       }
@@ -112,7 +112,7 @@
     /* state in direction register of port D*/
     "D.dir": [
       {
-        "property": "(D7 | D6 | D5 | D4 | EAST_RX | STH_RX | D1 | D0)",
+        "property": "(D7 | D6 | D5 | D4 | EAST_RX | SOUTH_RX | D1 | D0)",
         "type": "bit",
         "address": 49
       }
@@ -120,7 +120,7 @@
     /* state in register of port (output) D */
     "D.out": [
       {
-        "property": "(D7 | D6 | D5 | D4 | EAST_RX | STH_RX | D1 | D0)",
+        "property": "(D7 | D6 | D5 | D4 | EAST_RX | SOUTH_RX | D1 | D0)",
         "type": "bit",
         "address": 50
       }
@@ -128,7 +128,7 @@
     /* state in register of pin (input) D */
     "D.in": [
       {
-        "property": "(D7 | D6 | D5 | D4 | EAST_RX | STH_RX | D1 | D0)",
+        "property": "(D7 | D6 | D5 | D4 | EAST_RX | SOUTH_RX | D1 | D0)",
         "type": "bit",
         "address": 48
       }
@@ -187,6 +187,30 @@
         "property": "",
         "type": "hex",
         "address": 74
+      }
+    ],
+    /* state in timer/counter1 compare register high byte*/
+    "OCR1BH": [
+      {
+        "property": "",
+        "type": "hex",
+        "address": 73
+      }
+    ],
+    /* state in timer/counter1 compare register low byte*/
+    "OCR1BL": [
+      {
+        "property": "",
+        "type": "hex",
+        "address": 72
+      }
+    ],
+    /* state in timer counter0 compare register */
+    "OCR0": [
+      {
+        "property": "",
+        "type": "hex",
+        "address": 92
       }
     ],
     /* state in MCU control register*/
