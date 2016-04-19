@@ -7,15 +7,16 @@ package edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor;
 
 import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.registerdetails
         .RegisterOfInterestDescription;
+import edu.ucla.cs.compilers.avrora.avrora.sim.AtmelInterpreter;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,7 +29,7 @@ import java.util.regex.Pattern;
 public class ParticleFlashStateRegisterDetails {
 
     private static final String descriptionFileName = "ParticleRegisterDescription.json";
-    private final Logger logger = Logger.getLogger(ParticleFlashStateRegisterDetails.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(ParticleFlashStateRegisterDetails.class.getName());
     private Map<Integer, String> addressToRegisterName = new HashMap<>();
     private Map<Integer, String> addressToTypeName = new HashMap<>();
     private RegisterOfInterestDescription registerDescription = null;
@@ -42,8 +43,8 @@ public class ParticleFlashStateRegisterDetails {
     }
 
     private void mapAddressToTypeName() {
-        for (Map.Entry<String, List<RegisterOfInterestDescription.StructProperties>> entry : registerDescription
-                .getStructs().entrySet()) {
+        for (Map.Entry<String, List<RegisterOfInterestDescription.StructProperties>> entry :
+                registerDescription.getStructs().entrySet()) {
 
             List<RegisterOfInterestDescription.StructProperties> properties = entry.getValue();
             String structName = entry.getKey();
@@ -126,8 +127,7 @@ public class ParticleFlashStateRegisterDetails {
             try {
                 registerDescription = mapper.readValue(reader, RegisterOfInterestDescription.class);
             } catch (IOException e1) {
-                logger.log(Level.SEVERE, "failed parse [" + descriptionFileName + "] from .jar correctly",
-                        e1);
+                logger.error("failed parse [" + descriptionFileName + "] from .jar correctly", e1);
             }
         }
     }
@@ -147,7 +147,7 @@ public class ParticleFlashStateRegisterDetails {
      * @param sramAddress the sram address on the microcontroller
      * @param value       The enum field's value.
      */
-    public String toDetailedType(int sramAddress, byte value) {
+    String toDetailedType(int sramAddress, byte value, AtmelInterpreter.StateImpl state) {
         // TODO: also use the RegisterOfInterestDescription.getSizeofTypes() to determine the field size
         String type = addressToTypeName.get(sramAddress);
         if (type == null) {
@@ -165,13 +165,17 @@ public class ParticleFlashStateRegisterDetails {
         }
 
         String detailedType;
+        int intValue;
         switch (type) {
+            // int8_t
             case "bit":
-                detailedType = "0b" + String.format("%8s", Integer.toBinaryString(value & 0xFF)).replace(/**/' ', '0');
+                detailedType = "0b" + String.format("%8s", Integer.toBinaryString(value & 0xFF)).replace
+                        (/**/' ', '0');
                 break;
 
-            case "unsigned char":
-                detailedType = "" + Byte.toUnsignedInt(value);
+            // uint8_t
+            case "unsigned":
+                detailedType = "unsigned " + Byte.toUnsignedInt(value);
                 break;
 
             case "char":
@@ -179,17 +183,48 @@ public class ParticleFlashStateRegisterDetails {
                 if ((char) value == '\n') {
                     asCharRepresentation = "\\n";
                 } else if (!isPrintableChar((char) value)) {
-                    asCharRepresentation = "<unprintable>";
+                    asCharRepresentation = "<unprintable char code [" + (int) value + "]>";
                 } else {
                     asCharRepresentation = Character.toString((char) value);
                 }
                 detailedType = "'" + asCharRepresentation + "'";
                 break;
-            case "int":
+
+            // int8_t
+            case "signed":
                 detailedType = "" + value;
                 break;
 
+            // int16_t
+            case "int":
+            case "signed int":
+                intValue = ((state.getDataByte(sramAddress + 1) & 0xff) << 8) | (value & 0xff);
+                if ((intValue & (1 << 15)) != 0) {
+                    detailedType = "";
+                } else {
+                    detailedType = "-";
+                }
+                detailedType += (intValue & 0x7FFF);
+                break;
+
+            // uint16_t
+            case "uint":
+            case "unsigned int":
+                intValue = ((state.getDataByte(sramAddress + 1) & 0xff) << 8) | (value & 0xff);
+                detailedType = "" + intValue;
+                break;
+
+            // int16_t
+            case "dhex":
+            case "hex16":
+                detailedType = "0x" + Integer.toHexString(state.getDataByte(sramAddress + 1) & 0xff) + " "
+                        + Integer.toHexString(value & 0xff);
+                break;
+
+            // int8_t
             default:
+                logger.warn("unrecognized type specified [{}]", type);
+            case "hex":
                 detailedType = "0x" + Integer.toHexString(value & 0xFF);
                 break;
         }

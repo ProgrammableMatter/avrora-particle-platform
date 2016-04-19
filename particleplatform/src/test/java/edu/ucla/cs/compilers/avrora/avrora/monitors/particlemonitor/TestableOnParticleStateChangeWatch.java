@@ -5,6 +5,7 @@
 
 package edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor;
 
+import edu.ucla.cs.compilers.avrora.avrora.sim.AtmelInterpreter;
 import edu.ucla.cs.compilers.avrora.avrora.sim.Simulator;
 import edu.ucla.cs.compilers.avrora.avrora.sim.State;
 
@@ -45,10 +46,11 @@ public class TestableOnParticleStateChangeWatch extends OnParticleStateChangeWat
 
         String valueString;
         try {
-            valueString = stateRegister.toDetailedType(data_addr, value);
+            valueString = registerDescription.toDetailedType(data_addr, value, (AtmelInterpreter.StateImpl)
+                    state);
             String variableName;
             try {
-                variableName = stateRegister.getAddressToRegisterNameMapping().get(data_addr);
+                variableName = registerDescription.getAddressToRegisterNameMapping().get(data_addr);
                 synchronized (writes) {
                     writes.add(new NameValueGlue(variableName, value, valueString, simulator.getID(),
                             simulator.getClock().getCount()));

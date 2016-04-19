@@ -224,28 +224,5 @@ public class ParticlePlatformMonitor extends MonitorFactory {
 
             onParticleStateChangeWatch.report();
         }
-
-//        /**
-//         * The usual address range of a particle platform is <b> 1 <= row <= Short.MAX_VALUE</b>  and <b>
-// 1 <=
-//         * column <= Short.MAX_VALUE</b>. Reserved addresses with <b>row=0</b> or <b>column=0</b> do not
-//         * belong to a regular particle network and are used for special devices such as a bust master
-//         * device.
-//         *
-//         * @return true if the address is out of bounds, else false
-//         */
-//        public boolean isAddressOutOfBounds() {
-//            try {
-//                ParticlePlatform platform = (ParticlePlatform) simulator.getSimulation().getNode(monitorId)
-//                        .getPlatform();
-//                PlatformAddress deviceAddress = platform.getAddress();
-//                if (deviceAddress.getRow() < 1 || deviceAddress.getColumn() < 1) {
-//                    return true;
-//                }
-//            } catch (ClassCastException cce) {
-//                // don't cate
-//            }
-//            return false;
-//        }
     }
 }

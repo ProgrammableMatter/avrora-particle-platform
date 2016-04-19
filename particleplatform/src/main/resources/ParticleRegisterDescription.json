@@ -134,11 +134,19 @@
       }
     ],
     /* UDR usart i/o register */
-    "UDR": [
+    "char-out": [
       {
         "property": "",
         "type": "char",
         "address": 44
+      }
+    ],
+    /*  serial programming interface data register */
+    "SPDR": [
+      {
+        "property": "",
+        "type": "hex",
+        "address": 47
       }
     ],
     /* state in general interrupt control register */
@@ -147,6 +155,22 @@
         "property": "(INT1 | INT0 | INT2 | - | - | - | IVSEL | IVCE)",
         "type": "bit",
         "address": 91
+      }
+    ],
+    /* state in EEPROM EEARL register */
+    "int16L-out": [
+      {
+        "property": "",
+        "type": "hex",
+        "address": 62
+      }
+    ],
+    /* state in EEPROM EEDR register including the following register */
+    "int16-out": [
+      {
+        "property": "",
+        "type": "unsigned int",
+        "address": 61
       }
     ],
     /* state in timer/counter interrupt flag register */
@@ -241,7 +265,7 @@
     "TCNT0": [
       {
         "property": "",
-        "type": "int",
+        "type": "signed",
         "address": 82
       }
     ],
@@ -299,12 +323,12 @@
       },
       {
         "property": "node.address.row",
-        "type": "unsigned char",
+        "type": "unsigned",
         "address": "globalStateBase+4"
       },
       {
         "property": "node.address.column",
-        "type": "unsigned char",
+        "type": "unsigned",
         "address": "globalStateBase+5"
       },
       {
@@ -324,7 +348,7 @@
       },
       {
         "property": "discovery.loopCount",
-        "type": "unsigned char",
+        "type": "unsigned",
         "address": "globalStateBase+9"
       },
       {
@@ -418,139 +442,244 @@
         "address": "globalStateBase+27"
       },
       {
-        "property": "ports.rx.north.syncOffset[0]",
-        "type": "hex",
+        "property": "ports.rx.north.adjustment.receptionOffset",
+        "type": "unsigned int",
         "address": "globalStateBase+28"
       },
       {
-        "property": "ports.rx.north.syncOffset[1]",
+        "property": "ports.rx.north.adjustment.receptionOffset[1]",
         "type": "hex",
         "address": "globalStateBase+29"
       },
       {
-        "property": "ports.rx.north.( - [7:2] | isReceiving [3:0])",
-        "type": "hex",
+        "property": "ports.rx.north.adjustment.estimatedCounterTop",
+        "type": "unsigned int",
         "address": "globalStateBase+30"
       },
       {
-        "property": "ports.rx.north.buffer[0]",
+        "property": "ports.rx.north.adjustment.estimatedCounterTop[1]",
         "type": "hex",
         "address": "globalStateBase+31"
       },
       {
-        "property": "ports.rx.north.buffer[1]",
-        "type": "hex",
+        "property": "ports.rx.north.adjustment.estimatedCounterCenter",
+        "type": "unsigned int",
         "address": "globalStateBase+32"
       },
       {
-        "property": "ports.rx.north.buffer[2]",
+        "property": "ports.rx.north.adjustment.estimatedCounterCenter[1]",
         "type": "hex",
         "address": "globalStateBase+33"
       },
       {
-        "property": "ports.rx.north.buffer[3]",
-        "type": "hex",
+        "property": "ports.rx.north.adjustment.receptionDelta",
+        "type": "unsigned int",
         "address": "globalStateBase+34"
       },
       {
-        "property": "ports.rx.north.buffer.pointer.( - [7:2] | byteNumber [1:0])",
-        "type": "bit",
+        "property": "ports.rx.north.adjustment.receptionDelta[1]",
+        "type": "hex",
         "address": "globalStateBase+35"
       },
       {
-        "property": "ports.rx.north.buffer.bitmask",
-        "type": "bit",
+        "property": "ports.rx.north.adjustment.estimatedTopCounterOffset",
+        "type": "signed",
         "address": "globalStateBase+36"
       },
       {
-        "property": "ports.rx.east.syncOffset[0]",
+        "property": "ports.rx.north.buffer[0]",
         "type": "hex",
         "address": "globalStateBase+37"
       },
       {
-        "property": "ports.rx.east.syncOffset[1]",
+        "property": "ports.rx.north.buffer[1]",
         "type": "hex",
         "address": "globalStateBase+38"
       },
       {
-        "property": "ports.rx.east.( - [7:2] | isReceiving [3:0])",
+        "property": "ports.rx.north.buffer[2]",
         "type": "hex",
         "address": "globalStateBase+39"
       },
       {
-        "property": "ports.rx.east.buffer[0]",
+        "property": "ports.rx.north.buffer[3]",
         "type": "hex",
         "address": "globalStateBase+40"
       },
       {
-        "property": "ports.rx.east.buffer[1]",
-        "type": "hex",
+        "property": "ports.rx.north.buffer.pointer.( - [7:2] | byteNumber [1:0])",
+        "type": "bit",
         "address": "globalStateBase+41"
       },
       {
-        "property": "ports.rx.east.buffer[2]",
-        "type": "hex",
+        "property": "ports.rx.north.buffer.bitmask",
+        "type": "bit",
         "address": "globalStateBase+42"
       },
       {
-        "property": "ports.rx.east.buffer[3]",
+        "property": "ports.rx.north.( - [7:2] | isReceiving [3:0])",
         "type": "hex",
         "address": "globalStateBase+43"
       },
       {
-        "property": "ports.rx.east.buffer.pointer.( - [7:2] | byteNumber [1:0])",
-        "type": "bit",
+        "property": "ports.rx.east.adjustment.receptionOffset",
+        "type": "unsigned int",
         "address": "globalStateBase+44"
       },
       {
-        "property": "ports.rx.east.buffer.bitmask",
-        "type": "bit",
+        "property": "ports.rx.east.adjustment.receptionOffset[1]",
+        "type": "hex",
         "address": "globalStateBase+45"
       },
       {
-        "property": "ports.rx.south.syncOffset[0]",
-        "type": "hex",
+        "property": "ports.rx.east.adjustment.estimatedCounterTop",
+        "type": "unsigned int",
         "address": "globalStateBase+46"
       },
       {
-        "property": "ports.rx.south.syncOffset[1]",
+        "property": "ports.rx.east.adjustment.estimatedCounterTop[1]",
         "type": "hex",
         "address": "globalStateBase+47"
       },
       {
-        "property": "ports.rx.south.( - [7:2] | isReceiving [3:0])",
-        "type": "hex",
+        "property": "ports.rx.east.adjustment.estimatedCounterCenter",
+        "type": "unsigned int",
         "address": "globalStateBase+48"
       },
       {
-        "property": "ports.rx.south.buffer[0]",
+        "property": "ports.rx.east.adjustment.estimatedCounterCenter[1]",
         "type": "hex",
         "address": "globalStateBase+49"
       },
       {
-        "property": "ports.rx.south.buffer[1]",
-        "type": "hex",
+        "property": "ports.rx.east.adjustment.receptionDelta",
+        "type": "unsigned int",
         "address": "globalStateBase+50"
       },
       {
-        "property": "ports.rx.south.buffer[2]",
+        "property": "ports.rx.east.adjustment.receptionDelta[1]",
         "type": "hex",
         "address": "globalStateBase+51"
       },
       {
+        "property": "ports.rx.east.adjustment.estimatedTopCounterOffset",
+        "type": "unsigned",
+        "address": "globalStateBase+52"
+      },
+      {
+        "property": "ports.rx.east.buffer[0]",
+        "type": "hex",
+        "address": "globalStateBase+53"
+      },
+      {
+        "property": "ports.rx.east.buffer[1]",
+        "type": "hex",
+        "address": "globalStateBase+54"
+      },
+      {
+        "property": "ports.rx.east.buffer[2]",
+        "type": "hex",
+        "address": "globalStateBase+55"
+      },
+      {
+        "property": "ports.rx.east.buffer[3]",
+        "type": "hex",
+        "address": "globalStateBase+56"
+      },
+      {
+        "property": "ports.rx.east.buffer.pointer.( - [7:2] | byteNumber [1:0])",
+        "type": "bit",
+        "address": "globalStateBase+57"
+      },
+      {
+        "property": "ports.rx.east.buffer.bitmask",
+        "type": "bit",
+        "address": "globalStateBase+58"
+      },
+      {
+        "property": "ports.rx.east.( - [7:2] | isReceiving [3:0])",
+        "type": "hex",
+        "address": "globalStateBase+59"
+      },
+      {
+        "property": "ports.rx.south.adjustment.receptionOffset",
+        "type": "unsigned int",
+        "address": "globalStateBase+60"
+      },
+      {
+        "property": "ports.rx.south.adjustment.receptionOffset[1]",
+        "type": "hex",
+        "address": "globalStateBase+61"
+      },
+      {
+        "property": "ports.rx.south.adjustment.estimatedCounterTop",
+        "type": "unsigned int",
+        "address": "globalStateBase+62"
+      },
+      {
+        "property": "ports.rx.south.adjustment.estimatedCounterTop",
+        "type": "unsigned int",
+        "address": "globalStateBase+63"
+      },
+      {
+        "property": "ports.rx.south.adjustment.estimatedCounterCenter",
+        "type": "unsigned int",
+        "address": "globalStateBase+64"
+      },
+      {
+        "property": "ports.rx.south.adjustment.estimatedCounterCenter[1]",
+        "type": "hex",
+        "address": "globalStateBase+65"
+      },
+      {
+        "property": "ports.rx.south.adjustment.receptionDelta",
+        "type": "unsigned int",
+        "address": "globalStateBase+66"
+      },
+      {
+        "property": "ports.rx.south.adjustment.receptionDelta[1]",
+        "type": "hex",
+        "address": "globalStateBase+67"
+      },
+      {
+        "property": "ports.rx.south.adjustment.estimatedTopCounterOffset",
+        "type": "unsigned",
+        "address": "globalStateBase+68"
+      },
+      {
+        "property": "ports.rx.south.buffer[0]",
+        "type": "hex",
+        "address": "globalStateBase+69"
+      },
+      {
+        "property": "ports.rx.south.buffer[1]",
+        "type": "hex",
+        "address": "globalStateBase+70"
+      },
+      {
+        "property": "ports.rx.south.buffer[2]",
+        "type": "hex",
+        "address": "globalStateBase+71"
+      },
+      {
         "property": "ports.rx.south.buffer[3]",
         "type": "hex",
-        "address": "globalStateBase+52"
+        "address": "globalStateBase+72"
       },
       {
         "property": "ports.rx.south.buffer.pointer.( - [7:2] | byteNumber [1:0])",
         "type": "bit",
-        "address": "globalStateBase+53"
+        "address": "globalStateBase+73"
       },
       {
         "property": "ports.rx.south.buffer.bitmask",
         "type": "bit",
-        "address": "globalStateBase+54"
+        "address": "globalStateBase+74"
+      },
+      {
+        "property": "ports.rx.south.( - [7:2] | isReceiving [3:0])",
+        "type": "hex",
+        "address": "globalStateBase+75"
       }
     ]
   },
@@ -560,17 +689,7 @@
     /* evaluates to StateType enum names */
     "StateType": 2,
     /* evaluates to NodeType enum Names */
-    "NodeType": 2,
-    /*evaluates to 8bit unsigned base 10 */
-    "unsigned char": 1,
-    /*evaluates to 8bit base 10 */
-    "int": 1,
-    /* evaluates to ascii character */
-    "char": 1,
-    /* evaluates to 0bXXXXXXXX */
-    "bit": 1,
-    /* evaluates to 0xXX */
-    "hex": 1
+    "NodeType": 2
   },
   /* listing of register address labels */
   "labels": {

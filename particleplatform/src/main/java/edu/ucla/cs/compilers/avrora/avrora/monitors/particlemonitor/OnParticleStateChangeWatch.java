@@ -23,7 +23,7 @@ import java.util.TreeMap;
  */
 public class OnParticleStateChangeWatch extends Simulator.Watch.Empty {
 
-    protected final ParticleFlashStateRegisterDetails stateRegister;
+    protected final ParticleFlashStateRegisterDetails registerDescription;
     protected final Simulator simulator;
     protected int[] registerWriteCount;
     private int[] registerChangeCount;
@@ -32,7 +32,7 @@ public class OnParticleStateChangeWatch extends Simulator.Watch.Empty {
     public OnParticleStateChangeWatch(Simulator simulator, ParticleFlashStateRegisterDetails stateRegister,
                                       ParticleLogSink particleStateLogger) {
         this.simulator = simulator;
-        this.stateRegister = stateRegister;
+        this.registerDescription = stateRegister;
         this.particleStateLogger = particleStateLogger;
         AVRProperties p = (AVRProperties) simulator.getMicrocontroller().getProperties();
         int ramSize = p.sram_size + p.ioreg_size + LegacyState.NUM_REGS;
@@ -61,11 +61,12 @@ public class OnParticleStateChangeWatch extends Simulator.Watch.Empty {
 
         String valueString;
         try {
-            valueString = stateRegister.toDetailedType(data_addr, value);
+            valueString = registerDescription.toDetailedType(data_addr, value, (AtmelInterpreter.StateImpl)
+                    state);
         } catch (Exception e) {
-            valueString = Integer.toHexString(value);
+            valueString = "0x" + Integer.toHexString(value);
         }
-        StringBuffer buffer = simulator.getPrinter().getBuffer().append("SRAM[" + stateRegister
+        StringBuffer buffer = simulator.getPrinter().getBuffer().append("SRAM[" + registerDescription
                 .getAddressToRegisterNameMapping().get(data_addr) + "] <- " + valueString);
         simulator.getPrinter().printBuffer(buffer);
         particleStateLogger.log(buffer);
@@ -77,7 +78,7 @@ public class OnParticleStateChangeWatch extends Simulator.Watch.Empty {
         Terminal.nextln();
         TermUtil.printThinSeparator(Terminal.MAXLINE);
 
-        Set<Map.Entry<Integer, String>> addressToRegisterName = stateRegister
+        Set<Map.Entry<Integer, String>> addressToRegisterName = registerDescription
                 .getAddressToRegisterNameMapping().entrySet();
         Map<String, String> registerNames = new TreeMap<>();
         Map<String, String> registerWrites = new HashMap<>();
