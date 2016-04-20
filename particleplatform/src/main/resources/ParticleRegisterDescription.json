@@ -680,6 +680,16 @@
         "property": "ports.rx.south.( - [7:2] | isReceiving [3:0])",
         "type": "hex",
         "address": "globalStateBase+75"
+      },
+      {
+        "property": "periphery.loopCount",
+        "type": "unsigned char",
+        "address": "globalStateBase+76"
+      },
+      {
+        "property": "magicEndByte",
+        "type": "hex",
+        "address": "globalStateBase+77"
       }
     ]
   },
@@ -693,6 +703,6 @@
   },
   /* listing of register address labels */
   "labels": {
-    "globalStateBase": 97
+    "globalStateBase": 96
   }
 }
