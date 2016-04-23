@@ -26,10 +26,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Wrapper for {@link edu.ucla.cs.compilers.avrora.avrora.monitors.ParticlePlatformMonitor.MonitorImpl}
- * instantiation.
- *
- * @author Raoul Rubien on 20.11.2015.
+ * This monitor monitors particle relevant changes such as internal global state and wire states. State
+ * changes are also written to log file.
  */
 public class ParticlePlatformMonitor extends MonitorFactory {
 
@@ -158,8 +156,8 @@ public class ParticlePlatformMonitor extends MonitorFactory {
                         wire.insertProbe(probe);
                     }
                 } else {
-                    printer.println("fatal error: node platform is no instance of " +
-                            ParticlePlatform.class.getName());
+                    printer.println("fatal error: node platform is no instance of " + ParticlePlatform
+                            .class.getName());
                 }
             }
         }
