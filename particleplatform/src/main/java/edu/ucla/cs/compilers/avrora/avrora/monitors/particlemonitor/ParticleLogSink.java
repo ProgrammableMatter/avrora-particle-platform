@@ -114,6 +114,10 @@ public class ParticleLogSink {
         log(line.toString());
     }
 
+    public void log(StringBuilder line) {
+        log(line.toString());
+    }
+
     public void log(String line) {
 
         if (!isLoggingEnabled) {
