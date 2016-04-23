@@ -6,6 +6,8 @@
 package at.tugraz.iti.avrora.particleplatform;
 
 import edu.ucla.cs.compilers.avrora.avrora.Defaults;
+import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticleCallMonitor;
+import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticleInterruptMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticlePlatformMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.ParticleLogSink;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatform;
@@ -26,7 +28,9 @@ public class Main {
     public static void main(String[] args) {
         Defaults.addPlatform("particle", ParticlePlatform.Factory.class);
         Defaults.addSimulation("particle-network", ParticleSimulation.class);
-        Defaults.addMonitor("particle", ParticlePlatformMonitor.class);
+        Defaults.addMonitor("particle-calls", ParticleCallMonitor.class);
+        Defaults.addMonitor("particle-interrupts", ParticleInterruptMonitor.class);
+        Defaults.addMonitor("particle-states", ParticlePlatformMonitor.class);
         edu.ucla.cs.compilers.avrora.avrora.Main.main(args);
     }
 }

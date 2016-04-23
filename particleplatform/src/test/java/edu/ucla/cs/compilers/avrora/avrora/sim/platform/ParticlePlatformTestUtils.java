@@ -7,6 +7,8 @@ package edu.ucla.cs.compilers.avrora.avrora.sim.platform;
 
 import edu.ucla.cs.compilers.avrora.avrora.Defaults;
 import edu.ucla.cs.compilers.avrora.avrora.actions.Action;
+import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticleCallMonitor;
+import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticleInterruptMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.TestableParticlePlatformMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.sim.types.ParticleSimulation;
 import edu.ucla.cs.compilers.avrora.cck.text.StringUtil;
@@ -29,7 +31,9 @@ public class ParticlePlatformTestUtils {
     public static void registerDefaultTestExtensions() {
         Defaults.addPlatform("particle", ParticlePlatform.Factory.class);
         Defaults.addSimulation("particle-network", ParticleSimulation.class);
-        Defaults.addMonitor("particle", TestableParticlePlatformMonitor.class);
+        Defaults.addMonitor("particle-states", TestableParticlePlatformMonitor.class);
+        Defaults.addMonitor("particle-calls", ParticleCallMonitor.class);
+        Defaults.addMonitor("particle-interrupts", ParticleInterruptMonitor.class);
     }
 
     /**
@@ -83,8 +87,10 @@ public class ParticlePlatformTestUtils {
                 "-seconds-precision=11 " +
                 "-action=simulate -simulation=particle-network -rowcount=" + rows + " -columncount=" +
                 columns + " -seconds=" + simulationSeconds + " " +
-                "-report-seconds=true -platform=particle -arch=avr -clockspeed=8000000 -monitors=calls," +
-                "retaddr,particle,interrupts,memory -dump-writes=true -show-interrupts=true " +
+                "-report-seconds=true -platform=particle -arch=avr -clockspeed=8000000 " +
+                "-monitors=particle-calls,stack," +
+                "retaddr,particle-states,particle-interrupts,memory -dump-writes=true -show-interrupts=true" +
+                " " +
                 "-invocations-only=false -low-addresses=true -particle-log-file=true " +
                 "-particle-facets=state,break,wires -input=elf -throughput=true " +
                 ParticlePlatformTestUtils.getFilePath(particleFirmwareFile));
