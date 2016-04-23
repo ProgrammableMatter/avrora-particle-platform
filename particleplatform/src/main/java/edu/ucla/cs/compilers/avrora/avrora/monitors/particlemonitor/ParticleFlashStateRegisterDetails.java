@@ -175,7 +175,7 @@ public class ParticleFlashStateRegisterDetails {
 
             // uint8_t
             case "unsigned":
-                detailedType = "unsigned " + Byte.toUnsignedInt(value);
+                detailedType = "" + Byte.toUnsignedInt(value);
                 break;
 
             case "char":
