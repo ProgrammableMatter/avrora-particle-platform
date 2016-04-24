@@ -19,30 +19,30 @@ import java.util.LinkedList;
  */
 public class ParticleCallMonitor extends CallMonitor {
 
-    public final Option.Bool PARTICLE_LOG_FILE_ENABLE = newOption("particle-log-file", false, "When this " +
+    private final Option.Bool PARTICLE_LOG_FILE_ENABLE = newOption("particle-log-file", false, "When this " +
             "option is " +
             "true, the" + ParticleInterruptMonitor.class.getSimpleName() + " appends logs to a temporary " +
             "file" +
             ". The file location is: " + ParticleLogSink.getInstance().getAbsoluteFileName());
-    SimPrinter printer;
 
     @Override
     public Monitor newMonitor(Simulator s) {
         return new Mon(s, SITE, SHOW, EDGE, ParticleLogSink.getInstance(PARTICLE_LOG_FILE_ENABLE.get()));
     }
 
-    class Mon extends CallMonitor.Mon {
+    private static class Mon extends CallMonitor.Mon {
 
         private final ParticleLogSink logSink;
         private final MCUProperties props;
         private Deque<Integer> stack;
+        private SimPrinter printer;
 
         Mon(Simulator s, Option.Bool site, Option.Bool show, Option.Bool edge, ParticleLogSink logger) {
             super(s, site, show, edge);
             logSink = logger;
             printer = s.getPrinter();
             props = s.getMicrocontroller().getProperties();
-            stack = new LinkedList();
+            stack = new LinkedList<>();
         }
 
         @Override
@@ -57,14 +57,14 @@ public class ParticleCallMonitor extends CallMonitor {
         @Override
         public void fireAfterInterruptReturn(long time, int pc, int retaddr) {
             super.fireAfterInterruptReturn(time, pc, retaddr);
-            StringBuffer line = printer.getBuffer(20);
-            line.append("INT return");
 
             int inum = stack.peek();
             if (inum > 0) {
-                line.append(" [#" + inum + "] (" + props.getInterruptName(inum) + ")");
+                String details = "[#" + inum + "-invoke] <- " +
+                        "(return) //" + props.getInterruptName(inum);
+                StringBuffer line = printer.getBuffer(20).append("INT").append(details);
+                logSink.log(line);
             }
-            logSink.log(line);
             stack.pop();
         }
     }
