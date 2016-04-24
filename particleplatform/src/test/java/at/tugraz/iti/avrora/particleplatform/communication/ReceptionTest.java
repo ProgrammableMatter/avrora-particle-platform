@@ -45,7 +45,7 @@ public class ReceptionTest {
 
         short rows = 1;
         short colummns = 1;
-        double simulationSeconds = 005500E-6; // enough for max discovery loop count
+        double simulationSeconds = 1E-6 * 690;
         Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, rows, colummns,
                 simulationSeconds, firmware, communicationUnitFirmware);
         ParticlePlatformTestUtils.startSimulation(mainOptions, action);
