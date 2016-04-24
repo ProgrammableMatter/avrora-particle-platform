@@ -32,6 +32,8 @@ public class ParticleLogSink {
         try {
             absoluteFileName = System.getProperty("java.io.tmpdir") + "/particle-state.log";
             logFile = new File(absoluteFileName);
+            logFile.delete();
+
             if (!logFile.createNewFile()) {
                 LOGGER.error("failed to create new log file");
             }
