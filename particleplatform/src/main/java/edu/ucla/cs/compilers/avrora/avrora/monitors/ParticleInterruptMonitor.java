@@ -15,7 +15,7 @@ import edu.ucla.cs.compilers.avrora.cck.util.Option;
  */
 public class ParticleInterruptMonitor extends InterruptMonitor {
 
-    public final Option.Bool PARTICLE_LOG_FILE_ENABLE = newOption("particle-log-file", false, "When this " +
+    private final Option.Bool PARTICLE_LOG_FILE_ENABLE = newOption("particle-log-file", false, "When this " +
             "option is " +
             "true, the" + ParticleInterruptMonitor.class.getSimpleName() + " appends logs to a temporary " +
             "file" +
@@ -29,38 +29,50 @@ public class ParticleInterruptMonitor extends InterruptMonitor {
                 ()));
     }
 
-    class Mon extends InterruptMonitor.Mon {
+    private class Mon extends InterruptMonitor.Mon {
 
         Mon(Simulator s, ParticleLogSink logSink) {
             super(s);
             particleLogSink = logSink;
         }
 
-        private void log(String message, int inum) {
-            StringBuffer line = printer.getBuffer(20);
-            line.append("INT " + message);
-            if (inum > 0) {
-                line.append(" [#" + inum + "] (" + props.getInterruptName(inum) + ")");
-            }
+        private void log(String domain, String state, int inum) {
+//            if (inum > 0) {
+            String details = "INT[#" + inum + "-" + domain + "] <- (" + state + ") " +
+                    "//" + props.getInterruptName(inum);
+            StringBuffer line = printer.getBuffer(20).append(details);
             particleLogSink.log(line);
+//            }
         }
 
         @Override
         public void fireBeforeInvoke(State s, int inum) {
             super.fireBeforeInvoke(s, inum);
-            log("invoke", inum);
+            log("invoke", "invoke", inum);
         }
 
         @Override
         public void fireWhenDisabled(State s, int inum) {
             super.fireWhenDisabled(s, inum);
-            log("disabled", inum);
+            log("enable", "disabled", inum);
         }
 
         @Override
         public void fireWhenEnabled(State s, int inum) {
             super.fireWhenEnabled(s, inum);
-            log("enabled", inum);
+            log("enable", "enabled", inum);
+        }
+
+        @Override
+        public void fireWhenPosted(State s, int inum) {
+            super.fireWhenPosted(s, inum);
+            log("post", "posted", inum);
+        }
+
+        @Override
+        public void fireWhenUnposted(State s, int inum) {
+            super.fireWhenUnposted(s, inum);
+            log("post", "unposted", inum);
         }
     }
 }
