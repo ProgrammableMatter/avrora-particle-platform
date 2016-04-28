@@ -448,13 +448,13 @@
       },
       {
         "property": "ports.rx.receptionDelta[1]",
-        "type": "unsigned int",
+        "type": "hex",
         "address": "globalStateBase+29"
       },
 
       {
         "property": "ports.rx.north.adjustment.receptionOffset",
-        "type": "hex",
+        "type": "unsigned int",
         "address": "globalStateBase+30"
       },
       {
@@ -494,12 +494,12 @@
       },
       {
         "property": "ports.rx.north.adjustment.leftOfTop",
-        "type": "signed",
+        "type": "unsigned int",
         "address": "globalStateBase+38"
       },
       {
         "property": "ports.rx.north.adjustment.leftOfTop[1]",
-        "type": "signed",
+        "type": "hex",
         "address": "globalStateBase+39"
       },
       {
@@ -544,47 +544,47 @@
       },
       {
         "property": "ports.rx.east.adjustment.receptionOffset[1]",
-        "type": "unsigned int",
+        "type": "hex",
         "address": "globalStateBase+48"
       },
       {
         "property": "ports.rx.east.adjustment.center",
-        "type": "hex",
+        "type": "unsigned int",
         "address": "globalStateBase+49"
       },
       {
         "property": "ports.rx.east.adjustment.center[1]",
-        "type": "unsigned int",
+        "type": "hex",
         "address": "globalStateBase+50"
       },
       {
         "property": "ports.rx.east.adjustment.leftOfCenter",
-        "type": "hex",
+        "type": "unsigned int",
         "address": "globalStateBase+51"
       },
       {
         "property": "ports.rx.east.adjustment.leftOfCenter[1]",
-        "type": "unsigned int",
+        "type": "hex",
         "address": "globalStateBase+52"
       },
       {
         "property": "ports.rx.east.adjustment.rightOfCenter",
-        "type": "hex",
+        "type": "unsigned int",
         "address": "globalStateBase+53"
       },
       {
         "property": "ports.rx.east.adjustment.rightOfCenter[1]",
-        "type": "unsigned int",
+        "type": "hex",
         "address": "globalStateBase+54"
       },
       {
         "property": "ports.rx.east.adjustment.leftOfTop",
-        "type": "hex",
+        "type": "unsigned int",
         "address": "globalStateBase+55"
       },
       {
         "property": "ports.rx.east.adjustment.leftOfTop[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+56"
       },
       {
@@ -639,7 +639,7 @@
       },
       {
         "property": "ports.rx.south.adjustment.center[1]",
-        "type": "unsigned int",
+        "type": "hex",
         "address": "globalStateBase+67"
       },
       {
@@ -664,12 +664,12 @@
       },
       {
         "property": "ports.rx.south.adjustment.leftOfTop",
-        "type": "unsigned",
+        "type": "unsigned int",
         "address": "globalStateBase+72"
       },
       {
         "property": "ports.rx.south.adjustment.leftOfTop[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+73"
       },
       {
@@ -729,6 +729,6 @@
   },
   /* listing of register address labels */
   "labels": {
-    "globalStateBase": 97
+    "globalStateBase": 96
   }
 }
