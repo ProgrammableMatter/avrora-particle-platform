@@ -211,9 +211,12 @@ public class ParticlePlatformTest {
      * @return the message
      */
     private String rebuildTextFromUdrWrites() {
+
+        System.out.println("foo");
+
         assertEquals("true", mainOptions.getOptionValue("particle-log-file"));
 
-        String fileName = ParticleLogSink.getInstance().getAbsoluteFileName();
+        String fileName = ParticleLogSink.getAbsoluteFileName();
         // to be parsed:
         // 0  0:00:00.00022075371  SRAM[D.out.(D7 | D6 | D5 | D4 | EAST_RX | STH_RX | D1 | D0)] <-
         // (0b00001100)
@@ -235,16 +238,20 @@ public class ParticlePlatformTest {
         Pattern udrPattern = Pattern.compile(udrValueRegexp);
         try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
             String line;
+
             while ((line = br.readLine()) != null) {
                 line = line.trim();
                 if (line.length() <= 0) {
+                    System.out.println("foo");
                     continue;
                 }
+                System.out.println("line ------------" + line);
                 Matcher m = linePattern.matcher(line);
                 if (m.matches()) {
                     String registerName = m.group(4);
                     String registerValue = m.group(5);
-                    if (registerName.equals("UDR")) {
+                    //if (registerName.equals("UDR")) {
+                    if (registerName.equals("char-out")) {
                         Matcher udrMatcher = udrPattern.matcher(registerValue);
                         if (udrMatcher.matches()) {
 

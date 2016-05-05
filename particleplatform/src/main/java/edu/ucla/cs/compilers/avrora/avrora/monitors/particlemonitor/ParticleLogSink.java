@@ -22,15 +22,21 @@ public class ParticleLogSink {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ParticleLogSink.class.getName());
     private static ParticleLogSink Instance;
+    private static String absoluteFileName = "";
+
+    static {
+        absoluteFileName = System.getProperty("java.io.tmpdir") + "/particle-state.log";
+    }
+
     private final Object mutex = new Object();
     private boolean isLoggingEnabled = false;
     private File logFile;
     private FileWriter writer;
-    private String absoluteFileName = "";
 
     private ParticleLogSink() {
         try {
-            absoluteFileName = System.getProperty("java.io.tmpdir") + "/particle-state.log";
+
+            LOGGER.info("constructing particle log sink");
             logFile = new File(absoluteFileName);
             logFile.delete();
 
@@ -112,6 +118,13 @@ public class ParticleLogSink {
         }
     }
 
+    /**
+     * @return the file name including the absolute path
+     */
+    public static String getAbsoluteFileName() {
+        return absoluteFileName;
+    }
+
     public void log(StringBuffer line) {
         log(line.toString());
     }
@@ -136,12 +149,5 @@ public class ParticleLogSink {
                 }
             }
         }
-    }
-
-    /**
-     * @return the file name including the absolute path
-     */
-    public String getAbsoluteFileName() {
-        return absoluteFileName;
     }
 }
