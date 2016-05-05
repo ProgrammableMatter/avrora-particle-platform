@@ -26,6 +26,24 @@ import static junit.framework.TestCase.assertTrue;
  */
 public class ParticlePlatformTestUtils {
 
+    /**
+     * to be parsed: <br/> 0  0:00:00.00022075371  SRAM[D.out.(D7 | D6 | D5 | D4 | EAST_RX | STH_RX | D1 |
+     * D0)] <- (0b00001100) <br/> group 1 ... mcu number<br/> group 2 ... timestamp<br/> group 3 ... domain
+     * (SRAM, WIRE, ...)<br/> group 4 ... register name<br/> group 5 ... register value assigned<br/>
+     */
+    public final static String simulationLogLineRegexp = "^\\s*(\\d+)\\s*(\\d:\\d\\d:\\d\\d.\\d+)\\s*(\\w+)" +
+            "\\[(.+)\\]\\s*<-\\s*(.*)\\s*$";
+
+    /**
+     * to be parsed: ('c') <br/> group 1 ... char value without ('')
+     */
+    public final static String simulationLogUdrValueRegexp = "^\\s*\\('(.*)'\\)\\s*$";
+
+    /**
+     * to be parsed: (0xff)<br/> group 1 ... 0xff without ()
+     */
+    public final static String simulationLogHexByteValueRegexp = "^\\s*\\(0x(.*)\\)\\s*$";
+
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ParticlePlatformTestUtils.class);
 
     public static void registerDefaultTestExtensions() {
