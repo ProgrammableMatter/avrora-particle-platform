@@ -211,41 +211,22 @@ public class ParticlePlatformTest {
      * @return the message
      */
     private String rebuildTextFromUdrWrites() {
-
-        System.out.println("foo");
-
         assertEquals("true", mainOptions.getOptionValue("particle-log-file"));
 
         String fileName = ParticleLogSink.getAbsoluteFileName();
-        // to be parsed:
-        // 0  0:00:00.00022075371  SRAM[D.out.(D7 | D6 | D5 | D4 | EAST_RX | STH_RX | D1 | D0)] <-
-        // (0b00001100)
-        //
-        // regexp:
-        // "(\d{1}+)[ ]+(\d:\d\d:\d\d.\d+)[ ]+(\w+)\[(.+)\] <- \((\w*)\)$
-        //
-        // see: http://www.regexplanet.com/advanced/java/index.html
 
+        Pattern linePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogLineRegexp);
+        Pattern udrPattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogUdrValueRegexp);
         StringBuilder udrMessageBuilder = new StringBuilder();
 
-//        String lineRegexp = "^\\s*(\\d+)\\s*(\\d:\\d\\d:\\d\\d.\\d+)\\s*(\\w+)\\[(.+)\\]\\s*<-\\s*
-// ([^\\s]*)" +
-//                "" + "\\s*$";
-        String lineRegexp = "^\\s*(\\d+)\\s*(\\d:\\d\\d:\\d\\d.\\d+)\\s*(\\w+)\\[(.+)\\]\\s*<-\\s*(.*)\\s*$";
-        String udrValueRegexp = "^\\s*\\('(.*)'\\)\\s*$"; // ('\n') or ('x') x in [.]
-
-        Pattern linePattern = Pattern.compile(lineRegexp);
-        Pattern udrPattern = Pattern.compile(udrValueRegexp);
         try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
             String line;
 
             while ((line = br.readLine()) != null) {
                 line = line.trim();
                 if (line.length() <= 0) {
-                    System.out.println("foo");
                     continue;
                 }
-                System.out.println("line ------------" + line);
                 Matcher m = linePattern.matcher(line);
                 if (m.matches()) {
                     String registerName = m.group(4);
