@@ -11,18 +11,23 @@ import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticleCallMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticleInterruptMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticlePlatformMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.TestableParticlePlatformMonitor;
+import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.ParticleLogSink;
 import edu.ucla.cs.compilers.avrora.avrora.sim.types.ParticleSimulation;
 import edu.ucla.cs.compilers.avrora.cck.text.StringUtil;
 import edu.ucla.cs.compilers.avrora.cck.util.Option;
 import edu.ucla.cs.compilers.avrora.cck.util.Options;
 import edu.ucla.cs.compilers.avrora.cck.util.Util;
+import org.junit.Assert;
 import org.slf4j.Logger;
 
-import java.io.File;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by rubienr on 13.03.16.
@@ -35,7 +40,7 @@ public class ParticlePlatformTestUtils {
      * (SRAM, WIRE, ...)<br/> group 4 ... register name<br/> group 5 ... register value assigned<br/>
      */
     public final static String simulationLogLineRegexp = "^\\s*(\\d+)\\s*(\\d:\\d\\d:\\d\\d.\\d+)\\s*(\\w+)" +
-            "\\[(.+)\\]\\s*<-\\s*(.*)\\s*$";
+            "" + "\\[(.+)\\]\\s*<-\\s*(.*)\\s*$";
 
     /**
      * to be parsed: ('c') <br/> group 1 ... char value without ('')
@@ -192,4 +197,145 @@ public class ParticlePlatformTestUtils {
         atomicId.set(0);
     }
 
+    /**
+     * returns the last write to one transmission or reception byte in buffer
+     *
+     * @param nodeNumber        the node number/id as string
+     * @param receptionBuffer   true for reception, false else
+     * @param cardinalDirection north, east, south, west
+     * @param byteNumber        [0-3]
+     * @return the value last written to the buffer
+     */
+    public static byte getLastXmissionBufferWrite(String nodeNumber, boolean receptionBuffer, String
+            cardinalDirection, int byteNumber) throws Exception {
+
+        String fileName = ParticleLogSink.getAbsoluteFileName();
+
+        Pattern linePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogLineRegexp);
+        Pattern valuePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogHexByteValueRegexp);
+        StringBuilder bufferByte = new StringBuilder();
+
+        StringBuilder registerNameOfInterest = new StringBuilder("globalState.ports.");
+
+        // globalState.ports.rx.north.buffer
+        if (receptionBuffer) {
+            registerNameOfInterest.append("rx.");
+        } else {
+            registerNameOfInterest.append("tx.");
+        }
+        registerNameOfInterest.append(cardinalDirection + ".buffer[");
+        registerNameOfInterest.append(byteNumber + "]");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
+            String line;
+
+            byte lastValue = -1;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.length() <= 0) {
+                    continue;
+                }
+                Matcher m = linePattern.matcher(line);
+                if (m.matches()) {
+
+                    String mcuId = m.group(1);
+                    if (nodeNumber.compareTo(mcuId) == 0) {
+
+                        String registerName = m.group(4);
+                        if (registerName.compareTo(registerNameOfInterest.toString()) == 0) {
+                            Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                            if (valueMatcher.matches()) {
+                                lastValue = (byte) (Integer.parseInt(valueMatcher.group(1), 16) & 0xff);
+                            }
+                        }
+                    }
+                } else {
+                    Assert.assertTrue("line not parse-able: " + line, false);
+                }
+            }
+            br.close();
+            return lastValue;
+        } catch (FileNotFoundException e) {
+            Assert.assertTrue(false);
+            throw e;
+        } catch (IOException e) {
+            Assert.assertTrue(false);
+            throw e;
+        } catch (IllegalStateException e) {
+            Assert.assertTrue(false);
+            throw e;
+        }
+    }
+
+    /**
+     * reverse the byte bits
+     *
+     * @param toBeReversed input byte
+     * @return the reversed bit order of the input
+     */
+    public static byte msb2lsb(byte toBeReversed) {
+        byte reversed = 0;
+        byte mask = 0x1;
+
+        for (int i = 0; i < 7; i++) {
+
+            if ((mask & toBeReversed) != 0) {
+                reversed |= 0x1;
+            }
+
+            reversed <<= 1;
+            mask <<= 1;
+        }
+
+        if ((mask & toBeReversed) != 0) {
+            reversed |= 0x1;
+        }
+        return reversed;
+    }
+
+    /**
+     * Asserts that the last value written to the transmission buffer equals the last value written to the
+     * reception buffer. All 4 buffer bytes are compared.
+     */
+    public static void assertTxBufferEqualsRxBuffer() {
+        byte[] txSouthBuffer = new byte[4];
+        try {
+            // data written to transmission buffer
+            txSouthBuffer[0] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("1", false, "south", 0);
+            txSouthBuffer[1] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("1", false, "south", 1);
+            txSouthBuffer[2] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("1", false, "south", 2);
+            txSouthBuffer[3] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("1", false, "south", 3);
+
+            // data written to reception buffer (in reverse order)
+            byte[] rxNorthBuffer = new byte[4];
+            rxNorthBuffer[0] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", 0);
+            rxNorthBuffer[1] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", 1);
+            rxNorthBuffer[2] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", 2);
+            rxNorthBuffer[3] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", 3);
+
+            assertEquals("buffer [0] vs.[3]: expected [" + Integer.toBinaryString(ParticlePlatformTestUtils
+                    .msb2lsb(txSouthBuffer[0]) & 0xff) + "] but " +
+                    "got " +
+                    "[" + Integer.toBinaryString(rxNorthBuffer[3] & 0xff) + "]", ParticlePlatformTestUtils
+                    .msb2lsb(txSouthBuffer[0]), rxNorthBuffer[3]);
+
+            assertEquals("buffer [1] vs.[2]: expected [" + Integer.toBinaryString(ParticlePlatformTestUtils
+                    .msb2lsb(txSouthBuffer[1]) & 0xff) + "] but " +
+                    "got " +
+                    "[" + Integer.toBinaryString(rxNorthBuffer[2] & 0xff) + "]", ParticlePlatformTestUtils
+                    .msb2lsb(txSouthBuffer[1]), rxNorthBuffer[2]);
+            assertEquals("buffer [2] vs.[1]: expected [" + Integer.toBinaryString(ParticlePlatformTestUtils
+                    .msb2lsb(txSouthBuffer[2]) & 0xff) + "] but " +
+                    "got " +
+                    "[" + Integer.toBinaryString(rxNorthBuffer[1] & 0xff) + "]", ParticlePlatformTestUtils
+                    .msb2lsb(txSouthBuffer[2]), rxNorthBuffer[1]);
+            assertEquals("buffer [3] vs.[0]: expected [" + Integer.toBinaryString(ParticlePlatformTestUtils
+                    .msb2lsb(txSouthBuffer[3]) & 0xff) + "] but " +
+                    "got " +
+                    "[" + Integer.toBinaryString(rxNorthBuffer[0] & 0xff) + "]", ParticlePlatformTestUtils
+                    .msb2lsb(txSouthBuffer[3]), rxNorthBuffer[0]);
+        } catch (Exception e) {
+            assertTrue(false);
+        }
+    }
 }

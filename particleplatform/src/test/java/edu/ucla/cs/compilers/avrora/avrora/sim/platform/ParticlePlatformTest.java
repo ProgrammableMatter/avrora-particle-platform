@@ -14,6 +14,7 @@ import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.TestablePinW
 import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.TestablePinWireProbe.TransitionDetails;
 import edu.ucla.cs.compilers.avrora.cck.util.Option;
 import edu.ucla.cs.compilers.avrora.cck.util.Options;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -62,6 +63,11 @@ public class ParticlePlatformTest {
 
     private static String[] toLines(String text) {
         return text.split("\\\\n");
+    }
+
+    @After
+    public void cleanup() {
+        ParticleLogSink.deleteInstance();
     }
 
     @Test

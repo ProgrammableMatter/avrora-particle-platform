@@ -7,9 +7,11 @@ package edu.ucla.cs.compilers.avrora.avrora.sim.platform;
 
 import edu.ucla.cs.compilers.avrora.avrora.TestLogger;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.TestableParticlePlatformMonitor;
+import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.ParticleLogSink;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.TestableOnParticleStateChangeWatch;
 import edu.ucla.cs.compilers.avrora.cck.util.Option;
 import edu.ucla.cs.compilers.avrora.cck.util.Options;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -44,6 +46,11 @@ public class ParticlePlatformNetworkTest {
         TestableParticlePlatformMonitor.TestableMonitorImpl monitor = TestableParticlePlatformMonitor
                 .getInstance().getImplementation();
         watch = monitor.getWatch();
+    }
+
+    @After
+    public void cleanup() {
+        ParticleLogSink.deleteInstance();
     }
 
     @Test

@@ -377,7 +377,7 @@
         "address": "globalStateBase+14"
       },
       {
-        "property": "ports.tx.north.buffer.bitmask",
+        "property": "ports.tx.north.buffer.pointer.bitmask",
         "type": "bit",
         "address": "globalStateBase+15"
       },
@@ -407,7 +407,7 @@
         "address": "globalStateBase+20"
       },
       {
-        "property": "ports.tx.east.buffer.bitmask",
+        "property": "ports.tx.east.buffer.pointer.bitmask",
         "type": "bit",
         "address": "globalStateBase+21"
       },
@@ -437,7 +437,7 @@
         "address": "globalStateBase+26"
       },
       {
-        "property": "ports.tx.south.buffer.bitmask",
+        "property": "ports.tx.south.buffer.pointer.bitmask",
         "type": "bit",
         "address": "globalStateBase+27"
       },
@@ -528,7 +528,7 @@
         "address": "globalStateBase+44"
       },
       {
-        "property": "ports.rx.north.buffer.bitmask",
+        "property": "ports.rx.north.buffer.pointer.bitmask",
         "type": "bit",
         "address": "globalStateBase+45"
       },
@@ -613,7 +613,7 @@
         "address": "globalStateBase+61"
       },
       {
-        "property": "ports.rx.east.buffer.bitmask",
+        "property": "ports.rx.east.buffer.pointer.bitmask",
         "type": "bit",
         "address": "globalStateBase+62"
       },
@@ -698,7 +698,7 @@
         "address": "globalStateBase+78"
       },
       {
-        "property": "ports.rx.south.buffer.bitmask",
+        "property": "ports.rx.south.buffer.pointer.bitmask",
         "type": "bit",
         "address": "globalStateBase+79"
       },
