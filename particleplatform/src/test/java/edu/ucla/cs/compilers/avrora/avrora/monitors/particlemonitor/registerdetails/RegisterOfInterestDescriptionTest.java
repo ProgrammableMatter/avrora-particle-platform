@@ -53,7 +53,8 @@ public class RegisterOfInterestDescriptionTest {
         assertTrue(registerDescription.getStructs().containsKey("D.in"));
         assertTrue(registerDescription.getStructs().containsKey("D.dir"));
         assertTrue(registerDescription.getStructs().containsKey("D.out"));
-        assertTrue(registerDescription.getStructs().containsKey("UDR"));
+//        assertTrue(registerDescription.getStructs().containsKey("UDR"));
+        assertTrue(registerDescription.getStructs().containsKey("char-out"));
         assertTrue(registerDescription.getStructs().containsKey("GICR"));
         assertTrue(registerDescription.getStructs().containsKey("TCCR1A"));
         assertTrue(registerDescription.getStructs().containsKey("TCCR1B"));

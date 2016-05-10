@@ -47,7 +47,8 @@ public class ParticlePlatformTest {
     public TestLogger testLogger = new TestLogger(LOGGER);
 
     @BeforeClass
-    public static void startSimulation() {
+    public static void startSimulation() throws NoSuchFieldException, IllegalAccessException {
+        ParticlePlatformTestUtils.resetMonitorId();
         LOGGER.debug("BEFORE CLASS: {}", ParticlePlatformTest.class.getSimpleName());
         ParticlePlatformTestUtils.registerDefaultTestExtensions();
         Option.Str action = ParticlePlatformTestUtils.setUpDefaultSimulationOptions(mainOptions);

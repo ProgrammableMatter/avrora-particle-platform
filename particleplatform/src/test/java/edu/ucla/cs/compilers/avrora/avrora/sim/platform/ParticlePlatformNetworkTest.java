@@ -19,26 +19,23 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 public class ParticlePlatformNetworkTest {
-
     static final Options mainOptions = new Options();
     private static final Logger LOGGER = LoggerFactory.getLogger(ParticlePlatformNetworkTest.class);
-    //    private static Map<PinWire, TestablePinWireProbe> probes;
     private static TestableOnParticleStateChangeWatch watch;
-    //    private static int[] registerToWriteCount;
     private static short rows;
     @Rule
     public TestLogger testLogger = new TestLogger(LOGGER);
 
     @BeforeClass
-    public static void startSimulation() {
+    public static void startSimulation() throws NoSuchFieldException, IllegalAccessException {
+        ParticlePlatformTestUtils.resetMonitorId();
         LOGGER.debug("BEFORE CLASS: {}", ParticlePlatformNetworkTest.class.getSimpleName());
         ParticlePlatformTestUtils.registerDefaultTestExtensions();
-        String firmware = System.getProperty("user.home") + "/" +
-                ".CLion2016.1/system/cmake/generated/c14d54a/c14d54a/Debug/particle-simulation/main" +
+        String firmware = System.getProperty("user.home") + "/" + ".CLion2016" +
+                ".1/system/cmake/generated/avr-c14d54a/c14d54a/Debug/particle-simulation/main" +
                 "/ParticleSimulation.elf";
         rows = 2;
         short colummns = 2;
-//        double simulationSeconds = 350E-6;
         double simulationSeconds = 8000E-6;
         Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, rows, colummns,
                 simulationSeconds, firmware, null);
@@ -46,9 +43,7 @@ public class ParticlePlatformNetworkTest {
 
         TestableParticlePlatformMonitor.TestableMonitorImpl monitor = TestableParticlePlatformMonitor
                 .getInstance().getImplementation();
-//        probes = monitor.getProbes();
         watch = monitor.getWatch();
-//        registerToWriteCount = watch.getRegisterWriteCount();
     }
 
     @Test

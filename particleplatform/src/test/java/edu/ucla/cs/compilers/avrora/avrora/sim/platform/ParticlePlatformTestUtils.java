@@ -9,6 +9,7 @@ import edu.ucla.cs.compilers.avrora.avrora.Defaults;
 import edu.ucla.cs.compilers.avrora.avrora.actions.Action;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticleCallMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticleInterruptMonitor;
+import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticlePlatformMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.TestableParticlePlatformMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.sim.types.ParticleSimulation;
 import edu.ucla.cs.compilers.avrora.cck.text.StringUtil;
@@ -18,6 +19,8 @@ import edu.ucla.cs.compilers.avrora.cck.util.Util;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static junit.framework.TestCase.assertTrue;
 
@@ -174,6 +177,19 @@ public class ParticlePlatformTestUtils {
         } catch (Exception e) {
             assertTrue("failed to get arguments", false);
         }
+    }
+
+    /**
+     * workaround that sets resets the {@link ParticlePlatformMonitor.MonitorImpl#monitorIdCounter)} id to 0
+     *
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
+    public static void resetMonitorId() throws NoSuchFieldException, IllegalAccessException {
+        Field field = ParticlePlatformMonitor.MonitorImpl.class.getDeclaredField("monitorIdCounter");
+        field.setAccessible(true);
+        AtomicInteger atomicId = (AtomicInteger) field.get(null);//, new AtomicInteger(0));
+        atomicId.set(0);
     }
 
 }

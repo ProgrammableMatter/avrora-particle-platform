@@ -533,7 +533,7 @@
         "address": "globalStateBase+45"
       },
       {
-        "property": "ports.rx.north.( - [7:2] | isReceiving [3:0])",
+        "property": "ports.rx.north.( - [7:5] | isOverflowed [4]  | isReceiving [3:0])",
         "type": "hex",
         "address": "globalStateBase+46"
       },

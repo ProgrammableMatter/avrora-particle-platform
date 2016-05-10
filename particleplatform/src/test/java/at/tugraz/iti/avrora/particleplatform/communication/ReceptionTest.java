@@ -70,8 +70,8 @@ public class ReceptionTest {
      * @param byteNumber        [0-3]
      * @return the value last written to the buffer
      */
-    private byte getLastXmissionBufferWrite(boolean receptionBuffer, String cardinalDirection, int
-            byteNumber) throws Exception {
+    private byte getLastXmissionBufferWrite(String nodeNumber, boolean receptionBuffer, String
+            cardinalDirection, int byteNumber) throws Exception {
         assertEquals("true", mainOptions.getOptionValue("particle-log-file"));
 
         String fileName = ParticleLogSink.getAbsoluteFileName();
@@ -94,7 +94,7 @@ public class ReceptionTest {
         try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
             String line;
 
-            byte lastValue = 0;
+            byte lastValue = -1;
             while ((line = br.readLine()) != null) {
                 line = line.trim();
                 if (line.length() <= 0) {
@@ -102,18 +102,23 @@ public class ReceptionTest {
                 }
                 Matcher m = linePattern.matcher(line);
                 if (m.matches()) {
-                    String registerName = m.group(4);
 
-                    if (registerName.compareTo(registerNameOfInterest.toString()) == 0) {
-                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
-                        if (valueMatcher.matches()) {
-                            lastValue = (byte) (Integer.parseInt(valueMatcher.group(1), 16) & 0xff);
+                    String mcuId = m.group(1);
+                    if (nodeNumber.compareTo(mcuId) == 0) {
+
+                        String registerName = m.group(4);
+                        if (registerName.compareTo(registerNameOfInterest.toString()) == 0) {
+                            Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                            if (valueMatcher.matches()) {
+                                lastValue = (byte) (Integer.parseInt(valueMatcher.group(1), 16) & 0xff);
+                            }
                         }
                     }
                 } else {
                     assertTrue("line not parse-able: " + line, false);
                 }
             }
+            br.close();
             return lastValue;
         } catch (FileNotFoundException e) {
             assertTrue(false);
@@ -132,29 +137,33 @@ public class ReceptionTest {
 
         // data written to transmission buffer
         byte[] txSouthBuffer = new byte[4];
-        txSouthBuffer[0] = getLastXmissionBufferWrite(false, "south", 0);
-        txSouthBuffer[1] = getLastXmissionBufferWrite(false, "south", 1);
-        txSouthBuffer[2] = getLastXmissionBufferWrite(false, "south", 2);
-        txSouthBuffer[3] = getLastXmissionBufferWrite(false, "south", 3);
+        txSouthBuffer[0] = getLastXmissionBufferWrite("1", false, "south", 0);
+        txSouthBuffer[1] = getLastXmissionBufferWrite("1", false, "south", 1);
+        txSouthBuffer[2] = getLastXmissionBufferWrite("1", false, "south", 2);
+        txSouthBuffer[3] = getLastXmissionBufferWrite("1", false, "south", 3);
 
         // data written to reception buffer (in reverse order)
         byte[] rxNorthBuffer = new byte[4];
-        rxNorthBuffer[0] = getLastXmissionBufferWrite(true, "north", 0);
-        rxNorthBuffer[1] = getLastXmissionBufferWrite(true, "north", 1);
-        rxNorthBuffer[2] = getLastXmissionBufferWrite(true, "north", 2);
-        rxNorthBuffer[3] = getLastXmissionBufferWrite(true, "north", 3);
+        rxNorthBuffer[0] = getLastXmissionBufferWrite("0", true, "north", 0);
+        rxNorthBuffer[1] = getLastXmissionBufferWrite("0", true, "north", 1);
+        rxNorthBuffer[2] = getLastXmissionBufferWrite("0", true, "north", 2);
+        rxNorthBuffer[3] = getLastXmissionBufferWrite("0", true, "north", 3);
 
-        assertEquals("expected [" + Integer.toBinaryString(msb2lsb(txSouthBuffer[0]) & 0xff) + "] but got " +
+        assertEquals("expected [" + Integer.toBinaryString(msb2lsb(txSouthBuffer[0]) & 0xff) + "] but " +
+                        "got " +
                 "[" + Integer.toBinaryString(rxNorthBuffer[3] & 0xff) + "]", msb2lsb(txSouthBuffer[0]),
                 rxNorthBuffer[3]);
 
-        assertEquals("expected [" + Integer.toBinaryString(msb2lsb(txSouthBuffer[1]) & 0xff) + "] but got " +
+        assertEquals("expected [" + Integer.toBinaryString(msb2lsb(txSouthBuffer[1]) & 0xff) + "] but " +
+                        "got " +
                 "[" + Integer.toBinaryString(rxNorthBuffer[2] & 0xff) + "]", msb2lsb(txSouthBuffer[1]),
                 rxNorthBuffer[2]);
-        assertEquals("expected [" + Integer.toBinaryString(msb2lsb(txSouthBuffer[2]) & 0xff) + "] but got " +
+        assertEquals("expected [" + Integer.toBinaryString(msb2lsb(txSouthBuffer[2]) & 0xff) + "] but " +
+                        "got " +
                 "[" + Integer.toBinaryString(rxNorthBuffer[1] & 0xff) + "]", msb2lsb(txSouthBuffer[2]),
                 rxNorthBuffer[1]);
-        assertEquals("expected [" + Integer.toBinaryString(msb2lsb(txSouthBuffer[3]) & 0xff) + "] but got " +
+        assertEquals("expected [" + Integer.toBinaryString(msb2lsb(txSouthBuffer[3]) & 0xff) + "] but " +
+                        "got " +
                 "[" + Integer.toBinaryString(rxNorthBuffer[0] & 0xff) + "]", msb2lsb(txSouthBuffer[3]),
                 rxNorthBuffer[0]);
     }
