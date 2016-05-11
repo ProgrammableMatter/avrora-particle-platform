@@ -212,11 +212,11 @@ public class ParticlePlatformMonitor extends MonitorFactory {
             if (ParticleLogSink.isInstanceAlive()) {
                 TermUtil.printSeparator("Particle state log");
                 TermUtil.printThinSeparator();
-                Terminal.print("log file written to [" + particleStateLogger.getAbsoluteFileName() + "]");
+                Terminal.print("log file written to [" + ParticleLogSink.getAbsoluteFileName() + "]");
                 Terminal.nextln();
                 Terminal.nextln();
 
-                ParticleLogSink.deleteInstance();
+//                ParticleLogSink.deleteInstance();
                 particleStateLogger = null;
             }
 
