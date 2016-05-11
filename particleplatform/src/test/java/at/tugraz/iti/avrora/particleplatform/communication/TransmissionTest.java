@@ -54,7 +54,7 @@ public class TransmissionTest {
     @AfterClass
     public static void cleanup() {
         ParticleLogSink.deleteInstance();
-        ParticlePlatformNetworkConnector.close();
+        ParticlePlatformNetworkConnector.reset();
     }
 
     @Test

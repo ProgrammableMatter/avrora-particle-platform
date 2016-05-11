@@ -31,7 +31,7 @@ public class SmaWireLogicTest {
     @AfterClass
     public static void cleanup() {
         ParticleLogSink.deleteInstance();
-        ParticlePlatformNetworkConnector.close();
+        ParticlePlatformNetworkConnector.reset();
     }
 
     @Before
