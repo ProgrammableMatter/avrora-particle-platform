@@ -11,7 +11,7 @@ import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.ParticleLogS
 import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.TestableOnParticleStateChangeWatch;
 import edu.ucla.cs.compilers.avrora.cck.util.Option;
 import edu.ucla.cs.compilers.avrora.cck.util.Options;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,6 +32,10 @@ public class ParticlePlatformNetworkTest {
     public static void startSimulation() throws NoSuchFieldException, IllegalAccessException {
         ParticlePlatformTestUtils.resetMonitorId();
         LOGGER.debug("BEFORE CLASS: {}", ParticlePlatformNetworkTest.class.getSimpleName());
+        ParticleLogSink.deleteInstance();
+        ParticleLogSink.getInstance(true).log("   0  0:00:00.00000000000  " +
+                ParticlePlatformNetworkConnectorTest.class.getSimpleName() + "[BeforeClass] <- (TEST)");
+
         ParticlePlatformTestUtils.registerDefaultTestExtensions();
         String firmware = System.getProperty("user.home") + "/" + ".CLion2016" +
                 ".1/system/cmake/generated/avr-c14d54a/c14d54a/Debug/particle-simulation/main" +
@@ -48,9 +52,10 @@ public class ParticlePlatformNetworkTest {
         watch = monitor.getWatch();
     }
 
-    @After
-    public void cleanup() {
+    @AfterClass
+    public static void cleanup() {
         ParticleLogSink.deleteInstance();
+        ParticlePlatformNetworkConnector.close();
     }
 
     @Test

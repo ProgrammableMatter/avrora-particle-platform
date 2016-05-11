@@ -6,6 +6,8 @@
 package edu.ucla.cs.compilers.avrora.avrora.sim.platform;
 
 import edu.ucla.cs.compilers.avrora.avrora.TestLogger;
+import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.ParticleLogSink;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,6 +29,15 @@ public class ParticlePlatformNetworkConnectorTest {
     @BeforeClass
     public static void startSimulation() {
         LOGGER.debug("BEFORE CLASS: {}", ParticlePlatformNetworkConnectorTest.class.getSimpleName());
+        ParticleLogSink.deleteInstance();
+        ParticleLogSink.getInstance(true).log("   0  0:00:00.00000000000  " + ParticlePlatformNetworkTest
+                .class.getSimpleName() + "[BeforeClass] <- (TEST)");
+    }
+
+    @AfterClass
+    public static void cleanup() {
+        ParticleLogSink.deleteInstance();
+        ParticlePlatformNetworkConnector.close();
     }
 
     @Test

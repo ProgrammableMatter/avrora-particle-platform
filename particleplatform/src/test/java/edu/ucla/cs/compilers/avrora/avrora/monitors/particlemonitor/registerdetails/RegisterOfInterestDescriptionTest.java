@@ -5,10 +5,18 @@
 
 package edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.registerdetails;
 
+import edu.ucla.cs.compilers.avrora.avrora.TestLogger;
+import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.ParticleLogSink;
+import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformNetworkConnector;
+import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformTest;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformTestUtils;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.AfterClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
@@ -19,6 +27,16 @@ import static org.junit.Assert.assertTrue;
  * Created by rubienr on 24.03.16.
  */
 public class RegisterOfInterestDescriptionTest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ParticlePlatformTest.class);
+    @Rule
+    public TestLogger testLogger = new TestLogger(LOGGER);
+
+    @AfterClass
+    public static void cleanup() {
+        ParticleLogSink.deleteInstance();
+        ParticlePlatformNetworkConnector.close();
+    }
 
     @Test
     public void test_readJson_expect_mapAbleWithoutErrors() {

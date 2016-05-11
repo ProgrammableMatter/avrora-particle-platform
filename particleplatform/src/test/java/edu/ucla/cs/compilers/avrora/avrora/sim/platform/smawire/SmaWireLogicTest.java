@@ -1,10 +1,9 @@
 package edu.ucla.cs.compilers.avrora.avrora.sim.platform.smawire;
 
 import edu.ucla.cs.compilers.avrora.avrora.TestLogger;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.ParticleLogSink;
+import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformNetworkConnector;
+import org.junit.*;
 import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +23,15 @@ public class SmaWireLogicTest {
     @BeforeClass
     public static void startSimulation() {
         LOGGER.debug("BEFORE CLASS: {}", SmaWireLogicTest.class.getSimpleName());
+        ParticleLogSink.deleteInstance();
+        ParticleLogSink.getInstance(true).log("   0  0:00:00.00000000000  " + SmaWireLogic.class
+                .getSimpleName() + "[BeforeClass] <- (TEST)");
+    }
+
+    @AfterClass
+    public static void cleanup() {
+        ParticleLogSink.deleteInstance();
+        ParticlePlatformNetworkConnector.close();
     }
 
     @Before

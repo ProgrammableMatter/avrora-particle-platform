@@ -14,7 +14,7 @@ import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.TestablePinW
 import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.TestablePinWireProbe.TransitionDetails;
 import edu.ucla.cs.compilers.avrora.cck.util.Option;
 import edu.ucla.cs.compilers.avrora.cck.util.Options;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -51,6 +51,9 @@ public class ParticlePlatformTest {
     public static void startSimulation() throws NoSuchFieldException, IllegalAccessException {
         ParticlePlatformTestUtils.resetMonitorId();
         LOGGER.debug("BEFORE CLASS: {}", ParticlePlatformTest.class.getSimpleName());
+        ParticleLogSink.deleteInstance();
+        ParticleLogSink.getInstance(true).log("   0  0:00:00.00000000000  " + ParticlePlatformTest.class
+                .getSimpleName() + "[BeforeClass] <- (TEST)");
         ParticlePlatformTestUtils.registerDefaultTestExtensions();
         Option.Str action = ParticlePlatformTestUtils.setUpDefaultSimulationOptions(mainOptions);
         ParticlePlatformTestUtils.startSimulation(mainOptions, action);
@@ -65,9 +68,10 @@ public class ParticlePlatformTest {
         return text.split("\\\\n");
     }
 
-    @After
-    public void cleanup() {
+    @AfterClass
+    public static void cleanup() {
         ParticleLogSink.deleteInstance();
+        ParticlePlatformNetworkConnector.close();
     }
 
     @Test
