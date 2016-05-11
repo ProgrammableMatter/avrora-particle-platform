@@ -41,28 +41,28 @@ public class SmaWireLogicTest {
     }
 
     @Test
-    public void evaluate_txHigh_rxMosOff_expectRxHigh() {
+    public void evaluate_txHigh_rxMosfetOff_expectRxHigh() {
         logic.setTxSignal(true); // tx = high, after passing IC3A tx is inverted
         logic.setRxSwitchSignal(true); // disable IC2B mosfet
         assertEquals(false, state.isRx()); // expect GND
     }
 
     @Test
-    public void evaluate_txHigh_rxMosOn_expectRxHigh() {
+    public void evaluate_txHigh_rxMosfetOn_expectRxHigh() {
         logic.setTxSignal(true); // tx = high, after passing IC3A tx is inverted
         logic.setRxSwitchSignal(false); // enable rx mosfet
         assertEquals(true, state.isRx()); // expect tx to be overridden with VCC
     }
 
     @Test
-    public void evaluate_txLow_rxMosOff_expectRxLow() {
+    public void evaluate_txLow_rxMosfetOff_expectRxLow() {
         logic.setTxSignal(false); // tx = low, after passing IC2A tx is inverted
         logic.setRxSwitchSignal(true); // disable rx mosfet
         assertEquals(true, state.isRx()); // expect VCC
     }
 
     @Test
-    public void evaluate_txLow_rxMosOn_expectRxHigh() {
+    public void evaluate_txLow_rxMosfetOn_expectRxHigh() {
         logic.setTxSignal(false); // tx = low, after passing IC3A tx is inverted
         logic.setRxSwitchSignal(false); // enable rx mosfet
         assertEquals(true, state.isRx()); // expect tx to be overridden with VCC

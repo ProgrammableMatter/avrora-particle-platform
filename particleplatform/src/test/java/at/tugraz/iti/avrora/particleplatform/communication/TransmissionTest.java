@@ -44,7 +44,7 @@ public class TransmissionTest {
 
         short rows = 1;
         short colummns = 1;
-        double simulationSeconds = 1E-6 * 690 * 1.5 * 4;
+        double simulationSeconds = 1E-6 * 690 * 1.5 * 4 * 2;
         Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, rows, colummns,
                 simulationSeconds, particleFirmware, communicationUnitFirmware);
         ParticlePlatformTestUtils.resetMonitorId();
@@ -60,5 +60,11 @@ public class TransmissionTest {
     @Test
     public void test_simulate_1x1_network_with_tx_rx_nodes() throws Exception {
         ParticlePlatformTestUtils.assertTxBufferEqualsRxBuffer();
+    }
+
+    @Test
+    public void testMagicByte() {
+        ParticlePlatformTestUtils.testMagicByte("0");
+        ParticlePlatformTestUtils.testMagicByte("1");
     }
 }

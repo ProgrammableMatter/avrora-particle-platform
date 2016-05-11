@@ -73,4 +73,12 @@ public class ParticlePlatformNetworkTest {
             }
         }
     }
+
+    @Test
+    public void testMagicByte() {
+        ParticlePlatformTestUtils.testMagicByte("0");
+        ParticlePlatformTestUtils.testMagicByte("1");
+        ParticlePlatformTestUtils.testMagicByte("2");
+        ParticlePlatformTestUtils.testMagicByte("3");
+    }
 }
