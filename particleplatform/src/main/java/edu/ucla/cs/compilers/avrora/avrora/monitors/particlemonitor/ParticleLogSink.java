@@ -11,6 +11,12 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.ClosedChannelException;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.nio.channels.OverlappingFileLockException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Class that accepts logs that are written to {@link #logFile} for external analysis of monitoring results or
@@ -20,6 +26,7 @@ import java.io.IOException;
  */
 public class ParticleLogSink {
 
+    private static final AtomicInteger instanceCounter = new AtomicInteger(0);
     private static final Logger LOGGER = LoggerFactory.getLogger(ParticleLogSink.class.getName());
     private static ParticleLogSink Instance;
     private static String absoluteFileName = "";
@@ -29,6 +36,7 @@ public class ParticleLogSink {
     }
 
     private final Object mutex = new Object();
+    private FileLock lock = null;
     private boolean isLoggingEnabled = false;
     private File logFile;
     private FileWriter writer;
@@ -38,7 +46,21 @@ public class ParticleLogSink {
 
             LOGGER.info("constructing particle log sink");
             logFile = new File(absoluteFileName);
-            logFile.delete();
+            FileChannel channel = new RandomAccessFile(logFile, "rw").getChannel();
+
+            try {
+                lock = channel.tryLock();
+            } catch (ClosedChannelException cce) {
+                LOGGER.error("failed to lock log file due to channel exception", cce);
+            } catch (OverlappingFileLockException ofe) {
+                LOGGER.error("failed to lock log file due to overlapping locks", ofe);
+            } catch (IOException ioe) {
+                LOGGER.error("failed to lock log file", ioe);
+            }
+
+            if (!logFile.delete()) {
+                LOGGER.error("failed to delete log file");
+            }
 
             if (!logFile.createNewFile()) {
                 LOGGER.error("failed to create new log file");
@@ -53,6 +75,8 @@ public class ParticleLogSink {
             }
             LOGGER.error("failed to create log file", ioe);
         }
+        LOGGER.debug("created {} instance [{}]", ParticleLogSink.class.getSimpleName(), instanceCounter
+                .incrementAndGet());
     }
 
     /**
@@ -68,9 +92,9 @@ public class ParticleLogSink {
      */
     public static ParticleLogSink getInstance(boolean isParticleLogFileEnabled) {
 
-        if (Instance == null) {
+        if (!isInstanceAlive()) {
             synchronized (LOGGER) {
-                if (Instance == null) {
+                if (!isInstanceAlive()) {
                     Instance = new ParticleLogSink();
                 }
             }
@@ -85,7 +109,7 @@ public class ParticleLogSink {
      * @return see {@link #getInstance(boolean)}
      */
     public static ParticleLogSink getInstance() {
-        if (Instance != null) {
+        if (isInstanceAlive()) {
             return getInstance(Instance.isLoggingEnabled);
         } else {
             return getInstance(true);
@@ -97,9 +121,20 @@ public class ParticleLogSink {
      */
     public static void deleteInstance() {
 
-        if (Instance != null) {
+        if (isInstanceAlive()) {
             synchronized (LOGGER) {
-                if (Instance != null) {
+                if (isInstanceAlive()) {
+
+                    if (null != Instance.lock) {
+                        try {
+                            Instance.lock.release();
+                        } catch (ClosedChannelException cce) {
+                            LOGGER.error("failed to release file lock due to closed channel exception", cce);
+                        } catch (IOException ioe) {
+                            LOGGER.error("failed to release file lock", ioe);
+                        }
+                        Instance.lock = null;
+                    }
                     try {
                         if (Instance.writer != null) {
                             Instance.writer.flush();
@@ -115,12 +150,15 @@ public class ParticleLogSink {
                     Instance = null;
                 }
             }
+            LOGGER.debug("deleted {} instance [{}] ", ParticleLogSink.class.getSimpleName(),
+                    instanceCounter.getAndDecrement());
         }
     }
 
     /**
      * @return the file name including the absolute path
      */
+
     public static String getAbsoluteFileName() {
         return absoluteFileName;
     }
