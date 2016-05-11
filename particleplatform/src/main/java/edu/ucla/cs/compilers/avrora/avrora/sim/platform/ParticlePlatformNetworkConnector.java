@@ -70,6 +70,15 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
     }
 
     /**
+     * Resets the internal state to defaul
+     */
+    public static void close() {
+        INSTANCE.particlePlatforms.clear();
+        INSTANCE.maxNetworkColumns = 0;
+        INSTANCE.maxNetworkRows = 0;
+    }
+
+    /**
      * Stores a particle platform reference for later connection initialization.
      *
      * @param particle the reference to store
