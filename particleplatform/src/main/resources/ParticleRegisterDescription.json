@@ -309,6 +309,22 @@
         "address": 95
       }
     ],
+    /* status register */
+    "SPH": [
+      {
+        "property": "(- | - | - | - | - | SP10 | SP9 | SP8)",
+        "type": "hex",
+        "address": 94
+      }
+    ],
+    /* status register */
+    "SPL": [
+      {
+        "property": "(SP7 | SP6 | SP5 |SP4 | SP3 | SP2 | SP1 | SP0)",
+        "type": "hex",
+        "address": 93
+      }
+    ],
     /* global status struct*/
     "globalState": [
       {
@@ -416,7 +432,6 @@
         "type": "hex",
         "address": "globalStateBase+22"
       },
-
       {
         "property": "ports.tx.east.buffer[4]",
         "type": "hex",
@@ -497,7 +512,6 @@
         "type": "hex",
         "address": "globalStateBase+38"
       },
-
       {
         "property": "ports.rx.north.adjustment.receptionOffset",
         "type": "unsigned int",
