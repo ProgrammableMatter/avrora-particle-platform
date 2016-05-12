@@ -20,11 +20,18 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
+
 public class ParticlePlatformNetworkTest {
     static final Options mainOptions = new Options();
     private static final Logger LOGGER = LoggerFactory.getLogger(ParticlePlatformNetworkTest.class);
     private static TestableOnParticleStateChangeWatch watch;
     private static short rows;
+
+    static {
+        rows = 2;
+    }
+
     @Rule
     public TestLogger testLogger = new TestLogger(LOGGER);
 
@@ -40,8 +47,12 @@ public class ParticlePlatformNetworkTest {
         String firmware = System.getProperty("user.home") + "/" + ".CLion2016" +
                 ".1/system/cmake/generated/avr-c14d54a/c14d54a/Debug/particle-simulation/main" +
                 "/ParticleSimulation.elf";
-        rows = 2;
+
         short colummns = 2;
+        assertTrue(false);
+
+        rows = 1;
+        colummns = 1;
         double simulationSeconds = 8000E-6;
         Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, rows, colummns,
                 simulationSeconds, firmware, null);
@@ -64,12 +75,14 @@ public class ParticlePlatformNetworkTest {
                 .getRegisterOfInterestWriteListing();
 
         for (TestableOnParticleStateChangeWatch.NameValueGlue nameValueGlue : list) {
-            if (nameValueGlue.getName().equals("globalState.state") || nameValueGlue.getName().equals
-                    ("globalState.type")) {
+            if ((nameValueGlue.getName().compareTo("globalState.node.state") == 0) || (nameValueGlue
+                    .getName().compareTo("globalState.node.type") == 0)) {
 
                 PlatformAddress address = ParticlePlatformNetworkConnector.linearToAddressMappingImpl
                         (nameValueGlue.getPlatformId(), rows);
-                System.out.println("(" + address.getRow() + "," + address.getColumn() + ") " + nameValueGlue);
+//                System.out.println("(" + address.getRow() + "," + address.getColumn() + ") " +
+// nameValueGlue);
+                assertTrue(false);
             }
         }
     }
