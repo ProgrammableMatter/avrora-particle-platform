@@ -19,15 +19,21 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.*;
+
+import static junit.framework.TestCase.assertFalse;
+
 public class TransmissionTest {
 
     static final Options mainOptions = new Options();
+    static final ByteArrayOutputStream systemOutBuffer = new ByteArrayOutputStream();
     private static final Logger LOGGER = LoggerFactory.getLogger(ParticlePlatformTest.class);
     @Rule
     public TestLogger testLogger = new TestLogger(LOGGER);
 
     @BeforeClass
-    public static void startSimulation() throws NoSuchFieldException, IllegalAccessException {
+    public static void startSimulation() throws NoSuchFieldException, IllegalAccessException, IOException {
+        System.setOut(new PrintStream(systemOutBuffer));
         LOGGER.debug("BEFORE CLASS: {}", TransmissionTest.class.getSimpleName());
         ParticleLogSink.deleteInstance();
         ParticleLogSink.getInstance(true).log("   0  0:00:00.00000000000  " + TransmissionTest.class
@@ -49,6 +55,9 @@ public class TransmissionTest {
                 simulationSeconds, particleFirmware, communicationUnitFirmware);
         ParticlePlatformTestUtils.resetMonitorId();
         ParticlePlatformTestUtils.startSimulation(mainOptions, action);
+
+        System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
+        systemOutBuffer.writeTo(System.out);
     }
 
     @AfterClass
@@ -67,4 +76,17 @@ public class TransmissionTest {
         ParticlePlatformTestUtils.testMagicByte("0");
         ParticlePlatformTestUtils.testMagicByte("1");
     }
+
+    /**
+     * In caese interrupts are not registered correctly the MCU jums to reset. In that case main is called and
+     * the recurn on stack is overwritten which results in "Instruction at xxx destroyed return address on
+     * stack address yyy"
+     */
+    @Test
+    public void testNoDestroyedReturnStackAddress() {
+        assertFalse("found erroneous keyword [destroyed] in output", systemOutBuffer.toString().contains
+                ("destroyed"));
+    }
+
+
 }

@@ -18,21 +18,22 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.*;
+
+import static junit.framework.TestCase.assertFalse;
+
 public class ReceptionTest {
 
     static final Options mainOptions = new Options();
+    static final ByteArrayOutputStream systemOutBuffer = new ByteArrayOutputStream();
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceptionTest.class);
     @Rule
     public TestLogger testLogger = new TestLogger(LOGGER);
 
-//    private static TestableParticlePlatformMonitor.TestableMonitorImpl monitor;
-//    private static Map<PinWire, TestablePinWireProbe> probes;
-//    private static TestableOnParticleStateChangeWatch watch;
-//    private static int[] registerToWriteCount;
-//    private static short rows;
-
     @BeforeClass
-    public static void startSimulation() throws NoSuchFieldException, IllegalAccessException {
+    public static void startSimulation() throws NoSuchFieldException, IllegalAccessException, IOException {
+        System.setOut(new PrintStream(systemOutBuffer));
+
         LOGGER.debug("BEFORE CLASS: {}", ReceptionTest.class.getSimpleName());
         ParticleLogSink.deleteInstance();
         ParticleLogSink.getInstance(true).log("   0  0:00:00.00000000000  " + TransmissionTest.class
@@ -53,6 +54,9 @@ public class ReceptionTest {
                 simulationSeconds, firmware, communicationUnitFirmware);
         ParticlePlatformTestUtils.resetMonitorId();
         ParticlePlatformTestUtils.startSimulation(mainOptions, action);
+
+        System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
+        systemOutBuffer.writeTo(System.out);
     }
 
     @AfterClass
@@ -70,5 +74,11 @@ public class ReceptionTest {
     public void testMagicByte() {
         ParticlePlatformTestUtils.testMagicByte("0");
         ParticlePlatformTestUtils.testMagicByte("1");
+    }
+
+    @Test
+    public void testNoDestroyedReturnStackAddress() {
+        assertFalse("found erroneous keyword [destroyed] in output", systemOutBuffer.toString().contains
+                ("destroyed"));
     }
 }

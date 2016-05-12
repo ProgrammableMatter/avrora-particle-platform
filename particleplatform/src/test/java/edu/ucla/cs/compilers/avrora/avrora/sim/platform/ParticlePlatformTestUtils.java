@@ -274,10 +274,10 @@ public class ParticlePlatformTestUtils {
 
         String registerNameOfInterest = new String("globalState.magicEndByte");
 
+        byte lastValue = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
             String line;
 
-            byte lastValue = 0;
             while ((line = br.readLine()) != null) {
                 line = line.trim();
                 if (line.length() <= 0) {
@@ -305,8 +305,6 @@ public class ParticlePlatformTestUtils {
                     Assert.assertTrue("line not parse-able: " + line, false);
                 }
             }
-            br.close();
-            return lastValue;
         } catch (FileNotFoundException e) {
             Assert.assertTrue(false);
         } catch (IOException e) {
@@ -314,7 +312,7 @@ public class ParticlePlatformTestUtils {
         } catch (IllegalStateException e) {
             Assert.assertTrue(false);
         }
-        return 0;
+        return lastValue;
     }
 
     /**
@@ -392,6 +390,7 @@ public class ParticlePlatformTestUtils {
     }
 
     public static void testMagicByte(String nodeId) {
-        assertEquals(0xaa, ParticlePlatformTestUtils.getAndAssertOneAndOnlyMagicByteWrite(nodeId) & 0xff);
+        assertEquals((byte) (0xaa & 0xff), (byte) (ParticlePlatformTestUtils
+                .getAndAssertOneAndOnlyMagicByteWrite(nodeId) & 0xff));
     }
 }

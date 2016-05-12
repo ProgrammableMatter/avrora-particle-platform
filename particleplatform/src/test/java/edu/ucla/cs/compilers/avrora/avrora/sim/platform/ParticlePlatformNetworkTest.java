@@ -18,12 +18,15 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.*;
 import java.util.List;
 
+import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class ParticlePlatformNetworkTest {
     static final Options mainOptions = new Options();
+    static final ByteArrayOutputStream systemOutBuffer = new ByteArrayOutputStream();
     private static final Logger LOGGER = LoggerFactory.getLogger(ParticlePlatformNetworkTest.class);
     private static TestableOnParticleStateChangeWatch watch;
     private static short rows;
@@ -36,7 +39,9 @@ public class ParticlePlatformNetworkTest {
     public TestLogger testLogger = new TestLogger(LOGGER);
 
     @BeforeClass
-    public static void startSimulation() throws NoSuchFieldException, IllegalAccessException {
+    public static void startSimulation() throws NoSuchFieldException, IllegalAccessException, IOException {
+        System.setOut(new PrintStream(systemOutBuffer));
+
         ParticlePlatformTestUtils.resetMonitorId();
         LOGGER.debug("BEFORE CLASS: {}", ParticlePlatformNetworkTest.class.getSimpleName());
         ParticleLogSink.deleteInstance();
@@ -49,10 +54,10 @@ public class ParticlePlatformNetworkTest {
                 "/ParticleSimulation.elf";
 
         short colummns = 2;
-        assertTrue(false);
-
+        // TODO: to be removed
         rows = 1;
         colummns = 1;
+
         double simulationSeconds = 8000E-6;
         Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, rows, colummns,
                 simulationSeconds, firmware, null);
@@ -61,6 +66,9 @@ public class ParticlePlatformNetworkTest {
         TestableParticlePlatformMonitor.TestableMonitorImpl monitor = TestableParticlePlatformMonitor
                 .getInstance().getImplementation();
         watch = monitor.getWatch();
+
+        System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
+        systemOutBuffer.writeTo(System.out);
     }
 
     @AfterClass
@@ -93,5 +101,11 @@ public class ParticlePlatformNetworkTest {
         ParticlePlatformTestUtils.testMagicByte("1");
         ParticlePlatformTestUtils.testMagicByte("2");
         ParticlePlatformTestUtils.testMagicByte("3");
+    }
+
+    @Test
+    public void testNoDestroyedReturnStackAddress() {
+        assertFalse("found erroneous keyword [destroyed] in output", systemOutBuffer.toString().contains
+                ("destroyed"));
     }
 }
