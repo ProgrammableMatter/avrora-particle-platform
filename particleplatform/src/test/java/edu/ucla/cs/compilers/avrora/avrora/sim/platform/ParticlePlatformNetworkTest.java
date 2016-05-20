@@ -19,10 +19,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class ParticlePlatformNetworkTest {
     static final Options mainOptions = new Options();
@@ -30,9 +32,11 @@ public class ParticlePlatformNetworkTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(ParticlePlatformNetworkTest.class);
     private static TestableOnParticleStateChangeWatch watch;
     private static short rows;
+    private static short columns;
 
     static {
-        rows = 2;
+        rows = 4;
+        columns = 3;
     }
 
     @Rule
@@ -53,13 +57,8 @@ public class ParticlePlatformNetworkTest {
                 ".1/system/cmake/generated/avr-c14d54a/c14d54a/Debug/particle-simulation/main" +
                 "/ParticleSimulation.elf";
 
-        short colummns = 2;
-        // TODO: to be removed
-        rows = 1;
-        colummns = 1;
-
-        double simulationSeconds = 8000E-6;
-        Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, rows, colummns,
+        double simulationSeconds = 7000E-6 * 1;
+        Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, rows, columns,
                 simulationSeconds, firmware, null);
         ParticlePlatformTestUtils.startSimulation(mainOptions, action);
 
@@ -82,17 +81,53 @@ public class ParticlePlatformNetworkTest {
         List<TestableOnParticleStateChangeWatch.NameValueGlue> list = watch
                 .getRegisterOfInterestWriteListing();
 
-        for (TestableOnParticleStateChangeWatch.NameValueGlue nameValueGlue : list) {
-            if ((nameValueGlue.getName().compareTo("globalState.node.state") == 0) || (nameValueGlue
-                    .getName().compareTo("globalState.node.type") == 0)) {
+        class NodeStateToTypeGlue {
+            public String nodeState;
+            public String nodeType;
+            public String address;
+        }
+        Map<Integer, NodeStateToTypeGlue> nodeStateToTypeGlueMap = new HashMap<>();
+        for (int i = 0; i < (columns * rows); i++) {
+            nodeStateToTypeGlueMap.put(i, new NodeStateToTypeGlue());
+        }
 
-                PlatformAddress address = ParticlePlatformNetworkConnector.linearToAddressMappingImpl
-                        (nameValueGlue.getPlatformId(), rows);
-//                System.out.println("(" + address.getRow() + "," + address.getColumn() + ") " +
-// nameValueGlue);
-                assertTrue(false);
+        for (TestableOnParticleStateChangeWatch.NameValueGlue nameValueGlue : list) {
+            if (nameValueGlue.getName().compareTo("globalState.node.state") == 0) {
+                nodeStateToTypeGlueMap.get(nameValueGlue.getPlatformId()).nodeState = nameValueGlue
+                        .getReadableValue();
+                nodeStateToTypeGlueMap.get(nameValueGlue.getPlatformId()).address =
+                        ParticlePlatformNetworkConnector.linearToAddressMappingImpl(nameValueGlue
+                                .getPlatformId(), rows).toString();
+            }
+            if (nameValueGlue.getName().compareTo("globalState.node.type") == 0) {
+                nodeStateToTypeGlueMap.get(nameValueGlue.getPlatformId()).nodeType = nameValueGlue
+                        .getReadableValue();
+                nodeStateToTypeGlueMap.get(nameValueGlue.getPlatformId()).address =
+                        ParticlePlatformNetworkConnector.linearToAddressMappingImpl(nameValueGlue
+                                .getPlatformId(), rows).toString();
             }
         }
+
+        System.out.println("Latest node states:");
+        for (Map.Entry<Integer, NodeStateToTypeGlue> entry : nodeStateToTypeGlueMap.entrySet()) {
+            System.out.println("node:" + entry.getKey() + " --> type:" + entry.getValue().nodeType + ", " +
+                    "state:" + entry.getValue().nodeState + ", @" + entry.getValue().address);
+        }
+
+        assertEquals(nodeStateToTypeGlueMap.get(0).nodeType, "NODE_TYPE_ORIGIN");
+        assertEquals(nodeStateToTypeGlueMap.get(1).nodeType, "NODE_TYPE_INTER_NODE");
+        assertEquals(nodeStateToTypeGlueMap.get(2).nodeType, "NODE_TYPE_INTER_NODE");
+        assertEquals(nodeStateToTypeGlueMap.get(3).nodeType, "NODE_TYPE_TAIL");
+
+        assertEquals(nodeStateToTypeGlueMap.get(4).nodeType, "NODE_TYPE_INTER_HEAD");
+        assertEquals(nodeStateToTypeGlueMap.get(5).nodeType, "NODE_TYPE_INTER_NODE");
+        assertEquals(nodeStateToTypeGlueMap.get(6).nodeType, "NODE_TYPE_INTER_NODE");
+        assertEquals(nodeStateToTypeGlueMap.get(7).nodeType, "NODE_TYPE_TAIL");
+
+        assertEquals(nodeStateToTypeGlueMap.get(8).nodeType, "NODE_TYPE_INTER_NODE");
+        assertEquals(nodeStateToTypeGlueMap.get(9).nodeType, "NODE_TYPE_INTER_NODE");
+        assertEquals(nodeStateToTypeGlueMap.get(10).nodeType, "NODE_TYPE_INTER_NODE");
+        assertEquals(nodeStateToTypeGlueMap.get(11).nodeType, "NODE_TYPE_TAIL");
     }
 
     @Test
@@ -105,7 +140,7 @@ public class ParticlePlatformNetworkTest {
 
     @Test
     public void testNoDestroyedReturnStackAddress() {
-        assertFalse("found erroneous keyword [destroyed] in output", systemOutBuffer.toString().contains
-                ("destroyed"));
+        assertFalse("found erroneous keyword [destroy] in output", systemOutBuffer.toString().contains
+                ("destroy"));
     }
 }
