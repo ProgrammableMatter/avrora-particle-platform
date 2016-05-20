@@ -72,7 +72,7 @@ public class ParticlePlatformTestUtils {
 
         Option.Str action = mainOptions.newOption("action", "simulate", "");
 
-        mainOptions.newOption("input", "auto", "");
+        //mainOptions.newOption("input", "auto", "");
         mainOptions.newOption("action", "simulate", "");
         mainOptions.newOption("colors", true, "");
         mainOptions.newOption("banner", false, "");
@@ -112,13 +112,16 @@ public class ParticlePlatformTestUtils {
         StringBuilder cliArgs = new StringBuilder("-banner=false -status-timing=true -verbose=all " +
                 "-seconds-precision=11 " +
                 "-action=simulate -simulation=particle-network -rowcount=" + rows + " -columncount=" +
-                columns + " -seconds=" + simulationSeconds + " " +
-                "-report-seconds=true -platform=particle -arch=avr -clockspeed=8000000 " +
-                "-monitors=particle-calls,stack," +
-                "retaddr,particle-states,particle-interrupts,memory -dump-writes=true -show-interrupts=true" +
-                " " +
+                columns + " " +
+                "-seconds=" + simulationSeconds + " " +
+                "-report-seconds=true -platform=particle -arch=avr" +
+                "-clockspeed=8000000 " +
+                "-monitors=particle-calls,stack,retaddr,particle-states,particle-interrupts,memory " +
+                "-dump-writes=true " +
+                "-show-interrupts=true " +
                 "-invocations-only=false -low-addresses=true -particle-log-file=true " +
-                "-particle-facets=state,break,wires -input=elf -throughput=true " +
+                "-particle-facets=state,break,wires " +
+                "-input=atmel -throughput=true " +
                 ParticlePlatformTestUtils.getFilePath(particleFirmwareFile));
 
         if (null != mainCommunicationUnitFirmware) {
@@ -367,13 +370,13 @@ public class ParticlePlatformTestUtils {
             rxNorthBuffer[5] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", 5);
             rxNorthBuffer[6] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", 6);
 
-            assertBufferByte(txSouthBuffer, 0, rxNorthBuffer, 6);
-            assertBufferByte(txSouthBuffer, 1, rxNorthBuffer, 5);
-            assertBufferByte(txSouthBuffer, 2, rxNorthBuffer, 4);
-            assertBufferByte(txSouthBuffer, 3, rxNorthBuffer, 3);
-            assertBufferByte(txSouthBuffer, 4, rxNorthBuffer, 2);
-            assertBufferByte(txSouthBuffer, 5, rxNorthBuffer, 1);
             assertBufferByte(txSouthBuffer, 6, rxNorthBuffer, 0);
+            assertBufferByte(txSouthBuffer, 5, rxNorthBuffer, 1);
+            assertBufferByte(txSouthBuffer, 4, rxNorthBuffer, 2);
+            assertBufferByte(txSouthBuffer, 3, rxNorthBuffer, 3);
+            assertBufferByte(txSouthBuffer, 2, rxNorthBuffer, 4);
+            assertBufferByte(txSouthBuffer, 1, rxNorthBuffer, 5);
+            assertBufferByte(txSouthBuffer, 0, rxNorthBuffer, 6);
         } catch (Exception e) {
             e.printStackTrace();
             assertTrue(false);
@@ -382,9 +385,10 @@ public class ParticlePlatformTestUtils {
 
     private static void assertBufferByte(byte[] txBuffer, int txId, byte[] rxBuffer, int rxId) {
 
-        assertEquals("buffer[" + txId + "] vs. buffer[" + rxId + "]: expected [0b" + Integer.toBinaryString
+        assertEquals("tx-buffer[" + txId + "] vs. rx-buffer[" + rxId + "]: expected/tx [0b" + Integer
+                .toBinaryString
                 (ParticlePlatformTestUtils.msb2lsb(txBuffer[txId]) & 0xff) + "] but " +
-                "got " +
+                "got/rx " +
                 "[0b" + Integer.toBinaryString(rxBuffer[rxId] & 0xff) + "]", ParticlePlatformTestUtils
                 .msb2lsb(txBuffer[txId]), rxBuffer[rxId]);
     }
