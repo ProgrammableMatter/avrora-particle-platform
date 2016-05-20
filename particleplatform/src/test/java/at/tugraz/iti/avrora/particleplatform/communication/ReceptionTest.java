@@ -48,9 +48,9 @@ public class ReceptionTest {
                 "-simulation/main/ParticleReceptionSimulation.elf";
 
         short rows = 1;
-        short colummns = 1;
-        double simulationSeconds = 1E-6 * 690 * 1.5 * 4 * 2;
-        Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, rows, colummns,
+        short columns = 1;
+        double simulationSeconds = 1E-6 * 12000;
+        Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, rows, columns,
                 simulationSeconds, firmware, communicationUnitFirmware);
         ParticlePlatformTestUtils.resetMonitorId();
         ParticlePlatformTestUtils.startSimulation(mainOptions, action);
@@ -78,7 +78,7 @@ public class ReceptionTest {
 
     @Test
     public void testNoDestroyedReturnStackAddress() {
-        assertFalse("found erroneous keyword [destroyed] in output", systemOutBuffer.toString().contains
-                ("destroyed"));
+        assertFalse("found erroneous keyword [destroy] in output", systemOutBuffer.toString().contains
+                ("destroy"));
     }
 }

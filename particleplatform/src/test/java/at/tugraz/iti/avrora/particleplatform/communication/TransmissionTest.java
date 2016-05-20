@@ -50,7 +50,7 @@ public class TransmissionTest {
 
         short rows = 1;
         short colummns = 1;
-        double simulationSeconds = 1E-6 * 690 * 1.5 * 4 * 2;
+        double simulationSeconds = 1E-6 * 12000;
         Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, rows, colummns,
                 simulationSeconds, particleFirmware, communicationUnitFirmware);
         ParticlePlatformTestUtils.resetMonitorId();
@@ -84,8 +84,8 @@ public class TransmissionTest {
      */
     @Test
     public void testNoDestroyedReturnStackAddress() {
-        assertFalse("found erroneous keyword [destroyed] in output", systemOutBuffer.toString().contains
-                ("destroyed"));
+        assertFalse("found erroneous keyword [destroy] in output", systemOutBuffer.toString().contains
+                ("destroy"));
     }
 
 

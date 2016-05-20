@@ -46,8 +46,7 @@ public class TestableOnParticleStateChangeWatch extends OnParticleStateChangeWat
 
         String valueString;
         try {
-            valueString = registerDescription.toDetailedType(data_addr, value, (AtmelInterpreter.StateImpl)
-                    state);
+            valueString = registerDescription.toDetailedType(data_addr, value, (AtmelInterpreter.StateImpl) state).replace("(", "").replace(")", "");
             String variableName;
             try {
                 variableName = registerDescription.getAddressToRegisterNameMapping().get(data_addr);
