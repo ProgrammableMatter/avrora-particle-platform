@@ -370,6 +370,24 @@ public class ParticlePlatformTestUtils {
             rxNorthBuffer[5] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", 5);
             rxNorthBuffer[6] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", 6);
 
+            System.out.println("byte | transmitted | received");
+            System.out.println("-----+-------------+-----------");
+            System.out.println("0    | 0b" + Integer.toBinaryString(txSouthBuffer[0] & 0xff) + "  | 0b" +
+                    Integer.toBinaryString(rxNorthBuffer[0] & 0xff));
+            System.out.println("1    | 0b" + Integer.toBinaryString(txSouthBuffer[1] & 0xff) + "  | 0b" +
+                    Integer.toBinaryString(rxNorthBuffer[1] & 0xff));
+            System.out.println("2    | 0b" + Integer.toBinaryString(txSouthBuffer[2] & 0xff) + "  | 0b" +
+                    Integer.toBinaryString(rxNorthBuffer[2] & 0xff));
+            System.out.println("3    | 0b" + Integer.toBinaryString(txSouthBuffer[3] & 0xff) + "  | 0b" +
+                    Integer.toBinaryString(rxNorthBuffer[3] & 0xff));
+            System.out.println("4    | 0b" + Integer.toBinaryString(txSouthBuffer[4] & 0xff) + "  | 0b" +
+                    Integer.toBinaryString(rxNorthBuffer[4] & 0xff));
+            System.out.println("5    | 0b" + Integer.toBinaryString(txSouthBuffer[5] & 0xff) + "  | 0b" +
+                    Integer.toBinaryString(rxNorthBuffer[5] & 0xff));
+            System.out.println("6    | 0b" + Integer.toBinaryString(txSouthBuffer[6] & 0xff) + "  | 0b" +
+                    Integer.toBinaryString(rxNorthBuffer[6] & 0xff));
+
+
             assertBufferByte(txSouthBuffer, 6, rxNorthBuffer, 0);
             assertBufferByte(txSouthBuffer, 5, rxNorthBuffer, 1);
             assertBufferByte(txSouthBuffer, 4, rxNorthBuffer, 2);
@@ -383,14 +401,19 @@ public class ParticlePlatformTestUtils {
         }
     }
 
-    private static void assertBufferByte(byte[] txBuffer, int txId, byte[] rxBuffer, int rxId) {
+    private static void assertMirroredBufferByte(byte[] txBuffer, int txId, byte[] rxBuffer, int rxId) {
 
-        assertEquals("tx-buffer[" + txId + "] vs. rx-buffer[" + rxId + "]: expected/tx [0b" + Integer
-                .toBinaryString
-                (ParticlePlatformTestUtils.msb2lsb(txBuffer[txId]) & 0xff) + "] but " +
+        assertEquals("tx-buffer[" + txId + "] vs. rx-buffer[" + rxId + "]: expected/tx [0b" + Integer.toBinaryString(ParticlePlatformTestUtils.msb2lsb(txBuffer[txId]) & 0xff) + "] but " +
                 "got/rx " +
                 "[0b" + Integer.toBinaryString(rxBuffer[rxId] & 0xff) + "]", ParticlePlatformTestUtils
                 .msb2lsb(txBuffer[txId]), rxBuffer[rxId]);
+    }
+
+    private static void assertBufferByte(byte[] txBuffer, int txId, byte[] rxBuffer, int rxId) {
+
+        assertEquals("tx-buffer[" + txId + "] vs. rx-buffer[" + rxId + "]: expected/tx [0b" + Integer
+                .toBinaryString(txBuffer[txId] & 0xff) + "] but got/rx " +
+                "[0b" + Integer.toBinaryString(rxBuffer[rxId] & 0xff) + "]", txBuffer[txId], rxBuffer[rxId]);
     }
 
     public static void testMagicByte(String nodeId) {

@@ -413,429 +413,459 @@
         "address": "globalStateBase+18"
       },
       {
-        "property": "ports.tx.north.( -[7:2] | retainTransmission[1] | enableTransmission[0])",
+        "property": "ports.tx.north.dataEndPos.( - [7:3] | byteNumber [2:0])",
         "type": "bit",
         "address": "globalStateBase+19"
       },
       {
-        "property": "ports.tx.east.buffer[0]",
-        "type": "hex",
+        "property": "ports.tx.north.dataEndPos.bitmask",
+        "type": "bit",
         "address": "globalStateBase+20"
       },
       {
-        "property": "ports.tx.east.buffer[1]",
-        "type": "hex",
+        "property": "ports.tx.north.( -[7:2] | retainTransmission[1] | enableTransmission[0])",
+        "type": "bit",
         "address": "globalStateBase+21"
       },
       {
-        "property": "ports.tx.east.buffer[2]",
+        "property": "ports.tx.east.buffer[0]",
         "type": "hex",
         "address": "globalStateBase+22"
       },
       {
-        "property": "ports.tx.east.buffer[3]",
+        "property": "ports.tx.east.buffer[1]",
         "type": "hex",
         "address": "globalStateBase+23"
       },
       {
-        "property": "ports.tx.east.buffer[4]",
+        "property": "ports.tx.east.buffer[2]",
         "type": "hex",
         "address": "globalStateBase+24"
       },
       {
-        "property": "ports.tx.east.buffer[5]",
+        "property": "ports.tx.east.buffer[3]",
         "type": "hex",
         "address": "globalStateBase+25"
       },
       {
-        "property": "ports.tx.east.buffer[6]",
+        "property": "ports.tx.east.buffer[4]",
         "type": "hex",
         "address": "globalStateBase+26"
       },
       {
-        "property": "ports.tx.east.buffer.pointer.( -[7:2] | byteNumber [1:0])",
-        "type": "bit",
+        "property": "ports.tx.east.buffer[5]",
+        "type": "hex",
         "address": "globalStateBase+27"
       },
       {
-        "property": "ports.tx.east.buffer.pointer.bitmask",
-        "type": "bit",
+        "property": "ports.tx.east.buffer[6]",
+        "type": "hex",
         "address": "globalStateBase+28"
       },
       {
-        "property": "ports.tx.east.( -[7:2] | retainTransmission[1] | enableTransmission[0])",
+        "property": "ports.tx.east.buffer.pointer.( -[7:2] | byteNumber [1:0])",
         "type": "bit",
         "address": "globalStateBase+29"
       },
       {
-        "property": "ports.tx.south.buffer[0]",
-        "type": "hex",
+        "property": "ports.tx.east.buffer.pointer.bitmask",
+        "type": "bit",
         "address": "globalStateBase+30"
       },
       {
-        "property": "ports.tx.south.buffer[1]",
-        "type": "hex",
+        "property": "ports.tx.east.dataEndPos.( - [7:3] | byteNumber [2:0])",
+        "type": "bit",
         "address": "globalStateBase+31"
       },
       {
-        "property": "ports.tx.south.buffer[2]",
-        "type": "hex",
+        "property": "ports.tx.east.dataEndPos.bitmask",
+        "type": "bit",
         "address": "globalStateBase+32"
       },
       {
-        "property": "ports.tx.south.buffer[3]",
-        "type": "hex",
+        "property": "ports.tx.east.( -[7:2] | retainTransmission[1] | enableTransmission[0])",
+        "type": "bit",
         "address": "globalStateBase+33"
       },
       {
-        "property": "ports.tx.south.buffer[4]",
+        "property": "ports.tx.south.buffer[0]",
         "type": "hex",
         "address": "globalStateBase+34"
       },
       {
-        "property": "ports.tx.south.buffer[5]",
+        "property": "ports.tx.south.buffer[1]",
         "type": "hex",
         "address": "globalStateBase+35"
       },
       {
-        "property": "ports.tx.south.buffer[6]",
+        "property": "ports.tx.south.buffer[2]",
         "type": "hex",
         "address": "globalStateBase+36"
       },
       {
+        "property": "ports.tx.south.buffer[3]",
+        "type": "hex",
+        "address": "globalStateBase+37"
+      },
+      {
+        "property": "ports.tx.south.buffer[4]",
+        "type": "hex",
+        "address": "globalStateBase+38"
+      },
+      {
+        "property": "ports.tx.south.buffer[5]",
+        "type": "hex",
+        "address": "globalStateBase+39"
+      },
+      {
+        "property": "ports.tx.south.buffer[6]",
+        "type": "hex",
+        "address": "globalStateBase+40"
+      },
+      {
         "property": "ports.tx.south.buffer.pointer.( -[7:3] | byteNumber [2:0])",
         "type": "bit",
-        "address": "globalStateBase+37"
+        "address": "globalStateBase+41"
       },
       {
         "property": "ports.tx.south.buffer.pointer.bitmask",
         "type": "bit",
-        "address": "globalStateBase+38"
+        "address": "globalStateBase+42"
+      },
+      {
+        "property": "ports.tx.south.dataEndPos.( - [7:3] | byteNumber [2:0])",
+        "type": "bit",
+        "address": "globalStateBase+43"
+      },
+      {
+        "property": "ports.tx.south.dataEndPos.bitmask",
+        "type": "bit",
+        "address": "globalStateBase+44"
       },
       {
         "property": "ports.tx.south.( -[7:2] | retainTransmission[1] | enableTransmission[0])",
         "type": "bit",
-        "address": "globalStateBase+39"
+        "address": "globalStateBase+45"
       },
       {
         "property": "ports.rx.receptionDelta",
         "type": "unsigned int",
-        "address": "globalStateBase+40"
+        "address": "globalStateBase+46"
       },
       {
         "property": "ports.rx.receptionDelta[1]",
         "type": "hex",
-        "address": "globalStateBase+41"
+        "address": "globalStateBase+47"
       },
       {
         "property": "ports.rx.north.adjustment.receptionOffset",
         "type": "unsigned int",
-        "address": "globalStateBase+42"
+        "address": "globalStateBase+48"
       },
       {
         "property": "ports.rx.north.adjustment.receptionOffset[1]",
         "type": "hex",
-        "address": "globalStateBase+43"
+        "address": "globalStateBase+49"
       },
       {
         "property": "ports.rx.north.adjustment.center",
         "type": "unsigned int",
-        "address": "globalStateBase+44"
+        "address": "globalStateBase+50"
       },
       {
         "property": "ports.rx.north.adjustment.center[1]",
         "type": "hex",
-        "address": "globalStateBase+45"
+        "address": "globalStateBase+51"
       },
       {
         "property": "ports.rx.north.adjustment.leftOfCenter",
         "type": "unsigned int",
-        "address": "globalStateBase+46"
+        "address": "globalStateBase+52"
       },
       {
         "property": "ports.rx.north.adjustment.leftOfCenter[1]",
         "type": "hex",
-        "address": "globalStateBase+47"
+        "address": "globalStateBase+53"
       },
       {
         "property": "ports.rx.north.adjustment.rightOfCenter",
         "type": "unsigned int",
-        "address": "globalStateBase+48"
+        "address": "globalStateBase+54"
       },
       {
         "property": "ports.rx.north.adjustment.rightOfCenter[1]",
         "type": "hex",
-        "address": "globalStateBase+49"
+        "address": "globalStateBase+55"
       },
       {
         "property": "ports.rx.north.adjustment.leftOfTop",
         "type": "unsigned int",
-        "address": "globalStateBase+50"
+        "address": "globalStateBase+56"
       },
       {
         "property": "ports.rx.north.adjustment.leftOfTop[1]",
         "type": "hex",
-        "address": "globalStateBase+51"
+        "address": "globalStateBase+57"
       },
       {
         "property": "ports.rx.north.buffer[0]",
         "type": "hex",
-        "address": "globalStateBase+52"
+        "address": "globalStateBase+58"
       },
       {
         "property": "ports.rx.north.buffer[1]",
         "type": "hex",
-        "address": "globalStateBase+53"
+        "address": "globalStateBase+59"
       },
       {
         "property": "ports.rx.north.buffer[2]",
         "type": "hex",
-        "address": "globalStateBase+54"
+        "address": "globalStateBase+60"
       },
       {
         "property": "ports.rx.north.buffer[3]",
         "type": "hex",
-        "address": "globalStateBase+55"
+        "address": "globalStateBase+61"
       },
       {
         "property": "ports.rx.north.buffer[4]",
         "type": "hex",
-        "address": "globalStateBase+56"
+        "address": "globalStateBase+62"
       },
       {
         "property": "ports.rx.north.buffer[5]",
         "type": "hex",
-        "address": "globalStateBase+57"
+        "address": "globalStateBase+63"
       },
       {
         "property": "ports.rx.north.buffer[6]",
         "type": "hex",
-        "address": "globalStateBase+58"
+        "address": "globalStateBase+64"
       },
       {
         "property": "ports.rx.north.buffer.pointer.( -[7:3] | byteNumber [2:0])",
         "type": "bit",
-        "address": "globalStateBase+59"
+        "address": "globalStateBase+65"
       },
       {
         "property": "ports.rx.north.buffer.pointer.bitmask",
         "type": "bit",
-        "address": "globalStateBase+60"
+        "address": "globalStateBase+66"
       },
       {
         "property": "ports.rx.north.( - [7:5] | isOverflowed [4]  | isReceiving [3:0])",
         "type": "bit",
-        "address": "globalStateBase+61"
+        "address": "globalStateBase+67"
       },
       {
         "property": "ports.rx.east.adjustment.receptionOffset",
         "type": "unsigned int",
-        "address": "globalStateBase+62"
+        "address": "globalStateBase+68"
       },
       {
         "property": "ports.rx.east.adjustment.receptionOffset[1]",
         "type": "hex",
-        "address": "globalStateBase+63"
+        "address": "globalStateBase+69"
       },
       {
         "property": "ports.rx.east.adjustment.center",
         "type": "unsigned int",
-        "address": "globalStateBase+64"
+        "address": "globalStateBase+70"
       },
       {
         "property": "ports.rx.east.adjustment.center[1]",
         "type": "hex",
-        "address": "globalStateBase+65"
+        "address": "globalStateBase+71"
       },
       {
         "property": "ports.rx.east.adjustment.leftOfCenter",
         "type": "unsigned int",
-        "address": "globalStateBase+66"
+        "address": "globalStateBase+72"
       },
       {
         "property": "ports.rx.east.adjustment.leftOfCenter[1]",
         "type": "hex",
-        "address": "globalStateBase+67"
+        "address": "globalStateBase+73"
       },
       {
         "property": "ports.rx.east.adjustment.rightOfCenter",
         "type": "unsigned int",
-        "address": "globalStateBase+68"
+        "address": "globalStateBase+74"
       },
       {
         "property": "ports.rx.east.adjustment.rightOfCenter[1]",
         "type": "hex",
-        "address": "globalStateBase+69"
+        "address": "globalStateBase+75"
       },
       {
         "property": "ports.rx.east.adjustment.leftOfTop",
         "type": "unsigned int",
-        "address": "globalStateBase+70"
+        "address": "globalStateBase+76"
       },
       {
         "property": "ports.rx.east.adjustment.leftOfTop[1]",
         "type": "hex",
-        "address": "globalStateBase+71"
+        "address": "globalStateBase+77"
       },
       {
         "property": "ports.rx.east.buffer[0]",
         "type": "hex",
-        "address": "globalStateBase+72"
+        "address": "globalStateBase+78"
       },
       {
         "property": "ports.rx.east.buffer[1]",
         "type": "hex",
-        "address": "globalStateBase+73"
+        "address": "globalStateBase+79"
       },
       {
         "property": "ports.rx.east.buffer[2]",
         "type": "hex",
-        "address": "globalStateBase+74"
+        "address": "globalStateBase+80"
       },
       {
         "property": "ports.rx.east.buffer[3]",
         "type": "hex",
-        "address": "globalStateBase+75"
+        "address": "globalStateBase+81"
       },
       {
         "property": "ports.rx.east.buffer[4]",
         "type": "hex",
-        "address": "globalStateBase+76"
+        "address": "globalStateBase+82"
       },
       {
         "property": "ports.rx.east.buffer[5]",
         "type": "hex",
-        "address": "globalStateBase+77"
+        "address": "globalStateBase+83"
       },
       {
         "property": "ports.rx.east.buffer[6]",
         "type": "hex",
-        "address": "globalStateBase+78"
+        "address": "globalStateBase+84"
       },
       {
         "property": "ports.rx.east.buffer.pointer.( - [7:2] | byteNumber [2:0])",
         "type": "bit",
-        "address": "globalStateBase+79"
+        "address": "globalStateBase+85"
       },
       {
         "property": "ports.rx.east.buffer.pointer.bitmask",
         "type": "bit",
-        "address": "globalStateBase+80"
+        "address": "globalStateBase+86"
       },
       {
         "property": "ports.rx.east.( -[7:4] | isReceiving [3:0])",
         "type": "hex",
-        "address": "globalStateBase+81"
+        "address": "globalStateBase+87"
       },
       {
         "property": "ports.rx.south.adjustment.receptionOffset",
         "type": "unsigned int",
-        "address": "globalStateBase+82"
+        "address": "globalStateBase+88"
       },
       {
         "property": "ports.rx.south.adjustment.receptionOffset[1]",
         "type": "hex",
-        "address": "globalStateBase+83"
+        "address": "globalStateBase+89"
       },
       {
         "property": "ports.rx.south.adjustment.center",
         "type": "unsigned int",
-        "address": "globalStateBase+84"
+        "address": "globalStateBase+90"
       },
       {
         "property": "ports.rx.south.adjustment.center[1]",
         "type": "hex",
-        "address": "globalStateBase+85"
+        "address": "globalStateBase+91"
       },
       {
         "property": "ports.rx.south.adjustment.leftOfCenter",
         "type": "unsigned int",
-        "address": "globalStateBase+86"
+        "address": "globalStateBase+92"
       },
       {
         "property": "ports.rx.south.adjustment.leftOfCenter[1]",
         "type": "hex",
-        "address": "globalStateBase+87"
+        "address": "globalStateBase+93"
       },
       {
         "property": "ports.rx.south.adjustment.rightOfCenter",
         "type": "unsigned int",
-        "address": "globalStateBase+88"
+        "address": "globalStateBase+94"
       },
       {
         "property": "ports.rx.south.adjustment.rightOfCenter[1]",
         "type": "hex",
-        "address": "globalStateBase+89"
+        "address": "globalStateBase+95"
       },
       {
         "property": "ports.rx.south.adjustment.leftOfTop",
         "type": "unsigned int",
-        "address": "globalStateBase+90"
+        "address": "globalStateBase+96"
       },
       {
         "property": "ports.rx.south.adjustment.leftOfTop[1]",
         "type": "hex",
-        "address": "globalStateBase+91"
+        "address": "globalStateBase+97"
       },
       {
         "property": "ports.rx.south.buffer[0]",
         "type": "hex",
-        "address": "globalStateBase+92"
+        "address": "globalStateBase+98"
       },
       {
         "property": "ports.rx.south.buffer[1]",
         "type": "hex",
-        "address": "globalStateBase+93"
+        "address": "globalStateBase+99"
       },
       {
         "property": "ports.rx.south.buffer[2]",
         "type": "hex",
-        "address": "globalStateBase+94"
+        "address": "globalStateBase+100"
       },
       {
         "property": "ports.rx.south.buffer[3]",
         "type": "hex",
-        "address": "globalStateBase+95"
+        "address": "globalStateBase+101"
       },
       {
         "property": "ports.rx.south.buffer[4]",
         "type": "hex",
-        "address": "globalStateBase+96"
+        "address": "globalStateBase+102"
       },
       {
         "property": "ports.rx.south.buffer[5]",
         "type": "hex",
-        "address": "globalStateBase+97"
+        "address": "globalStateBase+103"
       },
       {
         "property": "ports.rx.south.buffer[6]",
         "type": "hex",
-        "address": "globalStateBase+98"
+        "address": "globalStateBase+104"
       },
       {
         "property": "ports.rx.south.buffer.pointer.( - [7:2] | byteNumber [2:0])",
         "type": "bit",
-        "address": "globalStateBase+99"
+        "address": "globalStateBase+105"
       },
       {
         "property": "ports.rx.south.buffer.pointer.bitmask",
         "type": "bit",
-        "address": "globalStateBase+100"
+        "address": "globalStateBase+106"
       },
       {
         "property": "ports.rx.south.( -[7:4] | isReceiving [3:0])",
         "type": "bit",
-        "address": "globalStateBase+101"
+        "address": "globalStateBase+107"
       },
       {
         "property": "periphery.loopCount",
         "type": "unsigned",
-        "address": "globalStateBase+102"
+        "address": "globalStateBase+108"
       },
       {
         "property": "magicEndByte",
         "type": "hex",
-        "address": "globalStateBase+103"
+        "address": "globalStateBase+109"
       }
     ]
   },
