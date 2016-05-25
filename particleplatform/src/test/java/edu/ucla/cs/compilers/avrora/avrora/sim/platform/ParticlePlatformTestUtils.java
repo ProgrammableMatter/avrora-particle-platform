@@ -196,7 +196,7 @@ public class ParticlePlatformTestUtils {
     public static void resetMonitorId() throws NoSuchFieldException, IllegalAccessException {
         Field field = ParticlePlatformMonitor.MonitorImpl.class.getDeclaredField("monitorIdCounter");
         field.setAccessible(true);
-        AtomicInteger atomicId = (AtomicInteger) field.get(null);//, new AtomicInteger(0));
+        AtomicInteger atomicId = (AtomicInteger) field.get(null);
         atomicId.set(0);
     }
 
@@ -387,7 +387,6 @@ public class ParticlePlatformTestUtils {
             System.out.println("6    | 0b" + Integer.toBinaryString(txSouthBuffer[6] & 0xff) + "  | 0b" +
                     Integer.toBinaryString(rxNorthBuffer[6] & 0xff));
 
-
             assertBufferByte(txSouthBuffer, 6, rxNorthBuffer, 0);
             assertBufferByte(txSouthBuffer, 5, rxNorthBuffer, 1);
             assertBufferByte(txSouthBuffer, 4, rxNorthBuffer, 2);
@@ -403,7 +402,8 @@ public class ParticlePlatformTestUtils {
 
     private static void assertMirroredBufferByte(byte[] txBuffer, int txId, byte[] rxBuffer, int rxId) {
 
-        assertEquals("tx-buffer[" + txId + "] vs. rx-buffer[" + rxId + "]: expected/tx [0b" + Integer.toBinaryString(ParticlePlatformTestUtils.msb2lsb(txBuffer[txId]) & 0xff) + "] but " +
+        assertEquals("tx-buffer[" + txId + "] vs. rx-buffer[" + rxId + "]: expected/tx [0b" + Integer
+                .toBinaryString(ParticlePlatformTestUtils.msb2lsb(txBuffer[txId]) & 0xff) + "] but " +
                 "got/rx " +
                 "[0b" + Integer.toBinaryString(rxBuffer[rxId] & 0xff) + "]", ParticlePlatformTestUtils
                 .msb2lsb(txBuffer[txId]), rxBuffer[rxId]);

@@ -49,9 +49,9 @@ public class TransmissionTest {
                 "-simulation/main/ParticleReceptionSimulation.elf";
 
         short rows = 1;
-        short colummns = 1;
+        short columns = 1;
         double simulationSeconds = 1E-6 * 12000;
-        Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, rows, colummns,
+        Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, rows, columns,
                 simulationSeconds, particleFirmware, communicationUnitFirmware);
         ParticlePlatformTestUtils.resetMonitorId();
         ParticlePlatformTestUtils.startSimulation(mainOptions, action);
