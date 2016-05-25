@@ -226,7 +226,7 @@ public class ParticlePlatformTestUtils {
         } else {
             registerNameOfInterest.append("tx.");
         }
-        registerNameOfInterest.append(cardinalDirection + ".buffer[");
+        registerNameOfInterest.append(cardinalDirection + ".buffer.bytes[");
         registerNameOfInterest.append(byteNumber + "]");
 
         try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
