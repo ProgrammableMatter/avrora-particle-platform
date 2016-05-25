@@ -654,7 +654,7 @@
         "address": "globalStateBase+66"
       },
       {
-        "property": "ports.rx.north.( - [7:5] | isOverflowed [4]  | isReceiving [3:0])",
+        "property": "ports.rx.north.( - [7:6] | isDataBuffered [5] | isOverflowed [4]  | isReceiving [3:0])",
         "type": "bit",
         "address": "globalStateBase+67"
       },
@@ -754,7 +754,7 @@
         "address": "globalStateBase+86"
       },
       {
-        "property": "ports.rx.east.( -[7:4] | isReceiving [3:0])",
+        "property": "ports.rx.east.( -[7:4] | isDataBuffered [5] | isOverflowed[4]  | isReceiving [3:0])",
         "type": "hex",
         "address": "globalStateBase+87"
       },
@@ -854,7 +854,7 @@
         "address": "globalStateBase+106"
       },
       {
-        "property": "ports.rx.south.( -[7:4] | isReceiving [3:0])",
+        "property": "ports.rx.south.( - [7:6] | isDataBuffered [5] | isOverflowed [4]  | isReceiving [3:0])",
         "type": "bit",
         "address": "globalStateBase+107"
       },
@@ -864,9 +864,44 @@
         "address": "globalStateBase+108"
       },
       {
-        "property": "magicEndByte",
+        "property": "interpreter.buffer[0]",
         "type": "hex",
         "address": "globalStateBase+109"
+      },
+      {
+        "property": "interpreter.buffer[1]",
+        "type": "hex",
+        "address": "globalStateBase+110"
+      },
+      {
+        "property": "interpreter.buffer[2]",
+        "type": "hex",
+        "address": "globalStateBase+111"
+      },
+      {
+        "property": "interpreter.buffer[3]",
+        "type": "hex",
+        "address": "globalStateBase+112"
+      },
+      {
+        "property": "interpreter.buffer[4]",
+        "type": "hex",
+        "address": "globalStateBase+113"
+      },
+      {
+        "property": "interpreter.buffer[5]",
+        "type": "hex",
+        "address": "globalStateBase+114"
+      },
+      {
+        "property": "interpreter.buffer[6]",
+        "type": "hex",
+        "address": "globalStateBase+115"
+      },
+      {
+        "property": "magicEndByte",
+        "type": "hex",
+        "address": "globalStateBase+116"
       }
     ]
   },
