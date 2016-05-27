@@ -22,6 +22,8 @@ import org.slf4j.Logger;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,6 +50,11 @@ public class ParticlePlatformTestUtils {
     public final static String simulationLogUdrValueRegexp = "^\\s*\\('(.*)'\\)\\s*$";
 
     /**
+     * to be parsed: (4) <br/> group 1 ... int value
+     */
+    public final static String simulationLogIntValueRegexp = "^\\s*\\((.*)\\)\\s*$";
+
+    /**
      * to be parsed: (0xff)<br/> group 1 ... 0xff without ()
      */
     public final static String simulationLogHexByteValueRegexp = "^\\s*\\(0x(.*)\\)\\s*$";
@@ -63,32 +70,6 @@ public class ParticlePlatformTestUtils {
     }
 
     /**
-     * Sets default command line arguments' default values.
-     *
-     * @param mainOptions the command line arguments container
-     * @return the default simulation action
-     */
-    private static Option.Str setUpDefaultArguments(Options mainOptions) {
-
-        Option.Str action = mainOptions.newOption("action", "simulate", "");
-
-        //mainOptions.newOption("input", "auto", "");
-        mainOptions.newOption("action", "simulate", "");
-        mainOptions.newOption("colors", true, "");
-        mainOptions.newOption("banner", false, "");
-        mainOptions.newOption("status", true, "");
-        mainOptions.newOption("status-timing", true, "");
-        mainOptions.newOptionList("verbose", "all", "");
-        mainOptions.newOption("help", false, "");
-        mainOptions.newOption("license", false, "");
-        mainOptions.newOption("seconds-precision", 11, "");
-        mainOptions.newOption("html", false, "");
-        mainOptions.newOption("config-file", "", "");
-
-        return action;
-    }
-
-    /**
      * Default simulation command line arguments. Instanciates a (1,1) particle network.
      *
      * @param mainOptions the command line arguments container
@@ -98,11 +79,6 @@ public class ParticlePlatformTestUtils {
         return setUpSimulationOptions(mainOptions, (short) 1, (short) 1, 350E-6, "ParticleSimulationIoTest"
                 + ".elf", null);
     }
-
-//    public static Option.Str setUpSimulationOptions(Options mainOptions, short rows, short columns) {
-//        return setUpSimulationOptions(mainOptions, rows, columns, 350E-6, "ParticleSimulationIoTest.elf",
-// null);
-//    }
 
     public static Option.Str setUpSimulationOptions(Options mainOptions, short rows, short columns, double
             simulationSeconds, String particleFirmwareFile, String mainCommunicationUnitFirmware) {
@@ -132,6 +108,11 @@ public class ParticlePlatformTestUtils {
         return action;
     }
 
+//    public static Option.Str setUpSimulationOptions(Options mainOptions, short rows, short columns) {
+//        return setUpSimulationOptions(mainOptions, rows, columns, 350E-6, "ParticleSimulationIoTest.elf",
+// null);
+//    }
+
     /**
      * Tries to find the file in the resources else it returns the unmodified file name.
      *
@@ -147,23 +128,6 @@ public class ParticlePlatformTestUtils {
             LOGGER.debug("requested file [{}] has no alternative", fileName);
             return fileName;
         }
-    }
-
-    /**
-     * Retrns the file path to the file in the package resources if possible.
-     *
-     * @param fileName the file name to look for
-     * @return the path including the file name
-     * @throws Exception on error
-     */
-    private static String getResourceFilePath(String fileName) throws Exception {
-        ClassLoader classLoader = ParticlePlatformTest.class.getClassLoader();
-        java.net.URL url = classLoader.getResource(fileName);
-        if (null == url) {
-            throw new Exception();
-        }
-        File file = new File(url.getFile());
-        return file.getAbsolutePath();
     }
 
     /**
@@ -270,54 +234,6 @@ public class ParticlePlatformTestUtils {
         }
     }
 
-    private static byte getAndAssertOneAndOnlyMagicByteWrite(String nodeId) {
-        String fileName = ParticleLogSink.getAbsoluteFileName();
-        Pattern linePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogLineRegexp);
-        Pattern valuePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogHexByteValueRegexp);
-
-        String registerNameOfInterest = new String("globalState.magicEndByte");
-
-        byte lastValue = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (line.length() <= 0) {
-                    continue;
-                }
-                Matcher m = linePattern.matcher(line);
-                if (m.matches()) {
-
-                    String mcuId = m.group(1);
-                    if (nodeId.compareTo(mcuId) == 0) {
-
-                        String registerName = m.group(4);
-                        if (registerName.compareTo(registerNameOfInterest.toString()) == 0) {
-                            Matcher valueMatcher = valuePattern.matcher(m.group(5));
-                            if (valueMatcher.matches()) {
-                                if (lastValue != 0) {
-                                    assertTrue("detected multiple nonzero writes to " +
-                                            registerNameOfInterest, false);
-                                }
-                                lastValue = (byte) (Integer.parseInt(valueMatcher.group(1), 16) & 0xff);
-                            }
-                        }
-                    }
-                } else {
-                    Assert.assertTrue("line not parse-able: " + line, false);
-                }
-            }
-        } catch (FileNotFoundException e) {
-            Assert.assertTrue(false);
-        } catch (IOException e) {
-            Assert.assertTrue(false);
-        } catch (IllegalStateException e) {
-            Assert.assertTrue(false);
-        }
-        return lastValue;
-    }
-
     /**
      * reverse the byte bits
      *
@@ -400,6 +316,133 @@ public class ParticlePlatformTestUtils {
         }
     }
 
+    public static void testMagicByte(String nodeId) {
+        assertEquals((byte) (0xaa & 0xff), (byte) (ParticlePlatformTestUtils
+                .getAndAssertOneAndOnlyMagicByteWrite(nodeId) & 0xff));
+    }
+
+    public static void assertCorrectlyEnumeratedNodes(short networkRows, int networkColumns, int
+            numberOfNodes) throws Exception {
+
+        Map<Integer, NodeAddressStateGlue> nodeIdAddresses = getLastNodeAddresses();
+        System.out.println("nodeId | address | state");
+        System.out.println("-------+---------+------");
+        for (Map.Entry<Integer, NodeAddressStateGlue> entry : nodeIdAddresses.entrySet()) {
+            System.out.println(entry.getKey() + "      | (" + entry.getValue().row + "," + entry.getValue()
+                    .column + ")   | " + entry.getValue().state);
+        }
+        System.out.println();
+
+        for (NodeAddressStateGlue value : nodeIdAddresses.values()) {
+            PlatformAddress expectedAddress = ParticlePlatformNetworkConnector.linearToAddressMappingImpl
+                    (value.nodeId, networkRows);
+            assertEquals("nodeId [" + value.nodeId + "]: expected row [" + expectedAddress.getRow() + "] " +
+                    "but got [" + value.row + "]", expectedAddress.getRow(), value.row);
+            assertEquals("nodeId [" + value.nodeId + "]: expected column [" + expectedAddress.getColumn() +
+                    "] but got [" + value.column + "]", expectedAddress.getColumn(), value.column);
+            assertEquals("nodeId [" + value.nodeId + "]: STATE_TYPE_IDLE but was [" + value.state + "]",
+                    "STATE_TYPE_IDLE", value.state);
+        }
+
+        for (int nodeNumber = 0; nodeNumber < numberOfNodes; nodeNumber++) {
+            assertTrue("evaluated node list did not contain node id [" + nodeNumber + "]", nodeIdAddresses
+                    .containsKey(nodeNumber));
+        }
+        Assert.assertEquals("expected number of nodes [" + networkRows * networkColumns + "] but got [" +
+                nodeIdAddresses.size() + "]", networkRows * networkColumns, nodeIdAddresses.size());
+    }
+
+    /**
+     * Sets default command line arguments' default values.
+     *
+     * @param mainOptions the command line arguments container
+     * @return the default simulation action
+     */
+    private static Option.Str setUpDefaultArguments(Options mainOptions) {
+
+        Option.Str action = mainOptions.newOption("action", "simulate", "");
+
+        //mainOptions.newOption("input", "auto", "");
+        mainOptions.newOption("action", "simulate", "");
+        mainOptions.newOption("colors", true, "");
+        mainOptions.newOption("banner", false, "");
+        mainOptions.newOption("status", true, "");
+        mainOptions.newOption("status-timing", true, "");
+        mainOptions.newOptionList("verbose", "all", "");
+        mainOptions.newOption("help", false, "");
+        mainOptions.newOption("license", false, "");
+        mainOptions.newOption("seconds-precision", 11, "");
+        mainOptions.newOption("html", false, "");
+        mainOptions.newOption("config-file", "", "");
+
+        return action;
+    }
+
+    /**
+     * Retrns the file path to the file in the package resources if possible.
+     *
+     * @param fileName the file name to look for
+     * @return the path including the file name
+     * @throws Exception on error
+     */
+    private static String getResourceFilePath(String fileName) throws Exception {
+        ClassLoader classLoader = ParticlePlatformTest.class.getClassLoader();
+        java.net.URL url = classLoader.getResource(fileName);
+        if (null == url) {
+            throw new Exception();
+        }
+        File file = new File(url.getFile());
+        return file.getAbsolutePath();
+    }
+
+    private static byte getAndAssertOneAndOnlyMagicByteWrite(String nodeId) {
+        String fileName = ParticleLogSink.getAbsoluteFileName();
+        Pattern linePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogLineRegexp);
+        Pattern valuePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogHexByteValueRegexp);
+
+        String registerNameOfInterest = new String("globalState.magicEndByte");
+
+        byte lastValue = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.length() <= 0) {
+                    continue;
+                }
+                Matcher m = linePattern.matcher(line);
+                if (m.matches()) {
+
+                    String mcuId = m.group(1);
+                    if (nodeId.compareTo(mcuId) == 0) {
+
+                        String registerName = m.group(4);
+                        if (registerName.compareTo(registerNameOfInterest.toString()) == 0) {
+                            Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                            if (valueMatcher.matches()) {
+                                if (lastValue != 0) {
+                                    assertTrue("detected multiple nonzero writes to " +
+                                            registerNameOfInterest, false);
+                                }
+                                lastValue = (byte) (Integer.parseInt(valueMatcher.group(1), 16) & 0xff);
+                            }
+                        }
+                    }
+                } else {
+                    Assert.assertTrue("line not parse-able: " + line, false);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            Assert.assertTrue(false);
+        } catch (IOException e) {
+            Assert.assertTrue(false);
+        } catch (IllegalStateException e) {
+            Assert.assertTrue(false);
+        }
+        return lastValue;
+    }
+
     private static void assertMirroredBufferByte(byte[] txBuffer, int txId, byte[] rxBuffer, int rxId) {
 
         assertEquals("tx-buffer[" + txId + "] vs. rx-buffer[" + rxId + "]: expected/tx [0b" + Integer
@@ -416,8 +459,72 @@ public class ParticlePlatformTestUtils {
                 "[0b" + Integer.toBinaryString(rxBuffer[rxId] & 0xff) + "]", txBuffer[txId], rxBuffer[rxId]);
     }
 
-    public static void testMagicByte(String nodeId) {
-        assertEquals((byte) (0xaa & 0xff), (byte) (ParticlePlatformTestUtils
-                .getAndAssertOneAndOnlyMagicByteWrite(nodeId) & 0xff));
+    private static Map<Integer, NodeAddressStateGlue> getLastNodeAddresses() throws Exception {
+
+        String fileName = ParticleLogSink.getAbsoluteFileName();
+
+        Map<Integer, NodeAddressStateGlue> nodeIdToAddress = new HashMap<>();
+
+        Pattern linePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogLineRegexp);
+        Pattern valuePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogIntValueRegexp);
+        StringBuilder bufferByte = new StringBuilder();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.length() <= 0) {
+                    continue;
+                }
+
+                Matcher m = linePattern.matcher(line);
+                if (m.matches()) {
+                    Integer mcuId = Integer.parseInt(m.group(1));
+                    if (!nodeIdToAddress.containsKey(mcuId)) {
+                        NodeAddressStateGlue nag = new NodeAddressStateGlue();
+                        nag.nodeId = mcuId;
+                        nodeIdToAddress.put(mcuId, nag);
+                    }
+                    String registerName = m.group(4).trim();
+                    if (registerName.compareTo("globalState.node.address.row") == 0) {
+                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                        if (valueMatcher.matches()) {
+                            nodeIdToAddress.get(mcuId).row = Integer.parseInt(valueMatcher.group(1));
+                        }
+                    } else if (registerName.compareTo("globalState.node.address.column") == 0) {
+                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                        if (valueMatcher.matches()) {
+                            nodeIdToAddress.get(mcuId).column = Integer.parseInt(valueMatcher.group(1));
+                        }
+                    } else if (registerName.compareTo("globalState.node.state") == 0) {
+                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                        if (valueMatcher.matches()) {
+                            nodeIdToAddress.get(mcuId).state = valueMatcher.group(1);
+                        }
+                    }
+                } else {
+                    Assert.assertTrue("line not parse-able: " + line, false);
+                }
+            }
+            br.close();
+        } catch (FileNotFoundException e) {
+            Assert.assertTrue(false);
+            throw e;
+        } catch (IOException e) {
+            Assert.assertTrue(false);
+            throw e;
+        } catch (IllegalStateException e) {
+            Assert.assertTrue(false);
+            throw e;
+        }
+
+        return nodeIdToAddress;
+    }
+
+    public static class NodeAddressStateGlue {
+        int nodeId = -1;
+        int row = -1;
+        int column = -1;
+        String state = "<invalid>";
     }
 }
