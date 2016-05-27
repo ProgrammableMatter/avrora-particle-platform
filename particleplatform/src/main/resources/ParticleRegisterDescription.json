@@ -10,10 +10,12 @@
       "STATE_TYPE_DISCOVERY_PULSING",
       "STATE_TYPE_RESET",
       "STATE_TYPE_WAIT_FOR_BEING_ENUMERATED",
+      "STATE_TYPE_LOCALLY_ENUMERATED",
       "STATE_TYPE_ENUMERATING_NEIGHBOURS",
       "STATE_TYPE_ENUMERATING_EAST_NEIGHBOUR",
       "STATE_TYPE_ENUMERATING_SOUTH_NEIGHBOUR",
-      "STATE_TYPE_ENUMERATED",
+      "STATE_TYPE_WAIT_UNTIL_ENUMERATION_TRANSMISSIONS_FINISHED",
+      "STATE_TYPE_ENUMERATING_FINISHED",
       "STATE_TYPE_IDLE",
       "STATE_TYPE_INTERPRET_COMMAND",
       "STATE_TYPE_TX_START",
@@ -349,17 +351,17 @@
         "address": "globalStateBase+5"
       },
       {
-        "property": "discovery.north.( - [7:5] | isConnected[4] | counter [3:0])",
+        "property": "discovery.north.( -[7:5] | isConnected[4] | counter[3:0])",
         "type": "bit",
         "address": "globalStateBase+6"
       },
       {
-        "property": "discovery.east.( - [7:5] | isConnected[4] | counter [3:0])",
+        "property": "discovery.east.( -[7:5] | isConnected[4] | counter[3:0])",
         "type": "bit",
         "address": "globalStateBase+7"
       },
       {
-        "property": "discovery.south.( - [7:5] | isConnected | counter [3:0])",
+        "property": "discovery.south.( -[7:5] | isConnected | counter[3:0])",
         "type": "bit",
         "address": "globalStateBase+8"
       },
@@ -404,7 +406,7 @@
         "address": "globalStateBase+16"
       },
       {
-        "property": "ports.tx.north.buffer.pointer.( - [7:3] | byteNumber [2:0])",
+        "property": "ports.tx.north.buffer.pointer.( -[7:3] | byteNumber[2:0])",
         "type": "bit",
         "address": "globalStateBase+17"
       },
@@ -414,7 +416,7 @@
         "address": "globalStateBase+18"
       },
       {
-        "property": "ports.tx.north.dataEndPos.( - [7:3] | byteNumber [2:0])",
+        "property": "ports.tx.north.dataEndPos.( -[7:3] | byteNumber[2:0])",
         "type": "bit",
         "address": "globalStateBase+19"
       },
@@ -424,7 +426,7 @@
         "address": "globalStateBase+20"
       },
       {
-        "property": "ports.tx.north.( -[7:2] | retainTransmission[1] | enableTransmission[0])",
+        "property": "ports.tx.north.( -[7:3] | isTransmitting[2] | retainTransmission[1] | enableTransmission[0])",
         "type": "bit",
         "address": "globalStateBase+21"
       },
@@ -464,7 +466,7 @@
         "address": "globalStateBase+28"
       },
       {
-        "property": "ports.tx.east.buffer.pointer.( -[7:2] | byteNumber [1:0])",
+        "property": "ports.tx.east.buffer.pointer.( -[7:2] | byteNumber[1:0])",
         "type": "bit",
         "address": "globalStateBase+29"
       },
@@ -474,7 +476,7 @@
         "address": "globalStateBase+30"
       },
       {
-        "property": "ports.tx.east.dataEndPos.( - [7:3] | byteNumber [2:0])",
+        "property": "ports.tx.east.dataEndPos.( -[7:3] | byteNumber[2:0])",
         "type": "bit",
         "address": "globalStateBase+31"
       },
@@ -484,7 +486,7 @@
         "address": "globalStateBase+32"
       },
       {
-        "property": "ports.tx.east.( -[7:2] | retainTransmission[1] | enableTransmission[0])",
+        "property": "ports.tx.east.( -[7:3] | isTransmitting[2] | retainTransmission[1] | enableTransmission[0])",
         "type": "bit",
         "address": "globalStateBase+33"
       },
@@ -524,7 +526,7 @@
         "address": "globalStateBase+40"
       },
       {
-        "property": "ports.tx.south.buffer.pointer.( -[7:3] | byteNumber [2:0])",
+        "property": "ports.tx.south.buffer.pointer.( -[7:3] | byteNumber[2:0])",
         "type": "bit",
         "address": "globalStateBase+41"
       },
@@ -534,7 +536,7 @@
         "address": "globalStateBase+42"
       },
       {
-        "property": "ports.tx.south.dataEndPos.( - [7:3] | byteNumber [2:0])",
+        "property": "ports.tx.south.dataEndPos.( -[7:3] | byteNumber[2:0])",
         "type": "bit",
         "address": "globalStateBase+43"
       },
@@ -544,7 +546,7 @@
         "address": "globalStateBase+44"
       },
       {
-        "property": "ports.tx.south.( -[7:2] | retainTransmission[1] | enableTransmission[0])",
+        "property": "ports.tx.south.( -[7:3] | isTransmitting[2] | retainTransmission[1] | enableTransmission[0])",
         "type": "bit",
         "address": "globalStateBase+45"
       },
@@ -644,7 +646,7 @@
         "address": "globalStateBase+64"
       },
       {
-        "property": "ports.rx.north.buffer.pointer.( -[7:3] | byteNumber [2:0])",
+        "property": "ports.rx.north.buffer.pointer.( -[7:3] | byteNumber[2:0])",
         "type": "bit",
         "address": "globalStateBase+65"
       },
@@ -654,7 +656,7 @@
         "address": "globalStateBase+66"
       },
       {
-        "property": "ports.rx.north.( - [7:6] | isDataBuffered [5] | isOverflowed [4]  | isReceiving [3:0])",
+        "property": "ports.rx.north.( -[7:6] | isDataBuffered[5] | isOverflowed[4]  | isReceiving[3:0])",
         "type": "bit",
         "address": "globalStateBase+67"
       },
@@ -744,7 +746,7 @@
         "address": "globalStateBase+84"
       },
       {
-        "property": "ports.rx.east.buffer.pointer.( - [7:2] | byteNumber [2:0])",
+        "property": "ports.rx.east.buffer.pointer.( -[7:2] | byteNumber[2:0])",
         "type": "bit",
         "address": "globalStateBase+85"
       },
@@ -754,8 +756,8 @@
         "address": "globalStateBase+86"
       },
       {
-        "property": "ports.rx.east.( -[7:4] | isDataBuffered [5] | isOverflowed[4]  | isReceiving [3:0])",
-        "type": "hex",
+        "property": "ports.rx.east.( -[7:6] | isDataBuffered[5] | isOverflowed[4]  | isReceiving[3:0])",
+        "type": "bit",
         "address": "globalStateBase+87"
       },
       {
@@ -844,7 +846,7 @@
         "address": "globalStateBase+104"
       },
       {
-        "property": "ports.rx.south.buffer.pointer.( - [7:2] | byteNumber [2:0])",
+        "property": "ports.rx.south.buffer.pointer.( -[7:2] | byteNumber[2:0])",
         "type": "bit",
         "address": "globalStateBase+105"
       },
@@ -854,7 +856,7 @@
         "address": "globalStateBase+106"
       },
       {
-        "property": "ports.rx.south.( - [7:6] | isDataBuffered [5] | isOverflowed [4]  | isReceiving [3:0])",
+        "property": "ports.rx.south.( -[7:6] | isDataBuffered[5] | isOverflowed[4]  | isReceiving[3:0])",
         "type": "bit",
         "address": "globalStateBase+107"
       },
