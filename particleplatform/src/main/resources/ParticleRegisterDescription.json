@@ -10,12 +10,24 @@
       "STATE_TYPE_DISCOVERY_PULSING",
       "STATE_TYPE_RESET",
       "STATE_TYPE_WAIT_FOR_BEING_ENUMERATED",
+      "STATE_TYPE_WAIT_FOR_BEING_ENUMERATED_SEND_ACK_RESPONSE_TO_PARENT",
+      "STATE_TYPE_WAIT_FOR_BEING_ENUMERATED_WAIT_UNTIL_ACK_RESPONSE_TO_PARENT_TRANSMISSION_FINISHED",
+      "STATE_TYPE_WAIT_FOR_BEING_ENUMERATED_ACK_RESPONSE_FROM_PARENT",
       "STATE_TYPE_LOCALLY_ENUMERATED",
       "STATE_TYPE_ENUMERATING_NEIGHBOURS",
       "STATE_TYPE_ENUMERATING_EAST_NEIGHBOUR",
+      "STATE_TYPE_ENUMERATING_EAST_WAIT_UNTIL_EAST_ENUMERATION_TRANSMISSIONS_FINISHED",
+      "STATE_TYPE_ENUMERATING_EAST_WAIT_UNTIL_ACK_RESPONSE_FROM_EAST",
+      "STATE_TYPE_ENUMERATING_EAST_SEND_ACK_RESPONSE_TO_EAST",
+      "STATE_TYPE_ENUMERATING_EAST_WAIT_UNTIL_ACK_RESPONSE_TO_EAST_TRANSMISSION_FINISHED",
+      "STATE_TYPE_ENUMERATING_EAST_NEIGHBOUR_DONE",
       "STATE_TYPE_ENUMERATING_SOUTH_NEIGHBOUR",
-      "STATE_TYPE_WAIT_UNTIL_ENUMERATION_TRANSMISSIONS_FINISHED",
-      "STATE_TYPE_ENUMERATING_FINISHED",
+      "STATE_TYPE_ENUMERATING_SOUTH_WAIT_UNTIL_SOUTH_ENUMERATION_TRANSMISSIONS_FINISHED",
+      "STATE_TYPE_ENUMERATING_SOUTH_WAIT_UNTIL_ACK_RESPONSE_FROM_SOUTH",
+      "STATE_TYPE_ENUMERATING_SOUTH_SEND_ACK_RESPONSE_TO_SOUTH",
+      "STATE_TYPE_ENUMERATING_SOUTH_WAIT_UNTIL_ACK_RESPONSE_TO_SOUTH_TRANSMISSION_FINISHED",
+      "STATE_TYPE_ENUMERATING_SOUTH_NEIGHBOUR_DONE",
+      "STATE_TYPE_ENUMERATING_NEIGHBOURS_DONE",
       "STATE_TYPE_IDLE",
       "STATE_TYPE_INTERPRET_COMMAND",
       "STATE_TYPE_TX_START",
@@ -36,6 +48,12 @@
       "NODE_TYPE_INTER_NODE",
       "NODE_TYPE_TAIL",
       "NODE_TYPE_MASTER"
+    ],
+    "XmissionType": [
+      "STATE_TYPE_XMISSION_TYPE_ENABLED_TX",
+      "STATE_TYPE_XMISSION_TYPE_ENABLED_TX_RX",
+      "STATE_TYPE_XMISSION_TYPE_ENABLED_RX",
+      "STATE_TYPE_XMISSION_TYPE_DISABLED_TX_RX"
     ]
   },
   "structs": {
@@ -861,49 +879,54 @@
         "address": "globalStateBase+107"
       },
       {
+        "property": "ports.xmissonState",
+        "type": "XmissionType",
+        "address": "globalStateBase+108"
+      },
+      {
         "property": "periphery.loopCount",
         "type": "unsigned",
-        "address": "globalStateBase+108"
+        "address": "globalStateBase+110"
       },
       {
         "property": "interpreter.buffer[0]",
         "type": "hex",
-        "address": "globalStateBase+109"
+        "address": "globalStateBase+111"
       },
       {
         "property": "interpreter.buffer[1]",
         "type": "hex",
-        "address": "globalStateBase+110"
+        "address": "globalStateBase+112"
       },
       {
         "property": "interpreter.buffer[2]",
         "type": "hex",
-        "address": "globalStateBase+111"
+        "address": "globalStateBase+113"
       },
       {
         "property": "interpreter.buffer[3]",
         "type": "hex",
-        "address": "globalStateBase+112"
+        "address": "globalStateBase+114"
       },
       {
         "property": "interpreter.buffer[4]",
         "type": "hex",
-        "address": "globalStateBase+113"
+        "address": "globalStateBase+115"
       },
       {
         "property": "interpreter.buffer[5]",
         "type": "hex",
-        "address": "globalStateBase+114"
+        "address": "globalStateBase+116"
       },
       {
         "property": "interpreter.buffer[6]",
         "type": "hex",
-        "address": "globalStateBase+115"
+        "address": "globalStateBase+117"
       },
       {
         "property": "magicEndByte",
         "type": "hex",
-        "address": "globalStateBase+116"
+        "address": "globalStateBase+118"
       }
     ]
   },
@@ -912,8 +935,10 @@
     "enum": 2,
     /* evaluates to StateType enum names */
     "StateType": 2,
-    /* evaluates to NodeType enum Names */
-    "NodeType": 2
+    /* evaluates to NodeType enum names */
+    "NodeType": 2,
+    /* evaluates to XmissonType enum names*/
+    "XmissionType": 2
   },
   /* listing of register address labels */
   "labels": {
