@@ -288,28 +288,35 @@ public class ParticlePlatformTestUtils {
 
             System.out.println("byte | transmitted | received");
             System.out.println("-----+-------------+-----------");
-            System.out.println("0    | 0b" + Integer.toBinaryString(txSouthBuffer[0] & 0xff) + "  | 0b" +
-                    Integer.toBinaryString(rxNorthBuffer[0] & 0xff));
-            System.out.println("1    | 0b" + Integer.toBinaryString(txSouthBuffer[1] & 0xff) + "  | 0b" +
-                    Integer.toBinaryString(rxNorthBuffer[1] & 0xff));
-            System.out.println("2    | 0b" + Integer.toBinaryString(txSouthBuffer[2] & 0xff) + "  | 0b" +
-                    Integer.toBinaryString(rxNorthBuffer[2] & 0xff));
-            System.out.println("3    | 0b" + Integer.toBinaryString(txSouthBuffer[3] & 0xff) + "  | 0b" +
-                    Integer.toBinaryString(rxNorthBuffer[3] & 0xff));
-            System.out.println("4    | 0b" + Integer.toBinaryString(txSouthBuffer[4] & 0xff) + "  | 0b" +
-                    Integer.toBinaryString(rxNorthBuffer[4] & 0xff));
-            System.out.println("5    | 0b" + Integer.toBinaryString(txSouthBuffer[5] & 0xff) + "  | 0b" +
-                    Integer.toBinaryString(rxNorthBuffer[5] & 0xff));
-            System.out.println("6    | 0b" + Integer.toBinaryString(txSouthBuffer[6] & 0xff) + "  | 0b" +
-                    Integer.toBinaryString(rxNorthBuffer[6] & 0xff));
+            System.out.println("0    | 0b" + fixedLengthLeftPaddedZerosString(Integer.toBinaryString
+                    (txSouthBuffer[0] & 0xff)) + "  | 0b" +
+                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[0] & 0xff)));
+            System.out.println("1    | 0b" + fixedLengthLeftPaddedZerosString(Integer.toBinaryString
+                    (txSouthBuffer[1] & 0xff)) + "  | 0b" +
+                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[1] & 0xff)));
+            System.out.println("2    | 0b" + fixedLengthLeftPaddedZerosString(Integer.toBinaryString
+                    (txSouthBuffer[2] & 0xff)) + "  | 0b" +
+                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[2] & 0xff)));
+            System.out.println("3    | 0b" + fixedLengthLeftPaddedZerosString(Integer.toBinaryString
+                    (txSouthBuffer[3] & 0xff)) + "  | 0b" +
+                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[3] & 0xff)));
+            System.out.println("4    | 0b" + fixedLengthLeftPaddedZerosString(Integer.toBinaryString
+                    (txSouthBuffer[4] & 0xff)) + "  | 0b" +
+                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[4] & 0xff)));
+            System.out.println("5    | 0b" + fixedLengthLeftPaddedZerosString(Integer.toBinaryString
+                    (txSouthBuffer[5] & 0xff)) + "  | 0b" +
+                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[5] & 0xff)));
+            System.out.println("6    | 0b" + fixedLengthLeftPaddedZerosString(Integer.toBinaryString
+                    (txSouthBuffer[6] & 0xff)) + "  | 0b" +
+                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[6] & 0xff)));
 
-            assertBufferByte(txSouthBuffer, 6, rxNorthBuffer, 0);
-            assertBufferByte(txSouthBuffer, 5, rxNorthBuffer, 1);
-            assertBufferByte(txSouthBuffer, 4, rxNorthBuffer, 2);
+            assertBufferByte(txSouthBuffer, 0, rxNorthBuffer, 0);
+            assertBufferByte(txSouthBuffer, 1, rxNorthBuffer, 1);
+            assertBufferByte(txSouthBuffer, 2, rxNorthBuffer, 2);
             assertBufferByte(txSouthBuffer, 3, rxNorthBuffer, 3);
-            assertBufferByte(txSouthBuffer, 2, rxNorthBuffer, 4);
-            assertBufferByte(txSouthBuffer, 1, rxNorthBuffer, 5);
-            assertBufferByte(txSouthBuffer, 0, rxNorthBuffer, 6);
+            assertBufferByte(txSouthBuffer, 4, rxNorthBuffer, 4);
+            assertBufferByte(txSouthBuffer, 5, rxNorthBuffer, 5);
+            assertBufferByte(txSouthBuffer, 6, rxNorthBuffer, 6);
         } catch (Exception e) {
             e.printStackTrace();
             assertTrue(false);
@@ -350,6 +357,16 @@ public class ParticlePlatformTestUtils {
         }
         Assert.assertEquals("expected number of nodes [" + networkRows * networkColumns + "] but got [" +
                 nodeIdAddresses.size() + "]", networkRows * networkColumns, nodeIdAddresses.size());
+    }
+
+    /**
+     * Pads leading zeros of a byte as binary string representation.
+     *
+     * @param string
+     * @return
+     */
+    private static String fixedLengthLeftPaddedZerosString(String string) {
+        return String.format("%1$" + 8 + "s", string).replace(" ", "0");
     }
 
     /**
