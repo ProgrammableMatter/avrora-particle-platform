@@ -49,7 +49,7 @@ public class ReceptionTest {
 
         short rows = 1;
         short columns = 1;
-        double simulationSeconds = 1E-6 * 12000;
+        double simulationSeconds = 1E-3 * 15f;
         Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, rows, columns,
                 simulationSeconds, firmware, communicationUnitFirmware);
         ParticlePlatformTestUtils.resetMonitorId();

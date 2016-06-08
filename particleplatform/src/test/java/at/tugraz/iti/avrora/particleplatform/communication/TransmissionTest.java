@@ -50,7 +50,7 @@ public class TransmissionTest {
 
         short rows = 1;
         short columns = 1;
-        double simulationSeconds = 1E-6 * 12000;
+        double simulationSeconds = 1E-3 * 15;
         Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, rows, columns,
                 simulationSeconds, particleFirmware, communicationUnitFirmware);
         ParticlePlatformTestUtils.resetMonitorId();
