@@ -42,6 +42,13 @@ public class ParticleFlashStateRegisterDetails {
         mapAddressToTypeName();
     }
 
+    /**
+     * @return a predefined mapping of microcontroller addresses to their variable names in source.
+     */
+    public Map<Integer, String> getAddressToRegisterNameMapping() {
+        return addressToRegisterName;
+    }
+
     private void mapAddressToTypeName() {
         for (Map.Entry<String, List<RegisterOfInterestDescription.StructProperties>> entry :
                 registerDescription.getStructs().entrySet()) {
@@ -133,10 +140,14 @@ public class ParticleFlashStateRegisterDetails {
     }
 
     /**
-     * @return a predefined mapping of microcontroller addresses to their variable names in source.
+     * @param c the character under inspection
+     * @return true if c is a printable character
      */
-    public Map<Integer, String> getAddressToRegisterNameMapping() {
-        return addressToRegisterName;
+    private boolean isPrintableChar(char c) {
+        Character.UnicodeBlock block = Character.UnicodeBlock.of(c);
+        return (!Character.isISOControl(c)) &&
+                block != null &&
+                block != Character.UnicodeBlock.SPECIALS;
     }
 
     /**
@@ -171,6 +182,12 @@ public class ParticleFlashStateRegisterDetails {
             case "bit":
                 detailedType = "0b" + String.format("%8s", Integer.toBinaryString(value & 0xFF)).replace
                         (/**/' ', '0');
+                break;
+
+            case "dbit":
+                detailedType = "0b" + String.format("%8s", Integer.toBinaryString(state.getDataByte
+                        (sramAddress + 1) & 0xff)).replace(' ', '0') + String.format("%8s", Integer
+                        .toBinaryString(value & 0xFF)).replace(' ', '0');
                 break;
 
             // uint8_t
@@ -229,16 +246,5 @@ public class ParticleFlashStateRegisterDetails {
                 break;
         }
         return "(" + detailedType + ")";
-    }
-
-    /**
-     * @param c the character under inspection
-     * @return true if c is a printable character
-     */
-    private boolean isPrintableChar(char c) {
-        Character.UnicodeBlock block = Character.UnicodeBlock.of(c);
-        return (!Character.isISOControl(c)) &&
-                block != null &&
-                block != Character.UnicodeBlock.SPECIALS;
     }
 }
