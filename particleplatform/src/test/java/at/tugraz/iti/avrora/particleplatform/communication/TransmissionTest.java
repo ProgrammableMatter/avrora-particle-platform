@@ -78,8 +78,8 @@ public class TransmissionTest {
     }
 
     /**
-     * In caese interrupts are not registered correctly the MCU jums to reset. In that case main is called and
-     * the recurn on stack is overwritten which results in "Instruction at xxx destroyed return address on
+     * In case interrupts are not registered correctly the MCU jums to reset. In that case main is called and
+     * the return on stack is overwritten which results in "Instruction at xxx destroyed return address on
      * stack address yyy"
      */
     @Test

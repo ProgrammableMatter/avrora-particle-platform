@@ -417,7 +417,7 @@ public class ParticlePlatformTestUtils {
         Pattern linePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogLineRegexp);
         Pattern valuePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogHexByteValueRegexp);
 
-        String registerNameOfInterest = new String("globalState.magicEndByte");
+        String registerNameOfInterest = new String("ParticleState.magicEndByte");
 
         byte lastValue = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
