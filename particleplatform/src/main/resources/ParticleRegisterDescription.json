@@ -675,7 +675,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+61"
       }
     ],
@@ -687,7 +687,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+63"
       }
     ],
@@ -699,7 +699,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+65"
       }
     ],
@@ -711,7 +711,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+67"
       }
     ],
@@ -723,7 +723,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+69"
       }
     ],
@@ -735,7 +735,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+71"
       }
     ],
@@ -747,7 +747,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+73"
       }
     ],
@@ -759,7 +759,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+75"
       }
     ],
@@ -771,7 +771,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+77"
       }
     ],
@@ -783,7 +783,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+79"
       }
     ],
@@ -795,7 +795,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+81"
       }
     ],
@@ -807,7 +807,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+83"
       }
     ],
@@ -819,7 +819,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+85"
       }
     ],
@@ -831,7 +831,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+87"
       }
     ],
@@ -843,7 +843,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+89"
       }
     ],
@@ -855,7 +855,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+91"
       }
     ],
@@ -867,7 +867,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+93"
       }
     ],
@@ -879,7 +879,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+95"
       }
     ],
@@ -891,7 +891,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+97"
       }
     ],
@@ -903,7 +903,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+99"
       }
     ],
@@ -915,7 +915,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+101"
       }
     ],
@@ -927,7 +927,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+103"
       }
     ],
@@ -939,7 +939,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+105"
       }
     ],
@@ -951,7 +951,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+107"
       }
     ],
@@ -963,7 +963,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+109"
       }
     ],
@@ -975,7 +975,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+111"
       }
     ],
@@ -987,7 +987,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+113"
       }
     ],
@@ -999,7 +999,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+115"
       }
     ],
@@ -1011,7 +1011,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+117"
       }
     ],
@@ -1023,7 +1023,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+119"
       }
     ],
@@ -1035,7 +1035,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+121"
       }
     ],
@@ -1047,7 +1047,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+123"
       }
     ],
@@ -1059,7 +1059,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+125"
       }
     ],
@@ -1071,7 +1071,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+127"
       }
     ],
@@ -1083,7 +1083,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+129"
       }
     ],
@@ -1095,7 +1095,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+131"
       }
     ],
@@ -1107,7 +1107,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+133"
       }
     ],
@@ -1119,7 +1119,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+135"
       }
     ],
@@ -1131,7 +1131,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+137"
       }
     ],
@@ -1143,7 +1143,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+139"
       }
     ],
@@ -1155,7 +1155,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+141"
       }
     ],
@@ -1167,7 +1167,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+143"
       }
     ],
@@ -1179,7 +1179,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+145"
       }
     ],
@@ -1191,7 +1191,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+147"
       }
     ],
@@ -1203,7 +1203,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+149"
       }
     ],
@@ -1215,7 +1215,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+151"
       }
     ],
@@ -1227,7 +1227,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+153"
       }
     ],
@@ -1239,7 +1239,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+155"
       }
     ],
@@ -1251,7 +1251,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+157"
       }
     ],
@@ -1263,7 +1263,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+159"
       }
     ],
@@ -1275,7 +1275,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+161"
       }
     ],
@@ -1287,7 +1287,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+163"
       }
     ],
@@ -1299,7 +1299,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+165"
       }
     ],
@@ -1311,7 +1311,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+167"
       }
     ],
@@ -1323,7 +1323,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+169"
       }
     ],
@@ -1335,7 +1335,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+171"
       }
     ],
@@ -1347,7 +1347,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+173"
       }
     ],
@@ -1359,7 +1359,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+175"
       }
     ],
@@ -1371,7 +1371,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+177"
       }
     ],
@@ -1383,7 +1383,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+179"
       }
     ],
@@ -1395,7 +1395,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+181"
       }
     ],
@@ -1407,7 +1407,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+183"
       }
     ],
@@ -1419,7 +1419,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+185"
       }
     ],
@@ -1431,7 +1431,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+187"
       }
     ],
@@ -1443,7 +1443,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+189"
       }
     ],
@@ -1455,7 +1455,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+191"
       }
     ],
@@ -1467,7 +1467,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+193"
       }
     ],
@@ -1479,7 +1479,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+195"
       }
     ],
@@ -1491,7 +1491,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+197"
       }
     ],
@@ -1503,7 +1503,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+199"
       }
     ],
@@ -1515,7 +1515,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+201"
       }
     ],
@@ -1527,7 +1527,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+203"
       }
     ],
@@ -1539,7 +1539,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+205"
       }
     ],
@@ -1551,7 +1551,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+207"
       }
     ],
@@ -1563,7 +1563,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+209"
       }
     ],
@@ -1575,7 +1575,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+211"
       }
     ],
@@ -1587,7 +1587,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+213"
       }
     ],
@@ -1599,7 +1599,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+215"
       }
     ],
@@ -1611,7 +1611,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+217"
       }
     ],
@@ -1623,7 +1623,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+219"
       }
     ],
@@ -1635,7 +1635,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+221"
       }
     ],
@@ -1647,7 +1647,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+223"
       }
     ],
@@ -1659,7 +1659,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+225"
       }
     ],
@@ -1671,7 +1671,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+227"
       }
     ],
@@ -1683,7 +1683,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+229"
       }
     ],
@@ -1695,7 +1695,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+231"
       }
     ],
@@ -1707,7 +1707,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+233"
       }
     ],
@@ -1719,7 +1719,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+235"
       }
     ],
@@ -1731,7 +1731,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+237"
       }
     ],
@@ -1743,7 +1743,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+239"
       }
     ],
@@ -1755,7 +1755,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+241"
       }
     ],
@@ -1767,7 +1767,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+243"
       }
     ],
@@ -1779,7 +1779,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+245"
       }
     ],
@@ -1791,7 +1791,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+247"
       }
     ],
@@ -1803,7 +1803,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+249"
       }
     ],
@@ -1815,7 +1815,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+251"
       }
     ],
@@ -1827,7 +1827,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+253"
       }
     ],
@@ -1839,7 +1839,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+255"
       }
     ],
@@ -1851,7 +1851,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+257"
       }
     ],
@@ -1863,7 +1863,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+259"
       }
     ],
@@ -1875,7 +1875,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+261"
       }
     ],
@@ -1887,7 +1887,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+263"
       }
     ],
@@ -1899,7 +1899,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+265"
       }
     ],
@@ -1911,7 +1911,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+267"
       }
     ],
@@ -1923,7 +1923,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+269"
       }
     ],
@@ -1935,7 +1935,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+271"
       }
     ],
@@ -1947,7 +1947,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+273"
       }
     ],
@@ -1959,7 +1959,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+275"
       }
     ],
@@ -1971,7 +1971,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+277"
       }
     ],
@@ -1983,7 +1983,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+279"
       }
     ],
@@ -1995,7 +1995,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+281"
       }
     ],
@@ -2007,7 +2007,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+283"
       }
     ],
@@ -2019,7 +2019,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+285"
       }
     ],
@@ -2031,7 +2031,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+287"
       }
     ],
@@ -2043,7 +2043,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+289"
       }
     ],
@@ -2055,7 +2055,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+291"
       }
     ],
@@ -2067,7 +2067,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+293"
       }
     ],
@@ -2079,7 +2079,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+295"
       }
     ],
@@ -2091,7 +2091,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+297"
       }
     ],
@@ -2103,7 +2103,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+299"
       }
     ],
@@ -2115,7 +2115,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+301"
       }
     ],
@@ -2127,7 +2127,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+303"
       }
     ],
@@ -2139,7 +2139,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+305"
       }
     ],
@@ -2151,7 +2151,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+307"
       }
     ],
@@ -2163,7 +2163,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+309"
       }
     ],
@@ -2175,7 +2175,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+311"
       }
     ],
@@ -2187,7 +2187,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+313"
       }
     ],
@@ -2199,7 +2199,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+315"
       }
     ],
@@ -2216,7 +2216,7 @@
       },
       {
         "property": "(__pad[7] | startIndex[6:0])",
-        "type": "bit",
+        "type": "unsigned",
         "address": "globalStateBase+319"
       },
       {
@@ -2311,7 +2311,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+336"
       }
     ],
@@ -2323,7 +2323,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+338"
       }
     ],
@@ -2335,7 +2335,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+340"
       }
     ],
@@ -2347,7 +2347,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+342"
       }
     ],
@@ -2359,7 +2359,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+344"
       }
     ],
@@ -2371,7 +2371,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+346"
       }
     ],
@@ -2383,7 +2383,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+348"
       }
     ],
@@ -2395,7 +2395,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+350"
       }
     ],
@@ -2407,7 +2407,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+352"
       }
     ],
@@ -2419,7 +2419,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+354"
       }
     ],
@@ -2431,7 +2431,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+356"
       }
     ],
@@ -2443,7 +2443,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+358"
       }
     ],
@@ -2455,7 +2455,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+360"
       }
     ],
@@ -2467,7 +2467,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+362"
       }
     ],
@@ -2479,7 +2479,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+364"
       }
     ],
@@ -2491,7 +2491,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+366"
       }
     ],
@@ -2503,7 +2503,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+368"
       }
     ],
@@ -2515,7 +2515,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+370"
       }
     ],
@@ -2527,7 +2527,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+372"
       }
     ],
@@ -2539,7 +2539,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+374"
       }
     ],
@@ -2551,7 +2551,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+376"
       }
     ],
@@ -2563,7 +2563,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+378"
       }
     ],
@@ -2575,7 +2575,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+380"
       }
     ],
@@ -2587,7 +2587,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+382"
       }
     ],
@@ -2599,7 +2599,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+384"
       }
     ],
@@ -2611,7 +2611,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+386"
       }
     ],
@@ -2623,7 +2623,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+388"
       }
     ],
@@ -2635,7 +2635,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+390"
       }
     ],
@@ -2647,7 +2647,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+392"
       }
     ],
@@ -2659,7 +2659,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+394"
       }
     ],
@@ -2671,7 +2671,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+396"
       }
     ],
@@ -2683,7 +2683,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+398"
       }
     ],
@@ -2695,7 +2695,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+400"
       }
     ],
@@ -2707,7 +2707,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+402"
       }
     ],
@@ -2719,7 +2719,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+404"
       }
     ],
@@ -2731,7 +2731,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+406"
       }
     ],
@@ -2743,7 +2743,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+408"
       }
     ],
@@ -2755,7 +2755,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+410"
       }
     ],
@@ -2767,7 +2767,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+412"
       }
     ],
@@ -2779,7 +2779,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+414"
       }
     ],
@@ -2791,7 +2791,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+416"
       }
     ],
@@ -2803,7 +2803,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+418"
       }
     ],
@@ -2815,7 +2815,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+420"
       }
     ],
@@ -2827,7 +2827,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+422"
       }
     ],
@@ -2839,7 +2839,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+424"
       }
     ],
@@ -2851,7 +2851,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+426"
       }
     ],
@@ -2863,7 +2863,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+428"
       }
     ],
@@ -2875,7 +2875,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+430"
       }
     ],
@@ -2887,7 +2887,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+432"
       }
     ],
@@ -2899,7 +2899,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+434"
       }
     ],
@@ -2911,7 +2911,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+436"
       }
     ],
@@ -2923,7 +2923,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+438"
       }
     ],
@@ -2935,7 +2935,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+440"
       }
     ],
@@ -2947,7 +2947,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+442"
       }
     ],
@@ -2959,7 +2959,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+444"
       }
     ],
@@ -2971,7 +2971,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+446"
       }
     ],
@@ -2983,7 +2983,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+448"
       }
     ],
@@ -2995,7 +2995,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+450"
       }
     ],
@@ -3007,7 +3007,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+452"
       }
     ],
@@ -3019,7 +3019,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+454"
       }
     ],
@@ -3031,7 +3031,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+456"
       }
     ],
@@ -3043,7 +3043,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+458"
       }
     ],
@@ -3055,7 +3055,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+460"
       }
     ],
@@ -3067,7 +3067,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+462"
       }
     ],
@@ -3079,7 +3079,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+464"
       }
     ],
@@ -3091,7 +3091,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+466"
       }
     ],
@@ -3103,7 +3103,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+468"
       }
     ],
@@ -3115,7 +3115,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+470"
       }
     ],
@@ -3127,7 +3127,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+472"
       }
     ],
@@ -3139,7 +3139,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+474"
       }
     ],
@@ -3151,7 +3151,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+476"
       }
     ],
@@ -3163,7 +3163,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+478"
       }
     ],
@@ -3175,7 +3175,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+480"
       }
     ],
@@ -3187,7 +3187,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+482"
       }
     ],
@@ -3199,7 +3199,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+484"
       }
     ],
@@ -3211,7 +3211,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+486"
       }
     ],
@@ -3223,7 +3223,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+488"
       }
     ],
@@ -3235,7 +3235,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+490"
       }
     ],
@@ -3247,7 +3247,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+492"
       }
     ],
@@ -3259,7 +3259,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+494"
       }
     ],
@@ -3271,7 +3271,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+496"
       }
     ],
@@ -3283,7 +3283,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+498"
       }
     ],
@@ -3295,7 +3295,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+500"
       }
     ],
@@ -3307,7 +3307,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+502"
       }
     ],
@@ -3319,7 +3319,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+504"
       }
     ],
@@ -3331,7 +3331,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+506"
       }
     ],
@@ -3343,7 +3343,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+508"
       }
     ],
@@ -3355,7 +3355,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+510"
       }
     ],
@@ -3367,7 +3367,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+512"
       }
     ],
@@ -3379,7 +3379,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+514"
       }
     ],
@@ -3391,7 +3391,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+516"
       }
     ],
@@ -3403,7 +3403,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+518"
       }
     ],
@@ -3415,7 +3415,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+520"
       }
     ],
@@ -3427,7 +3427,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+522"
       }
     ],
@@ -3439,7 +3439,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+524"
       }
     ],
@@ -3451,7 +3451,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+526"
       }
     ],
@@ -3463,7 +3463,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+528"
       }
     ],
@@ -3475,7 +3475,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+530"
       }
     ],
@@ -3487,7 +3487,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+532"
       }
     ],
@@ -3499,7 +3499,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+534"
       }
     ],
@@ -3511,7 +3511,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+536"
       }
     ],
@@ -3523,7 +3523,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+538"
       }
     ],
@@ -3535,7 +3535,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+540"
       }
     ],
@@ -3547,7 +3547,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+542"
       }
     ],
@@ -3559,7 +3559,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+544"
       }
     ],
@@ -3571,7 +3571,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+546"
       }
     ],
@@ -3583,7 +3583,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+548"
       }
     ],
@@ -3595,7 +3595,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+550"
       }
     ],
@@ -3607,7 +3607,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+552"
       }
     ],
@@ -3619,7 +3619,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+554"
       }
     ],
@@ -3631,7 +3631,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+556"
       }
     ],
@@ -3643,7 +3643,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+558"
       }
     ],
@@ -3655,7 +3655,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+560"
       }
     ],
@@ -3667,7 +3667,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+562"
       }
     ],
@@ -3679,7 +3679,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+564"
       }
     ],
@@ -3691,7 +3691,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+566"
       }
     ],
@@ -3703,7 +3703,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+568"
       }
     ],
@@ -3715,7 +3715,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+570"
       }
     ],
@@ -3727,7 +3727,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+572"
       }
     ],
@@ -3739,7 +3739,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+574"
       }
     ],
@@ -3751,7 +3751,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+576"
       }
     ],
@@ -3763,7 +3763,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+578"
       }
     ],
@@ -3775,7 +3775,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+580"
       }
     ],
@@ -3787,7 +3787,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+582"
       }
     ],
@@ -3799,7 +3799,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+584"
       }
     ],
@@ -3811,7 +3811,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+586"
       }
     ],
@@ -3823,7 +3823,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+588"
       }
     ],
@@ -3835,7 +3835,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+590"
       }
     ],
@@ -3852,7 +3852,7 @@
       },
       {
         "property": "(__pad[7] | startIndex[6:0])",
-        "type": "bit",
+        "type": "unsigned",
         "address": "globalStateBase+594"
       },
       {
@@ -3947,7 +3947,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+611"
       }
     ],
@@ -3959,7 +3959,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+613"
       }
     ],
@@ -3971,7 +3971,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+615"
       }
     ],
@@ -3983,7 +3983,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+617"
       }
     ],
@@ -3995,7 +3995,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+619"
       }
     ],
@@ -4007,7 +4007,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+621"
       }
     ],
@@ -4019,7 +4019,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+623"
       }
     ],
@@ -4031,7 +4031,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+625"
       }
     ],
@@ -4043,7 +4043,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+627"
       }
     ],
@@ -4055,7 +4055,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+629"
       }
     ],
@@ -4067,7 +4067,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+631"
       }
     ],
@@ -4079,7 +4079,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+633"
       }
     ],
@@ -4091,7 +4091,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+635"
       }
     ],
@@ -4103,7 +4103,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+637"
       }
     ],
@@ -4115,7 +4115,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+639"
       }
     ],
@@ -4127,7 +4127,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+641"
       }
     ],
@@ -4139,7 +4139,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+643"
       }
     ],
@@ -4151,7 +4151,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+645"
       }
     ],
@@ -4163,7 +4163,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+647"
       }
     ],
@@ -4175,7 +4175,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+649"
       }
     ],
@@ -4187,7 +4187,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+651"
       }
     ],
@@ -4199,7 +4199,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+653"
       }
     ],
@@ -4211,7 +4211,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+655"
       }
     ],
@@ -4223,7 +4223,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+657"
       }
     ],
@@ -4235,7 +4235,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+659"
       }
     ],
@@ -4247,7 +4247,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+661"
       }
     ],
@@ -4259,7 +4259,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+663"
       }
     ],
@@ -4271,7 +4271,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+665"
       }
     ],
@@ -4283,7 +4283,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+667"
       }
     ],
@@ -4295,7 +4295,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+669"
       }
     ],
@@ -4307,7 +4307,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+671"
       }
     ],
@@ -4319,7 +4319,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+673"
       }
     ],
@@ -4331,7 +4331,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+675"
       }
     ],
@@ -4343,7 +4343,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+677"
       }
     ],
@@ -4355,7 +4355,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+679"
       }
     ],
@@ -4367,7 +4367,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+681"
       }
     ],
@@ -4379,7 +4379,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+683"
       }
     ],
@@ -4391,7 +4391,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+685"
       }
     ],
@@ -4403,7 +4403,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+687"
       }
     ],
@@ -4415,7 +4415,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+689"
       }
     ],
@@ -4427,7 +4427,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+691"
       }
     ],
@@ -4439,7 +4439,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+693"
       }
     ],
@@ -4451,7 +4451,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+695"
       }
     ],
@@ -4463,7 +4463,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+697"
       }
     ],
@@ -4475,7 +4475,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+699"
       }
     ],
@@ -4487,7 +4487,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+701"
       }
     ],
@@ -4499,7 +4499,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+703"
       }
     ],
@@ -4511,7 +4511,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+705"
       }
     ],
@@ -4523,7 +4523,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+707"
       }
     ],
@@ -4535,7 +4535,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+709"
       }
     ],
@@ -4547,7 +4547,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+711"
       }
     ],
@@ -4559,7 +4559,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+713"
       }
     ],
@@ -4571,7 +4571,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+715"
       }
     ],
@@ -4583,7 +4583,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+717"
       }
     ],
@@ -4595,7 +4595,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+719"
       }
     ],
@@ -4607,7 +4607,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+721"
       }
     ],
@@ -4619,7 +4619,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+723"
       }
     ],
@@ -4631,7 +4631,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+725"
       }
     ],
@@ -4643,7 +4643,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+727"
       }
     ],
@@ -4655,7 +4655,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+729"
       }
     ],
@@ -4667,7 +4667,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+731"
       }
     ],
@@ -4679,7 +4679,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+733"
       }
     ],
@@ -4691,7 +4691,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+735"
       }
     ],
@@ -4703,7 +4703,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+737"
       }
     ],
@@ -4715,7 +4715,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+739"
       }
     ],
@@ -4727,7 +4727,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+741"
       }
     ],
@@ -4739,7 +4739,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+743"
       }
     ],
@@ -4751,7 +4751,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+745"
       }
     ],
@@ -4763,7 +4763,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+747"
       }
     ],
@@ -4775,7 +4775,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+749"
       }
     ],
@@ -4787,7 +4787,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+751"
       }
     ],
@@ -4799,7 +4799,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+753"
       }
     ],
@@ -4811,7 +4811,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+755"
       }
     ],
@@ -4823,7 +4823,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+757"
       }
     ],
@@ -4835,7 +4835,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+759"
       }
     ],
@@ -4847,7 +4847,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+761"
       }
     ],
@@ -4859,7 +4859,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+763"
       }
     ],
@@ -4871,7 +4871,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+765"
       }
     ],
@@ -4883,7 +4883,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+767"
       }
     ],
@@ -4895,7 +4895,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+769"
       }
     ],
@@ -4907,7 +4907,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+771"
       }
     ],
@@ -4919,7 +4919,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+773"
       }
     ],
@@ -4931,7 +4931,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+775"
       }
     ],
@@ -4943,7 +4943,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+777"
       }
     ],
@@ -4955,7 +4955,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+779"
       }
     ],
@@ -4967,7 +4967,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+781"
       }
     ],
@@ -4979,7 +4979,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+783"
       }
     ],
@@ -4991,7 +4991,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+785"
       }
     ],
@@ -5003,7 +5003,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+787"
       }
     ],
@@ -5015,7 +5015,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+789"
       }
     ],
@@ -5027,7 +5027,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+791"
       }
     ],
@@ -5039,7 +5039,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+793"
       }
     ],
@@ -5051,7 +5051,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+795"
       }
     ],
@@ -5063,7 +5063,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+797"
       }
     ],
@@ -5075,7 +5075,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+799"
       }
     ],
@@ -5087,7 +5087,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+801"
       }
     ],
@@ -5099,7 +5099,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+803"
       }
     ],
@@ -5111,7 +5111,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+805"
       }
     ],
@@ -5123,7 +5123,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+807"
       }
     ],
@@ -5135,7 +5135,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+809"
       }
     ],
@@ -5147,7 +5147,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+811"
       }
     ],
@@ -5159,7 +5159,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+813"
       }
     ],
@@ -5171,7 +5171,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+815"
       }
     ],
@@ -5183,7 +5183,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+817"
       }
     ],
@@ -5195,7 +5195,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+819"
       }
     ],
@@ -5207,7 +5207,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+821"
       }
     ],
@@ -5219,7 +5219,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+823"
       }
     ],
@@ -5231,7 +5231,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+825"
       }
     ],
@@ -5243,7 +5243,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+827"
       }
     ],
@@ -5255,7 +5255,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+829"
       }
     ],
@@ -5267,7 +5267,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+831"
       }
     ],
@@ -5279,7 +5279,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+833"
       }
     ],
@@ -5291,7 +5291,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+835"
       }
     ],
@@ -5303,7 +5303,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+837"
       }
     ],
@@ -5315,7 +5315,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+839"
       }
     ],
@@ -5327,7 +5327,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+841"
       }
     ],
@@ -5339,7 +5339,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+843"
       }
     ],
@@ -5351,7 +5351,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+845"
       }
     ],
@@ -5363,7 +5363,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+847"
       }
     ],
@@ -5375,7 +5375,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+849"
       }
     ],
@@ -5387,7 +5387,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+851"
       }
     ],
@@ -5399,7 +5399,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+853"
       }
     ],
@@ -5411,7 +5411,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+855"
       }
     ],
@@ -5423,7 +5423,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+857"
       }
     ],
@@ -5435,7 +5435,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+859"
       }
     ],
@@ -5447,7 +5447,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+861"
       }
     ],
@@ -5459,7 +5459,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+863"
       }
     ],
@@ -5471,7 +5471,7 @@
       },
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "dbit",
+        "type": "unsigned int",
         "address": "globalStateBase+865"
       }
     ],
@@ -5488,7 +5488,7 @@
       },
       {
         "property": "(__pad[7] | startIndex[6:0])",
-        "type": "bit",
+        "type": "unsigned",
         "address": "globalStateBase+869"
       },
       {
