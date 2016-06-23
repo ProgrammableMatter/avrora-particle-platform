@@ -123,6 +123,13 @@
         "address": 76
       }
     ],
+    "int16H-out": [
+      {
+        "property": "",
+        "type": "hex",
+        "address": 62
+      }
+    ],
     "TCNT1H": [
       {
         "property": "",
@@ -216,7 +223,7 @@
     ],
     "A.in": [
       {
-        "property": "(EAST_TX | EAST_SW | TP3 | PA4 | SOUTH_TX | STOUH_SW | TP2 | ERROR)",
+        "property": "(EAST_TX | EAST_SW | TP3 | PA4 | SOUTH_TX | SOUTH_SW | TP2 | ERROR)",
         "type": "bit",
         "address": 57
       }
@@ -331,13 +338,6 @@
         "property": "(C7 | C6 | C5 | NRTH_SW | C3 | TP1 | C1 | NRTH_TX)",
         "type": "bit",
         "address": 51
-      }
-    ],
-    "int16L-out": [
-      {
-        "property": "",
-        "type": "hex",
-        "address": 62
       }
     ],
     "ParticleState.node": [
@@ -2221,7 +2221,7 @@
       },
       {
         "property": "(__pad1[7] | endIndex[6:0])",
-        "type": "bit",
+        "type": "unsigned",
         "address": "globalStateBase+320"
       }
     ],
@@ -3857,7 +3857,7 @@
       },
       {
         "property": "(__pad1[7] | endIndex[6:0])",
-        "type": "bit",
+        "type": "unsigned",
         "address": "globalStateBase+595"
       }
     ],
@@ -5493,7 +5493,7 @@
       },
       {
         "property": "(__pad1[7] | endIndex[6:0])",
-        "type": "bit",
+        "type": "unsigned",
         "address": "globalStateBase+870"
       }
     ],
