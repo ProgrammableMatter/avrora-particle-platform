@@ -126,9 +126,13 @@ be used as type later on. Each list entry corresponds to one enum value:
 Properties are generally 1 byte width except of enums. Structures cannot be
 nested. Nested structures must be resolved byte by byte.
 
-**sizeofTypes:** not implemented/used yet
+**sizeofTypes:** not used yet
 
-### Short example (see full [example](https://github.com/ProgrammableMatter/avrora-particle-platform/blob/master/particleplatform/src/main/resources/ParticleStateDescription.json))
+### Short example
+One may use the auto [generator](https://github.com/ProgrammableMatter/software/tree/master/src/structs-to-json)
+written in python (see full [example](https://github.com/ProgrammableMatter/avrora-particle-platform/blob/master/particleplatform/src/main/resources/ParticleStateDescription.json)).
+
+
         {
           // define enums
           "enums": {
