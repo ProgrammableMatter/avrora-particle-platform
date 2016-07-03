@@ -32,7 +32,7 @@ public class EnumerationTestBase_2x1 {
     static private final Logger LOGGER = LoggerFactory.getLogger(EnumerationTestBase_2x1.class);
     protected static short numberOfRows = 2;
     protected static short numberOfColumns = 1;
-    protected static double simulationSeconds = 1E-3 * 15f;
+    protected static double simulationSeconds = 1E-3 * 30f;
     static private Options mainOptions = null;// = new Options();
     static private ByteArrayOutputStream systemOutBuffer = null;// = new ByteArrayOutputStream();
     @Rule
