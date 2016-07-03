@@ -484,7 +484,6 @@ public class ParticlePlatformTestUtils {
 
         Pattern linePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogLineRegexp);
         Pattern valuePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogIntValueRegexp);
-        StringBuilder bufferByte = new StringBuilder();
 
         try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
             String line;
@@ -503,17 +502,17 @@ public class ParticlePlatformTestUtils {
                         nodeIdToAddress.put(mcuId, nag);
                     }
                     String registerName = m.group(4).trim();
-                    if (registerName.compareTo("globalState.node.address.row") == 0) {
+                    if (registerName.compareTo("ParticleState.node.address.row") == 0) {
                         Matcher valueMatcher = valuePattern.matcher(m.group(5));
                         if (valueMatcher.matches()) {
                             nodeIdToAddress.get(mcuId).row = Integer.parseInt(valueMatcher.group(1));
                         }
-                    } else if (registerName.compareTo("globalState.node.address.column") == 0) {
+                    } else if (registerName.compareTo("ParticleState.node.address.column") == 0) {
                         Matcher valueMatcher = valuePattern.matcher(m.group(5));
                         if (valueMatcher.matches()) {
                             nodeIdToAddress.get(mcuId).column = Integer.parseInt(valueMatcher.group(1));
                         }
-                    } else if (registerName.compareTo("globalState.node.state") == 0) {
+                    } else if (registerName.compareTo("ParticleState.node.state") == 0) {
                         Matcher valueMatcher = valuePattern.matcher(m.group(5));
                         if (valueMatcher.matches()) {
                             nodeIdToAddress.get(mcuId).state = valueMatcher.group(1);
