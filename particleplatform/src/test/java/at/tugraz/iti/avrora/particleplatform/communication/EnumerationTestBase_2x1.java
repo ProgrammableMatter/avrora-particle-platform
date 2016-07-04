@@ -34,7 +34,7 @@ public class EnumerationTestBase_2x1 {
     protected static short numberOfColumns = 1;
     protected static double simulationSeconds = 1E-3 * 30f;
     static private Options mainOptions = null;// = new Options();
-    static private ByteArrayOutputStream systemOutBuffer = null;// = new ByteArrayOutputStream();
+    static private FileOutputStream systemOutBuffer = null;// = new ByteArrayOutputStream();
     @Rule
     public TestLogger testLogger = new TestLogger(LOGGER);
 
@@ -58,12 +58,12 @@ public class EnumerationTestBase_2x1 {
 
     @BeforeClass
     public static void startSimulation() throws NoSuchFieldException, IllegalAccessException, IOException {
-
-        mainOptions = new Options();
-        systemOutBuffer = new ByteArrayOutputStream();
-
+        String temporaryFileName = "/tmp/avrora-testcase.txt";
+        new File(temporaryFileName).delete();
+        systemOutBuffer = new FileOutputStream(temporaryFileName);
         System.setOut(new PrintStream(systemOutBuffer));
 
+        mainOptions = new Options();
         System.out.println("started tests with (" + numberOfRows + "x" + numberOfColumns + ") network " +
                 "dimension");
         LOGGER.debug("BEFORE CLASS: {}", EnumerationTestBase_2x1.class.getSimpleName());
@@ -82,20 +82,30 @@ public class EnumerationTestBase_2x1 {
         ParticlePlatformTestUtils.startSimulation(mainOptions, action);
 
         System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
-        systemOutBuffer.writeTo(System.out);
+        systemOutBuffer.flush();
+        systemOutBuffer.close();
+
+        File tempFile = new File(temporaryFileName);
+        BufferedReader foo = new BufferedReader(new FileReader(tempFile));
+
+        if (tempFile.length() < (1024 * 1024 * 3)) {
+            foo.lines().forEach(n -> {
+                System.out.println(n);
+            });
+        }
     }
 
     @Test
     public void test_simulate_MxN_network_without_attached_transmitting_communication_unit() throws
             Exception {
         int numberOfNodes = numberOfRows * numberOfColumns;
-        ParticlePlatformTestUtils.assertCorrectlyEnumeratedNodes(numberOfRows, numberOfColumns, numberOfNodes);
+        ParticlePlatformTestUtils.assertCorrectlyEnumeratedNodes(numberOfRows, numberOfColumns,
+                numberOfNodes);
     }
 
     @Test
     public void testMagicByte() {
-        ParticlePlatformTestUtils.testMagicByte("0");
-        ParticlePlatformTestUtils.testMagicByte("1");
+        ParticlePlatformTestUtils.testMagicBytes(numberOfColumns * numberOfRows);
     }
 
     @Test
