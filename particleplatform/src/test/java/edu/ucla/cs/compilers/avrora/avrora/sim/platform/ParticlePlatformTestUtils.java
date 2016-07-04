@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -323,20 +324,20 @@ public class ParticlePlatformTestUtils {
         }
     }
 
-    public static void testMagicByte(String nodeId) {
-        assertEquals((byte) (0xaa & 0xff), (byte) (ParticlePlatformTestUtils
-                .getAndAssertOneAndOnlyMagicByteWrite(nodeId) & 0xff));
+    public static void testMagicBytes(int numberNodes) {
+        IntStream.range(0, numberNodes).forEach(n -> {
+            ParticlePlatformTestUtils.testMagicByte(Integer.toString(n));
+        });
     }
 
     public static void assertCorrectlyEnumeratedNodes(short networkRows, int networkColumns, int
             numberOfNodes) throws Exception {
 
         Map<Integer, NodeAddressStateGlue> nodeIdAddresses = getLastNodeAddresses();
-        System.out.println("nodeId | address | state");
-        System.out.println("-------+---------+------");
+        System.out.println("nodeId | address | type | state");
+        System.out.println("-------+---------+------+-------");
         for (Map.Entry<Integer, NodeAddressStateGlue> entry : nodeIdAddresses.entrySet()) {
-            System.out.println(entry.getKey() + "      | (" + entry.getValue().row + "," + entry.getValue()
-                    .column + ")   | " + entry.getValue().state);
+            System.out.println(entry.getKey() + "      | (" + entry.getValue().row + "," + entry.getValue().column + ")   | " + entry.getValue().type + " | " + entry.getValue().state);
         }
         System.out.println();
 
@@ -357,6 +358,11 @@ public class ParticlePlatformTestUtils {
         }
         Assert.assertEquals("expected number of nodes [" + networkRows * networkColumns + "] but got [" +
                 nodeIdAddresses.size() + "]", networkRows * networkColumns, nodeIdAddresses.size());
+    }
+
+    private static void testMagicByte(String nodeId) {
+        assertEquals((byte) (0xaa & 0xff), (byte) (ParticlePlatformTestUtils
+                .getAndAssertOneAndOnlyMagicByteWrite(nodeId) & 0xff));
     }
 
     /**
@@ -517,6 +523,11 @@ public class ParticlePlatformTestUtils {
                         if (valueMatcher.matches()) {
                             nodeIdToAddress.get(mcuId).state = valueMatcher.group(1);
                         }
+                    } else if (registerName.compareTo("ParticleState.node.type") == 0) {
+                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                        if (valueMatcher.matches()) {
+                            nodeIdToAddress.get(mcuId).type = valueMatcher.group(1);
+                        }
                     }
                 } else {
                     Assert.assertTrue("line not parse-able: " + line, false);
@@ -542,5 +553,6 @@ public class ParticlePlatformTestUtils {
         int row = -1;
         int column = -1;
         String state = "<invalid>";
+        String type = "<invalid>";
     }
 }
