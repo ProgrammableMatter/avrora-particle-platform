@@ -37,36 +37,7 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
         PinEvent pinEvent = new PinEvent();
 //        synchronizer = new StepSynchronizer(pinEvent);
 //        synchronizer = new RippleSynchronizer(8, pinEvent);
-        synchronizer = new BarrierSynchronizer(1, pinEvent);
-    }
-
-    /**
-     * @return the one and only class instance
-     */
-    protected static ParticlePlatformNetworkConnector getInstance() {
-        return INSTANCE;
-    }
-
-    /**
-     * Maps a linear position to a rectangular matrix position. Rows come first, then columns. Example: Given
-     * a matrix with 4 rows; linear positions [0,1,2,3] are mapped to 1st column's indices [1,2,3,4] linear
-     * positions [4,5,6,7] are mapped to 2nd column's indices [5,6,7,8]
-     *
-     * @param position    the linear position to map starting with at index 0
-     * @param networkRows number of rows
-     * @return the (row x column) position starting with (1 x 1)
-     * @throws IllegalArgumentException if the mapped address (m x n) | (m > Short.MAX_VALUE ∨ n >
-     *                                  Short.MAX_VALUE ∨ )
-     */
-    protected static PlatformAddress linearToAddressMappingImpl(int position, short networkRows) {
-
-        int row = (position % networkRows + 1);
-        int column = (int) ((Math.floor((position) / networkRows) + 1));
-
-        if (row > Short.MAX_VALUE || column > Short.MAX_VALUE) {
-            throw new IllegalArgumentException();
-        }
-        return new PlatformAddress((short) row, (short) column);
+        synchronizer = new BarrierSynchronizer(8, pinEvent);
     }
 
     /**
@@ -139,6 +110,34 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
     }
 
     /**
+     * Disconnects all connections from/to the platform.
+     *
+     * @param platform the platform to detach from network
+     */
+    @Override
+    public void disconnectConnections(ParticlePlatform platform) {
+
+        if (particlePlatforms.contains(platform)) {
+            logger.debug("disconnecting platform ({},{}) from network", platform.getAddress().getRow(),
+                    platform.getAddress().getColumn());
+            platform.detachSouthNode();
+            platform.detachEastNode();
+            particlePlatforms.remove(platform);
+        }
+    }
+
+    @Override
+    public Synchronizer getSynchronizer() {
+        return synchronizer;
+    }
+
+    @Override
+    public void setNetworkDimension(short rows, short columns) {
+        this.maxNetworkRows = rows;
+        this.maxNetworkColumns = columns;
+    }
+
+    /**
      * Fits a linear collection to a matrix manner (row x column) mapping.
      *
      * @param platforms linear list of platforms
@@ -174,34 +173,6 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
     }
 
     /**
-     * Disconnects all connections from/to the platform.
-     *
-     * @param platform the platform to detach from network
-     */
-    @Override
-    public void disconnectConnections(ParticlePlatform platform) {
-
-        if (particlePlatforms.contains(platform)) {
-            logger.debug("disconnecting platform ({},{}) from network", platform.getAddress().getRow(),
-                    platform.getAddress().getColumn());
-            platform.detachSouthNode();
-            platform.detachEastNode();
-            particlePlatforms.remove(platform);
-        }
-    }
-
-    @Override
-    public Synchronizer getSynchronizer() {
-        return synchronizer;
-    }
-
-    @Override
-    public void setNetworkDimension(short rows, short columns) {
-        this.maxNetworkRows = rows;
-        this.maxNetworkColumns = columns;
-    }
-
-    /**
      * Propagates events from neighbours to local node.
      *
      * @author Raoul Rubien
@@ -213,5 +184,34 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
                 node.propagateSignals();
             }
         }
+    }
+
+    /**
+     * @return the one and only class instance
+     */
+    protected static ParticlePlatformNetworkConnector getInstance() {
+        return INSTANCE;
+    }
+
+    /**
+     * Maps a linear position to a rectangular matrix position. Rows come first, then columns. Example: Given
+     * a matrix with 4 rows; linear positions [0,1,2,3] are mapped to 1st column's indices [1,2,3,4] linear
+     * positions [4,5,6,7] are mapped to 2nd column's indices [5,6,7,8]
+     *
+     * @param position    the linear position to map starting with at index 0
+     * @param networkRows number of rows
+     * @return the (row x column) position starting with (1 x 1)
+     * @throws IllegalArgumentException if the mapped address (m x n) | (m > Short.MAX_VALUE ∨ n >
+     *                                  Short.MAX_VALUE ∨ )
+     */
+    protected static PlatformAddress linearToAddressMappingImpl(int position, short networkRows) {
+
+        int row = (position % networkRows + 1);
+        int column = (int) ((Math.floor((position) / networkRows) + 1));
+
+        if (row > Short.MAX_VALUE || column > Short.MAX_VALUE) {
+            throw new IllegalArgumentException();
+        }
+        return new PlatformAddress((short) row, (short) column);
     }
 }
