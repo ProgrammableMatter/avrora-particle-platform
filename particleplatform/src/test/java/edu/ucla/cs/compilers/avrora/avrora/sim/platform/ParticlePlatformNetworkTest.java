@@ -92,14 +92,14 @@ public class ParticlePlatformNetworkTest {
         }
 
         for (TestableOnParticleStateChangeWatch.NameValueGlue nameValueGlue : list) {
-            if (nameValueGlue.getName().compareTo("globalState.node.state") == 0) {
+            if (nameValueGlue.getName().compareTo("ParticleState.node.state") == 0) {
                 nodeStateToTypeGlueMap.get(nameValueGlue.getPlatformId()).nodeState = nameValueGlue
                         .getReadableValue();
                 nodeStateToTypeGlueMap.get(nameValueGlue.getPlatformId()).address =
                         ParticlePlatformNetworkConnector.linearToAddressMappingImpl(nameValueGlue
                                 .getPlatformId(), rows).toString();
             }
-            if (nameValueGlue.getName().compareTo("globalState.node.type") == 0) {
+            if (nameValueGlue.getName().compareTo("ParticleState.node.type") == 0) {
                 nodeStateToTypeGlueMap.get(nameValueGlue.getPlatformId()).nodeType = nameValueGlue
                         .getReadableValue();
                 nodeStateToTypeGlueMap.get(nameValueGlue.getPlatformId()).address =
@@ -132,10 +132,7 @@ public class ParticlePlatformNetworkTest {
 
     @Test
     public void testMagicByte() {
-        ParticlePlatformTestUtils.testMagicByte("0");
-        ParticlePlatformTestUtils.testMagicByte("1");
-        ParticlePlatformTestUtils.testMagicByte("2");
-        ParticlePlatformTestUtils.testMagicByte("3");
+        ParticlePlatformTestUtils.testMagicBytes(rows * columns);
     }
 
     @Test
