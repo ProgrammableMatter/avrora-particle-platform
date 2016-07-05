@@ -8,8 +8,14 @@
  * Raoul Rubien
  */
 
-package at.tugraz.iti.avrora.particleplatform.communication;
+/*
+ * Copyright (c) 2016
+ * Raoul Rubien
+ */
 
+package at.tugraz.iti.particleplatform.protocol.enumeration;
+
+import at.tugraz.iti.avrora.particleplatform.communication.TransmissionTest;
 import edu.ucla.cs.compilers.avrora.avrora.TestLogger;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.ParticleLogSink;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformNetworkConnector;
