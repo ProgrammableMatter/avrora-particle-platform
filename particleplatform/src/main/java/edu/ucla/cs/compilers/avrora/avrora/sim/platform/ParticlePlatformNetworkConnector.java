@@ -37,7 +37,7 @@ public class ParticlePlatformNetworkConnector implements WiredRectangularNetwork
         PinEvent pinEvent = new PinEvent();
 //        synchronizer = new StepSynchronizer(pinEvent);
 //        synchronizer = new RippleSynchronizer(8, pinEvent);
-        synchronizer = new BarrierSynchronizer(8, pinEvent);
+        synchronizer = new BarrierSynchronizer(4, pinEvent);
     }
 
     /**
