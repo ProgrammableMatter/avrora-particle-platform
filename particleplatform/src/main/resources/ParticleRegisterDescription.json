@@ -41,6 +41,10 @@
       "STATE_TYPE_ENUMERATING_SOUTH_NEIGHBOUR",
       "STATE_TYPE_ENUMERATING_SOUTH_NEIGHBOUR_DONE",
       "STATE_TYPE_ENUMERATING_NEIGHBOURS_DONE",
+      "STATE_TYPE_ANNOUNCE_NETWORK_GEOMETRY",
+      "STATE_TYPE_ANNOUNCE_NETWORK_GEOMETRY_RELAY",
+      "STATE_TYPE_ANNOUNCE_NETWORK_GEOMETRY_RELAY_DONE",
+      "STATE_TYPE_ANNOUNCE_NETWORK_GEOMETRY_DONE",
       "STATE_TYPE_SYNC_EAST_NEIGHBOUR",
       "STATE_TYPE_SYNC_EAST_NEIGHBOUR_DONE",
       "STATE_TYPE_SYNC_SOUTH_NEIGHBOUR",
@@ -57,7 +61,6 @@
       "PACKAGE_HEADER_ID_TYPE_FORWARDING_OFF",
       "PACKAGE_HEADER_ID_TYPE_NETWORK_GEOMETRY_DISCLOSE",
       "PACKAGE_HEADER_ID_TYPE_NETWORK_GEOMETRY_RESPONSE",
-      "PACKAGE_HEADER_ID_TYPE_NETWORK_GEOMETRY_REQUEST",
       "PACKAGE_HEADER_ID_TYPE_RESET",
       "PACKAGE_HEADER_ID_TYPE_SYNC_TIME",
       "PACKAGE_HEADER_ID_TYPE_PING_REQUEST",
@@ -5231,11 +5234,30 @@
         "address": "globalStateBase+836"
       }
     ],
+    "ParticleState.protocol.networkGeometry": [
+      {
+        "property": "rows",
+        "type": "unsigned",
+        "address": "globalStateBase+837"
+      },
+      {
+        "property": "columns",
+        "type": "unsigned",
+        "address": "globalStateBase+838"
+      }
+    ],
+    "ParticleState.protocol": [
+      {
+        "property": "(__pad[7:1] | hasNetworkGeometryDiscoveryBreadCrumb[0])",
+        "type": "bit",
+        "address": "globalStateBase+839"
+      }
+    ],
     "ParticleState": [
       {
         "property": "magicEndByte",
         "type": "hex",
-        "address": "globalStateBase+837"
+        "address": "globalStateBase+840"
       }
     ]
   }
