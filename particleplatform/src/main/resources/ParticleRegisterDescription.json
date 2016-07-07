@@ -2656,7 +2656,7 @@
     ],
     "ParticleState.protocol": [
       {
-        "property": "(__pad[7:1] | hasNetworkGeometryDiscoveryBreadCrumb[0])",
+        "property": "(__pad[7:2] | isBoradcastEnabled[1] | hasNetworkGeometryDiscoveryBreadCrumb[0])",
         "type": "bit",
         "address": "globalStateBase+407"
       }
