@@ -2085,80 +2085,80 @@
         "address": "globalStateBase+306"
       }
     ],
-    "Particle.periphery": [
-      {
-        "property": "loopCount",
-        "type": "unsigned",
-        "address": "globalStateBase+307"
-      }
-    ],
     "Particle.protocol.ports.north": [
       {
         "property": "initiatorState",
         "type": "CommunicationInitiatorStateTypes",
-        "address": "globalStateBase+308"
+        "address": "globalStateBase+307"
       },
       {
         "property": "receptionistState",
         "type": "CommunicationReceptionistStateTypes",
-        "address": "globalStateBase+310"
+        "address": "globalStateBase+309"
       },
       {
         "property": "stateTimeoutCounter",
         "type": "hex",
-        "address": "globalStateBase+312"
+        "address": "globalStateBase+311"
       }
     ],
     "Particle.protocol.ports.east": [
       {
         "property": "initiatorState",
         "type": "CommunicationInitiatorStateTypes",
-        "address": "globalStateBase+313"
+        "address": "globalStateBase+312"
       },
       {
         "property": "receptionistState",
         "type": "CommunicationReceptionistStateTypes",
-        "address": "globalStateBase+315"
+        "address": "globalStateBase+314"
       },
       {
         "property": "stateTimeoutCounter",
         "type": "hex",
-        "address": "globalStateBase+317"
+        "address": "globalStateBase+316"
       }
     ],
     "Particle.protocol.ports.south": [
       {
         "property": "initiatorState",
         "type": "CommunicationInitiatorStateTypes",
-        "address": "globalStateBase+318"
+        "address": "globalStateBase+317"
       },
       {
         "property": "receptionistState",
         "type": "CommunicationReceptionistStateTypes",
-        "address": "globalStateBase+320"
+        "address": "globalStateBase+319"
       },
       {
         "property": "stateTimeoutCounter",
         "type": "hex",
-        "address": "globalStateBase+322"
+        "address": "globalStateBase+321"
       }
     ],
     "Particle.protocol.networkGeometry": [
       {
         "property": "rows",
         "type": "unsigned",
-        "address": "globalStateBase+323"
+        "address": "globalStateBase+322"
       },
       {
         "property": "columns",
         "type": "unsigned",
-        "address": "globalStateBase+324"
+        "address": "globalStateBase+323"
       }
     ],
     "Particle.protocol": [
       {
         "property": "(__pad[7:3] | isSimultaneousTransmissionEnabled[2] | isBroadcastEnabled[1] | hasNetworkGeometryDiscoveryBreadCrumb[0])",
         "type": "bit",
+        "address": "globalStateBase+324"
+      }
+    ],
+    "Particle.periphery": [
+      {
+        "property": "loopCount",
+        "type": "unsigned",
         "address": "globalStateBase+325"
       }
     ],
