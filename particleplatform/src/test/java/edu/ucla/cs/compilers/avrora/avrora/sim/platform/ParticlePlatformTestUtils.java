@@ -183,7 +183,7 @@ public class ParticlePlatformTestUtils {
         Pattern valuePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogHexByteValueRegexp);
         StringBuilder bufferByte = new StringBuilder();
 
-        StringBuilder registerNameOfInterest = new StringBuilder("ParticleState.communication.ports.");
+        StringBuilder registerNameOfInterest = new StringBuilder("Particle.communication.ports.");
 
         // globalState.ports.rx.north.buffer
         if (receptionBuffer) {
@@ -423,7 +423,7 @@ public class ParticlePlatformTestUtils {
         Pattern linePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogLineRegexp);
         Pattern valuePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogHexByteValueRegexp);
 
-        String registerNameOfInterest = new String("ParticleState.magicEndByte");
+        String registerNameOfInterest = new String("Particle.magicEndByte");
 
         byte lastValue = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
@@ -508,22 +508,22 @@ public class ParticlePlatformTestUtils {
                         nodeIdToAddress.put(mcuId, nag);
                     }
                     String registerName = m.group(4).trim();
-                    if (registerName.compareTo("ParticleState.node.address.row") == 0) {
+                    if (registerName.compareTo("Particle.node.address.row") == 0) {
                         Matcher valueMatcher = valuePattern.matcher(m.group(5));
                         if (valueMatcher.matches()) {
                             nodeIdToAddress.get(mcuId).row = Integer.parseInt(valueMatcher.group(1));
                         }
-                    } else if (registerName.compareTo("ParticleState.node.address.column") == 0) {
+                    } else if (registerName.compareTo("Particle.node.address.column") == 0) {
                         Matcher valueMatcher = valuePattern.matcher(m.group(5));
                         if (valueMatcher.matches()) {
                             nodeIdToAddress.get(mcuId).column = Integer.parseInt(valueMatcher.group(1));
                         }
-                    } else if (registerName.compareTo("ParticleState.node.state") == 0) {
+                    } else if (registerName.compareTo("Particle.node.state") == 0) {
                         Matcher valueMatcher = valuePattern.matcher(m.group(5));
                         if (valueMatcher.matches()) {
                             nodeIdToAddress.get(mcuId).state = valueMatcher.group(1);
                         }
-                    } else if (registerName.compareTo("ParticleState.node.type") == 0) {
+                    } else if (registerName.compareTo("Particle.node.type") == 0) {
                         Matcher valueMatcher = valuePattern.matcher(m.group(5));
                         if (valueMatcher.matches()) {
                             nodeIdToAddress.get(mcuId).type = valueMatcher.group(1);
