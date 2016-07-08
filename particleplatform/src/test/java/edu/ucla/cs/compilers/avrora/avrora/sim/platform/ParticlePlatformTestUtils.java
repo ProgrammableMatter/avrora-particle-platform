@@ -183,7 +183,7 @@ public class ParticlePlatformTestUtils {
         Pattern valuePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogHexByteValueRegexp);
         StringBuilder bufferByte = new StringBuilder();
 
-        StringBuilder registerNameOfInterest = new StringBuilder("ParticleState.ports.");
+        StringBuilder registerNameOfInterest = new StringBuilder("ParticleState.communication.ports.");
 
         // globalState.ports.rx.north.buffer
         if (receptionBuffer) {
