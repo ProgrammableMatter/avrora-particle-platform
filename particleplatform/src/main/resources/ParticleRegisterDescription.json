@@ -695,31 +695,26 @@
         "address": "globalStateBase+64"
       }
     ],
+    "Particle.communication.ports.tx": [
+      {
+        "property": "simultaneous[0]",
+        "type": "hex16",
+        "address": "globalStateBase+65"
+      }
+    ],
     "Particle.communication.ports.rx.north.snapshotsBuffer.decoderStates": [
       {
         "property": "decodingState",
         "type": "ManchesterDecodingStateType",
-        "address": "globalStateBase+65"
+        "address": "globalStateBase+67"
       },
       {
         "property": "(__pad[7:1] | phaseState[0])",
         "type": "bit",
-        "address": "globalStateBase+67"
+        "address": "globalStateBase+69"
       }
     ],
     "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[0]": [
-      {
-        "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
-        "type": "bit",
-        "address": "globalStateBase+69"
-      },
-      {
-        "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "unsigned int",
-        "address": "globalStateBase+68"
-      }
-    ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[1]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -731,7 +726,7 @@
         "address": "globalStateBase+70"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[2]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[1]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -743,7 +738,7 @@
         "address": "globalStateBase+72"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[3]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[2]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -755,7 +750,7 @@
         "address": "globalStateBase+74"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[4]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[3]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -767,7 +762,7 @@
         "address": "globalStateBase+76"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[5]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[4]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -779,7 +774,7 @@
         "address": "globalStateBase+78"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[6]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[5]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -791,7 +786,7 @@
         "address": "globalStateBase+80"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[7]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[6]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -803,7 +798,7 @@
         "address": "globalStateBase+82"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[8]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[7]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -815,7 +810,7 @@
         "address": "globalStateBase+84"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[9]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[8]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -827,7 +822,7 @@
         "address": "globalStateBase+86"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[10]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[9]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -839,7 +834,7 @@
         "address": "globalStateBase+88"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[11]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[10]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -851,7 +846,7 @@
         "address": "globalStateBase+90"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[12]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[11]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -863,7 +858,7 @@
         "address": "globalStateBase+92"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[13]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[12]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -875,7 +870,7 @@
         "address": "globalStateBase+94"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[14]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[13]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -887,7 +882,7 @@
         "address": "globalStateBase+96"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[15]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[14]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -899,7 +894,7 @@
         "address": "globalStateBase+98"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[16]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[15]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -911,7 +906,7 @@
         "address": "globalStateBase+100"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[17]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[16]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -923,7 +918,7 @@
         "address": "globalStateBase+102"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[18]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[17]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -935,7 +930,7 @@
         "address": "globalStateBase+104"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[19]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[18]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -947,7 +942,7 @@
         "address": "globalStateBase+106"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[20]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[19]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -959,7 +954,7 @@
         "address": "globalStateBase+108"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[21]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[20]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -971,7 +966,7 @@
         "address": "globalStateBase+110"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[22]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[21]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -983,7 +978,7 @@
         "address": "globalStateBase+112"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[23]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[22]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -995,7 +990,7 @@
         "address": "globalStateBase+114"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[24]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[23]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1007,7 +1002,7 @@
         "address": "globalStateBase+116"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[25]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[24]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1019,7 +1014,7 @@
         "address": "globalStateBase+118"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[26]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[25]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1031,7 +1026,7 @@
         "address": "globalStateBase+120"
       }
     ],
-    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[27]": [
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[26]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1043,144 +1038,144 @@
         "address": "globalStateBase+122"
       }
     ],
+    "Particle.communication.ports.rx.north.snapshotsBuffer.snapshots[27]": [
+      {
+        "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
+        "type": "bit",
+        "address": "globalStateBase+125"
+      },
+      {
+        "property": "(timerValue[15:1] | isRisingEdge[0])",
+        "type": "unsigned int",
+        "address": "globalStateBase+124"
+      }
+    ],
     "Particle.communication.ports.rx.north.snapshotsBuffer": [
       {
         "property": "temporarySnapshotTimerValue[1]",
         "type": "unsigned",
-        "address": "globalStateBase+125"
+        "address": "globalStateBase+127"
       },
       {
         "property": "temporarySnapshotTimerValue",
         "type": "unsigned int",
-        "address": "globalStateBase+124"
+        "address": "globalStateBase+126"
       },
       {
         "property": "(__pad[7] | startIndex[6:0])",
         "type": "unsigned",
-        "address": "globalStateBase+126"
+        "address": "globalStateBase+128"
       },
       {
         "property": "(__pad1[7] | endIndex[6:0])",
         "type": "unsigned",
-        "address": "globalStateBase+127"
+        "address": "globalStateBase+129"
       },
       {
         "property": "temporaryTxStartSnapshotTimerValue[1]",
         "type": "unsigned",
-        "address": "globalStateBase+129"
+        "address": "globalStateBase+131"
       },
       {
         "property": "temporaryTxStartSnapshotTimerValue",
         "type": "unsigned int",
-        "address": "globalStateBase+128"
+        "address": "globalStateBase+130"
       },
       {
         "property": "temporaryTxStopSnapshotTimerValue[1]",
         "type": "unsigned",
-        "address": "globalStateBase+131"
+        "address": "globalStateBase+133"
       },
       {
         "property": "temporaryTxStopSnapshotTimerValue",
         "type": "unsigned int",
-        "address": "globalStateBase+130"
+        "address": "globalStateBase+132"
       },
       {
         "property": "numberHalfCyclesPassed",
         "type": "hex",
-        "address": "globalStateBase+132"
+        "address": "globalStateBase+134"
       }
     ],
     "Particle.communication.ports.rx.north.buffer": [
       {
         "property": "bytes[0]",
         "type": "hex",
-        "address": "globalStateBase+133"
+        "address": "globalStateBase+135"
       },
       {
         "property": "bytes[1]",
         "type": "hex",
-        "address": "globalStateBase+134"
+        "address": "globalStateBase+136"
       },
       {
         "property": "bytes[2]",
         "type": "hex",
-        "address": "globalStateBase+135"
+        "address": "globalStateBase+137"
       },
       {
         "property": "bytes[3]",
         "type": "hex",
-        "address": "globalStateBase+136"
+        "address": "globalStateBase+138"
       },
       {
         "property": "bytes[4]",
         "type": "hex",
-        "address": "globalStateBase+137"
+        "address": "globalStateBase+139"
       },
       {
         "property": "bytes[5]",
         "type": "hex",
-        "address": "globalStateBase+138"
+        "address": "globalStateBase+140"
       },
       {
         "property": "bytes[6]",
         "type": "hex",
-        "address": "globalStateBase+139"
+        "address": "globalStateBase+141"
       }
     ],
     "Particle.communication.ports.rx.north.buffer.pointer": [
       {
         "property": "(__pad[7:3] | byteNumber[2:0])",
         "type": "bit",
-        "address": "globalStateBase+140"
+        "address": "globalStateBase+142"
       },
       {
         "property": "bitMask",
         "type": "bit",
-        "address": "globalStateBase+141"
+        "address": "globalStateBase+143"
       }
     ],
     "Particle.communication.ports.rx.north": [
       {
         "property": "receptionOffset[1]",
         "type": "unsigned",
-        "address": "globalStateBase+143"
+        "address": "globalStateBase+145"
       },
       {
         "property": "receptionOffset",
         "type": "unsigned int",
-        "address": "globalStateBase+142"
+        "address": "globalStateBase+144"
       },
       {
         "property": "(__pad[7:2] | isDataBuffered[1] | isOverflowed[0])",
         "type": "bit",
-        "address": "globalStateBase+144"
+        "address": "globalStateBase+146"
       }
     ],
     "Particle.communication.ports.rx.east.snapshotsBuffer.decoderStates": [
       {
         "property": "decodingState",
         "type": "ManchesterDecodingStateType",
-        "address": "globalStateBase+145"
+        "address": "globalStateBase+147"
       },
       {
         "property": "(__pad[7:1] | phaseState[0])",
         "type": "bit",
-        "address": "globalStateBase+147"
+        "address": "globalStateBase+149"
       }
     ],
     "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[0]": [
-      {
-        "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
-        "type": "bit",
-        "address": "globalStateBase+149"
-      },
-      {
-        "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "unsigned int",
-        "address": "globalStateBase+148"
-      }
-    ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[1]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1192,7 +1187,7 @@
         "address": "globalStateBase+150"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[2]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[1]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1204,7 +1199,7 @@
         "address": "globalStateBase+152"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[3]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[2]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1216,7 +1211,7 @@
         "address": "globalStateBase+154"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[4]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[3]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1228,7 +1223,7 @@
         "address": "globalStateBase+156"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[5]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[4]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1240,7 +1235,7 @@
         "address": "globalStateBase+158"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[6]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[5]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1252,7 +1247,7 @@
         "address": "globalStateBase+160"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[7]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[6]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1264,7 +1259,7 @@
         "address": "globalStateBase+162"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[8]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[7]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1276,7 +1271,7 @@
         "address": "globalStateBase+164"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[9]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[8]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1288,7 +1283,7 @@
         "address": "globalStateBase+166"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[10]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[9]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1300,7 +1295,7 @@
         "address": "globalStateBase+168"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[11]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[10]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1312,7 +1307,7 @@
         "address": "globalStateBase+170"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[12]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[11]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1324,7 +1319,7 @@
         "address": "globalStateBase+172"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[13]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[12]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1336,7 +1331,7 @@
         "address": "globalStateBase+174"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[14]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[13]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1348,7 +1343,7 @@
         "address": "globalStateBase+176"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[15]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[14]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1360,7 +1355,7 @@
         "address": "globalStateBase+178"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[16]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[15]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1372,7 +1367,7 @@
         "address": "globalStateBase+180"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[17]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[16]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1384,7 +1379,7 @@
         "address": "globalStateBase+182"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[18]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[17]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1396,7 +1391,7 @@
         "address": "globalStateBase+184"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[19]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[18]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1408,7 +1403,7 @@
         "address": "globalStateBase+186"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[20]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[19]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1420,7 +1415,7 @@
         "address": "globalStateBase+188"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[21]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[20]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1432,7 +1427,7 @@
         "address": "globalStateBase+190"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[22]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[21]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1444,7 +1439,7 @@
         "address": "globalStateBase+192"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[23]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[22]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1456,7 +1451,7 @@
         "address": "globalStateBase+194"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[24]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[23]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1468,7 +1463,7 @@
         "address": "globalStateBase+196"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[25]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[24]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1480,7 +1475,7 @@
         "address": "globalStateBase+198"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[26]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[25]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1492,7 +1487,7 @@
         "address": "globalStateBase+200"
       }
     ],
-    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[27]": [
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[26]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1504,144 +1499,144 @@
         "address": "globalStateBase+202"
       }
     ],
+    "Particle.communication.ports.rx.east.snapshotsBuffer.snapshots[27]": [
+      {
+        "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
+        "type": "bit",
+        "address": "globalStateBase+205"
+      },
+      {
+        "property": "(timerValue[15:1] | isRisingEdge[0])",
+        "type": "unsigned int",
+        "address": "globalStateBase+204"
+      }
+    ],
     "Particle.communication.ports.rx.east.snapshotsBuffer": [
       {
         "property": "temporarySnapshotTimerValue[1]",
         "type": "unsigned",
-        "address": "globalStateBase+205"
+        "address": "globalStateBase+207"
       },
       {
         "property": "temporarySnapshotTimerValue",
         "type": "unsigned int",
-        "address": "globalStateBase+204"
+        "address": "globalStateBase+206"
       },
       {
         "property": "(__pad[7] | startIndex[6:0])",
         "type": "unsigned",
-        "address": "globalStateBase+206"
+        "address": "globalStateBase+208"
       },
       {
         "property": "(__pad1[7] | endIndex[6:0])",
         "type": "unsigned",
-        "address": "globalStateBase+207"
+        "address": "globalStateBase+209"
       },
       {
         "property": "temporaryTxStartSnapshotTimerValue[1]",
         "type": "unsigned",
-        "address": "globalStateBase+209"
+        "address": "globalStateBase+211"
       },
       {
         "property": "temporaryTxStartSnapshotTimerValue",
         "type": "unsigned int",
-        "address": "globalStateBase+208"
+        "address": "globalStateBase+210"
       },
       {
         "property": "temporaryTxStopSnapshotTimerValue[1]",
         "type": "unsigned",
-        "address": "globalStateBase+211"
+        "address": "globalStateBase+213"
       },
       {
         "property": "temporaryTxStopSnapshotTimerValue",
         "type": "unsigned int",
-        "address": "globalStateBase+210"
+        "address": "globalStateBase+212"
       },
       {
         "property": "numberHalfCyclesPassed",
         "type": "hex",
-        "address": "globalStateBase+212"
+        "address": "globalStateBase+214"
       }
     ],
     "Particle.communication.ports.rx.east.buffer": [
       {
         "property": "bytes[0]",
         "type": "hex",
-        "address": "globalStateBase+213"
+        "address": "globalStateBase+215"
       },
       {
         "property": "bytes[1]",
         "type": "hex",
-        "address": "globalStateBase+214"
+        "address": "globalStateBase+216"
       },
       {
         "property": "bytes[2]",
         "type": "hex",
-        "address": "globalStateBase+215"
+        "address": "globalStateBase+217"
       },
       {
         "property": "bytes[3]",
         "type": "hex",
-        "address": "globalStateBase+216"
+        "address": "globalStateBase+218"
       },
       {
         "property": "bytes[4]",
         "type": "hex",
-        "address": "globalStateBase+217"
+        "address": "globalStateBase+219"
       },
       {
         "property": "bytes[5]",
         "type": "hex",
-        "address": "globalStateBase+218"
+        "address": "globalStateBase+220"
       },
       {
         "property": "bytes[6]",
         "type": "hex",
-        "address": "globalStateBase+219"
+        "address": "globalStateBase+221"
       }
     ],
     "Particle.communication.ports.rx.east.buffer.pointer": [
       {
         "property": "(__pad[7:3] | byteNumber[2:0])",
         "type": "bit",
-        "address": "globalStateBase+220"
+        "address": "globalStateBase+222"
       },
       {
         "property": "bitMask",
         "type": "bit",
-        "address": "globalStateBase+221"
+        "address": "globalStateBase+223"
       }
     ],
     "Particle.communication.ports.rx.east": [
       {
         "property": "receptionOffset[1]",
         "type": "unsigned",
-        "address": "globalStateBase+223"
+        "address": "globalStateBase+225"
       },
       {
         "property": "receptionOffset",
         "type": "unsigned int",
-        "address": "globalStateBase+222"
+        "address": "globalStateBase+224"
       },
       {
         "property": "(__pad[7:2] | isDataBuffered[1] | isOverflowed[0])",
         "type": "bit",
-        "address": "globalStateBase+224"
+        "address": "globalStateBase+226"
       }
     ],
     "Particle.communication.ports.rx.south.snapshotsBuffer.decoderStates": [
       {
         "property": "decodingState",
         "type": "ManchesterDecodingStateType",
-        "address": "globalStateBase+225"
+        "address": "globalStateBase+227"
       },
       {
         "property": "(__pad[7:1] | phaseState[0])",
         "type": "bit",
-        "address": "globalStateBase+227"
+        "address": "globalStateBase+229"
       }
     ],
     "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[0]": [
-      {
-        "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
-        "type": "bit",
-        "address": "globalStateBase+229"
-      },
-      {
-        "property": "(timerValue[15:1] | isRisingEdge[0])",
-        "type": "unsigned int",
-        "address": "globalStateBase+228"
-      }
-    ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[1]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1653,7 +1648,7 @@
         "address": "globalStateBase+230"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[2]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[1]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1665,7 +1660,7 @@
         "address": "globalStateBase+232"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[3]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[2]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1677,7 +1672,7 @@
         "address": "globalStateBase+234"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[4]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[3]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1689,7 +1684,7 @@
         "address": "globalStateBase+236"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[5]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[4]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1701,7 +1696,7 @@
         "address": "globalStateBase+238"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[6]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[5]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1713,7 +1708,7 @@
         "address": "globalStateBase+240"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[7]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[6]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1725,7 +1720,7 @@
         "address": "globalStateBase+242"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[8]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[7]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1737,7 +1732,7 @@
         "address": "globalStateBase+244"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[9]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[8]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1749,7 +1744,7 @@
         "address": "globalStateBase+246"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[10]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[9]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1761,7 +1756,7 @@
         "address": "globalStateBase+248"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[11]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[10]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1773,7 +1768,7 @@
         "address": "globalStateBase+250"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[12]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[11]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1785,7 +1780,7 @@
         "address": "globalStateBase+252"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[13]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[12]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1797,7 +1792,7 @@
         "address": "globalStateBase+254"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[14]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[13]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1809,7 +1804,7 @@
         "address": "globalStateBase+256"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[15]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[14]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1821,7 +1816,7 @@
         "address": "globalStateBase+258"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[16]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[15]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1833,7 +1828,7 @@
         "address": "globalStateBase+260"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[17]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[16]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1845,7 +1840,7 @@
         "address": "globalStateBase+262"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[18]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[17]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1857,7 +1852,7 @@
         "address": "globalStateBase+264"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[19]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[18]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1869,7 +1864,7 @@
         "address": "globalStateBase+266"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[20]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[19]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1881,7 +1876,7 @@
         "address": "globalStateBase+268"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[21]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[20]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1893,7 +1888,7 @@
         "address": "globalStateBase+270"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[22]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[21]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1905,7 +1900,7 @@
         "address": "globalStateBase+272"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[23]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[22]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1917,7 +1912,7 @@
         "address": "globalStateBase+274"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[24]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[23]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1929,7 +1924,7 @@
         "address": "globalStateBase+276"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[25]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[24]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1941,7 +1936,7 @@
         "address": "globalStateBase+278"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[26]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[25]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1953,7 +1948,7 @@
         "address": "globalStateBase+280"
       }
     ],
-    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[27]": [
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[26]": [
       {
         "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
         "type": "bit",
@@ -1965,201 +1960,213 @@
         "address": "globalStateBase+282"
       }
     ],
+    "Particle.communication.ports.rx.south.snapshotsBuffer.snapshots[27]": [
+      {
+        "property": "(timerValue[15:1] | isRisingEdge[0])[1]",
+        "type": "bit",
+        "address": "globalStateBase+285"
+      },
+      {
+        "property": "(timerValue[15:1] | isRisingEdge[0])",
+        "type": "unsigned int",
+        "address": "globalStateBase+284"
+      }
+    ],
     "Particle.communication.ports.rx.south.snapshotsBuffer": [
       {
         "property": "temporarySnapshotTimerValue[1]",
         "type": "unsigned",
-        "address": "globalStateBase+285"
+        "address": "globalStateBase+287"
       },
       {
         "property": "temporarySnapshotTimerValue",
         "type": "unsigned int",
-        "address": "globalStateBase+284"
+        "address": "globalStateBase+286"
       },
       {
         "property": "(__pad[7] | startIndex[6:0])",
         "type": "unsigned",
-        "address": "globalStateBase+286"
+        "address": "globalStateBase+288"
       },
       {
         "property": "(__pad1[7] | endIndex[6:0])",
         "type": "unsigned",
-        "address": "globalStateBase+287"
+        "address": "globalStateBase+289"
       },
       {
         "property": "temporaryTxStartSnapshotTimerValue[1]",
         "type": "unsigned",
-        "address": "globalStateBase+289"
+        "address": "globalStateBase+291"
       },
       {
         "property": "temporaryTxStartSnapshotTimerValue",
         "type": "unsigned int",
-        "address": "globalStateBase+288"
+        "address": "globalStateBase+290"
       },
       {
         "property": "temporaryTxStopSnapshotTimerValue[1]",
         "type": "unsigned",
-        "address": "globalStateBase+291"
+        "address": "globalStateBase+293"
       },
       {
         "property": "temporaryTxStopSnapshotTimerValue",
         "type": "unsigned int",
-        "address": "globalStateBase+290"
+        "address": "globalStateBase+292"
       },
       {
         "property": "numberHalfCyclesPassed",
         "type": "hex",
-        "address": "globalStateBase+292"
+        "address": "globalStateBase+294"
       }
     ],
     "Particle.communication.ports.rx.south.buffer": [
       {
         "property": "bytes[0]",
         "type": "hex",
-        "address": "globalStateBase+293"
+        "address": "globalStateBase+295"
       },
       {
         "property": "bytes[1]",
         "type": "hex",
-        "address": "globalStateBase+294"
+        "address": "globalStateBase+296"
       },
       {
         "property": "bytes[2]",
         "type": "hex",
-        "address": "globalStateBase+295"
+        "address": "globalStateBase+297"
       },
       {
         "property": "bytes[3]",
         "type": "hex",
-        "address": "globalStateBase+296"
+        "address": "globalStateBase+298"
       },
       {
         "property": "bytes[4]",
         "type": "hex",
-        "address": "globalStateBase+297"
+        "address": "globalStateBase+299"
       },
       {
         "property": "bytes[5]",
         "type": "hex",
-        "address": "globalStateBase+298"
+        "address": "globalStateBase+300"
       },
       {
         "property": "bytes[6]",
         "type": "hex",
-        "address": "globalStateBase+299"
+        "address": "globalStateBase+301"
       }
     ],
     "Particle.communication.ports.rx.south.buffer.pointer": [
       {
         "property": "(__pad[7:3] | byteNumber[2:0])",
         "type": "bit",
-        "address": "globalStateBase+300"
+        "address": "globalStateBase+302"
       },
       {
         "property": "bitMask",
         "type": "bit",
-        "address": "globalStateBase+301"
+        "address": "globalStateBase+303"
       }
     ],
     "Particle.communication.ports.rx.south": [
       {
         "property": "receptionOffset[1]",
         "type": "unsigned",
-        "address": "globalStateBase+303"
+        "address": "globalStateBase+305"
       },
       {
         "property": "receptionOffset",
         "type": "unsigned int",
-        "address": "globalStateBase+302"
+        "address": "globalStateBase+304"
       },
       {
         "property": "(__pad[7:2] | isDataBuffered[1] | isOverflowed[0])",
         "type": "bit",
-        "address": "globalStateBase+304"
+        "address": "globalStateBase+306"
       }
     ],
     "Particle.periphery": [
       {
         "property": "loopCount",
         "type": "unsigned",
-        "address": "globalStateBase+305"
+        "address": "globalStateBase+307"
       }
     ],
     "Particle.protocol.ports.north": [
       {
         "property": "initiatorState",
         "type": "CommunicationInitiatorStateTypes",
-        "address": "globalStateBase+306"
+        "address": "globalStateBase+308"
       },
       {
         "property": "receptionistState",
         "type": "CommunicationReceptionistStateTypes",
-        "address": "globalStateBase+308"
+        "address": "globalStateBase+310"
       },
       {
         "property": "stateTimeoutCounter",
         "type": "hex",
-        "address": "globalStateBase+310"
+        "address": "globalStateBase+312"
       }
     ],
     "Particle.protocol.ports.east": [
       {
         "property": "initiatorState",
         "type": "CommunicationInitiatorStateTypes",
-        "address": "globalStateBase+311"
+        "address": "globalStateBase+313"
       },
       {
         "property": "receptionistState",
         "type": "CommunicationReceptionistStateTypes",
-        "address": "globalStateBase+313"
+        "address": "globalStateBase+315"
       },
       {
         "property": "stateTimeoutCounter",
         "type": "hex",
-        "address": "globalStateBase+315"
+        "address": "globalStateBase+317"
       }
     ],
     "Particle.protocol.ports.south": [
       {
         "property": "initiatorState",
         "type": "CommunicationInitiatorStateTypes",
-        "address": "globalStateBase+316"
+        "address": "globalStateBase+318"
       },
       {
         "property": "receptionistState",
         "type": "CommunicationReceptionistStateTypes",
-        "address": "globalStateBase+318"
+        "address": "globalStateBase+320"
       },
       {
         "property": "stateTimeoutCounter",
         "type": "hex",
-        "address": "globalStateBase+320"
+        "address": "globalStateBase+322"
       }
     ],
     "Particle.protocol.networkGeometry": [
       {
         "property": "rows",
         "type": "unsigned",
-        "address": "globalStateBase+321"
+        "address": "globalStateBase+323"
       },
       {
         "property": "columns",
         "type": "unsigned",
-        "address": "globalStateBase+322"
+        "address": "globalStateBase+324"
       }
     ],
     "Particle.protocol": [
       {
-        "property": "(__pad[7:2] | isBoradcastEnabled[1] | hasNetworkGeometryDiscoveryBreadCrumb[0])",
+        "property": "(__pad[7:3] | isSimultaneousTransmissionEnabled[2] | isBroadcastEnabled[1] | hasNetworkGeometryDiscoveryBreadCrumb[0])",
         "type": "bit",
-        "address": "globalStateBase+323"
+        "address": "globalStateBase+325"
       }
     ],
     "Particle": [
       {
         "property": "magicEndByte",
         "type": "hex",
-        "address": "globalStateBase+324"
+        "address": "globalStateBase+326"
       }
     ]
   }
