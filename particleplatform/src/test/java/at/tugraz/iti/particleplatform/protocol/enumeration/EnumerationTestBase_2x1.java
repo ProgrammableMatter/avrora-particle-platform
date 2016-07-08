@@ -94,7 +94,7 @@ public class EnumerationTestBase_2x1 {
         File tempFile = new File(temporaryFileName);
         BufferedReader foo = new BufferedReader(new FileReader(tempFile));
 
-        if (tempFile.length() < (1024 * 1024 * 3)) {
+        if (tempFile.length() < (1024 * 1024 * 6)) {
             foo.lines().forEach(n -> {
                 System.out.println(n);
             });
