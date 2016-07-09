@@ -71,7 +71,7 @@ public class ReceptionTest {
     }
 
     @Test
-    public void testMagicByte() {
+    public void testMarkerBytes() {
         ParticlePlatformTestUtils.testMarkerBytes(2);
     }
 

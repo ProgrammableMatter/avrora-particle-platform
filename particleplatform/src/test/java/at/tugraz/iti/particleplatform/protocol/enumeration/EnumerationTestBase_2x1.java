@@ -110,7 +110,7 @@ public class EnumerationTestBase_2x1 {
     }
 
     @Test
-    public void testMagicByte() {
+    public void testMarkerBytes() {
         ParticlePlatformTestUtils.testMarkerBytes(numberOfColumns * numberOfRows);
     }
 
