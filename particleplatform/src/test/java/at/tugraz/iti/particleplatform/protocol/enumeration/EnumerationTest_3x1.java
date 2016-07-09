@@ -16,9 +16,9 @@ import java.io.IOException;
 public class EnumerationTest_3x1 extends EnumerationTestBase_2x1 {
     @BeforeClass
     public static void startSimulation() throws IllegalAccessException, NoSuchFieldException, IOException {
-        EnumerationTestBase_2x1.numberOfRows = 3;
-        EnumerationTestBase_2x1.numberOfColumns = 1;
-        EnumerationTestBase_2x1.simulationSeconds = 1E-3 * 60;
+        numberOfRows = 3;
+        numberOfColumns = 1;
+        simulationSeconds = 1E-3 * 60;
         EnumerationTestBase_2x1.startSimulation();
     }
 }
