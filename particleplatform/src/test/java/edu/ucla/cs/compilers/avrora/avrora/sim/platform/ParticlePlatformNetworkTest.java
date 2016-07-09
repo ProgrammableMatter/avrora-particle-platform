@@ -132,7 +132,7 @@ public class ParticlePlatformNetworkTest {
 
     @Test
     public void testMagicByte() {
-        ParticlePlatformTestUtils.testMagicBytes(rows * columns);
+        ParticlePlatformTestUtils.testMarkerBytes(rows * columns);
     }
 
     @Test

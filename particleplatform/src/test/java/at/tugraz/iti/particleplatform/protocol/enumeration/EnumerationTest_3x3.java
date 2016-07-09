@@ -17,7 +17,7 @@ public class EnumerationTest_3x3 extends EnumerationTestBase_2x1 {
     public static void startSimulation() throws IllegalAccessException, NoSuchFieldException, IOException {
         EnumerationTestBase_2x1.numberOfRows = 3;
         EnumerationTestBase_2x1.numberOfColumns = 3;
-        EnumerationTestBase_2x1.simulationSeconds = 1E-3 * 65f;
+        EnumerationTestBase_2x1.simulationSeconds = 1E-3 * 65;
         EnumerationTestBase_2x1.startSimulation();
     }
 }

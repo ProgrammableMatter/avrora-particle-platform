@@ -73,7 +73,7 @@ public class TransmissionTest {
 
     @Test
     public void testMagicByte() {
-        ParticlePlatformTestUtils.testMagicBytes(2);
+        ParticlePlatformTestUtils.testMarkerBytes(2);
     }
 
     /**

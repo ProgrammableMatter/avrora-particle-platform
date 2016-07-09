@@ -324,9 +324,9 @@ public class ParticlePlatformTestUtils {
         }
     }
 
-    public static void testMagicBytes(int numberNodes) {
+    public static void testMarkerBytes(int numberNodes) {
         IntStream.range(0, numberNodes).forEach(n -> {
-            ParticlePlatformTestUtils.testMagicByte(Integer.toString(n));
+            ParticlePlatformTestUtils.testMarkerBytes(Integer.toString(n));
         });
     }
 
@@ -360,9 +360,11 @@ public class ParticlePlatformTestUtils {
                 nodeIdAddresses.size() + "]", networkRows * networkColumns, nodeIdAddresses.size());
     }
 
-    private static void testMagicByte(String nodeId) {
+    private static void testMarkerBytes(String nodeId) {
+        assertEquals((byte) (0xaa & 0xff), (byte) (ParticlePlatformTestUtils.getAndAssertOneAndOnlyStartMarkerWrite(nodeId) & 0xff));
+
         assertEquals((byte) (0xaa & 0xff), (byte) (ParticlePlatformTestUtils
-                .getAndAssertOneAndOnlyMagicByteWrite(nodeId) & 0xff));
+                .getAndAssertOneAndOnlyEndMarkerWrite(nodeId) & 0xff));
     }
 
     /**
@@ -418,12 +420,20 @@ public class ParticlePlatformTestUtils {
         return file.getAbsolutePath();
     }
 
-    private static byte getAndAssertOneAndOnlyMagicByteWrite(String nodeId) {
+    private static byte getAndAssertOneAndOnlyStartMarkerWrite(String nodeId) {
+        return getAndAssertOneAndOnlyByteMarkerWrite(nodeId, "__structStartMarker");
+    }
+
+    private static byte getAndAssertOneAndOnlyEndMarkerWrite(String nodeId) {
+        return getAndAssertOneAndOnlyByteMarkerWrite(nodeId, "__structEndMarker");
+    }
+
+    private static byte getAndAssertOneAndOnlyByteMarkerWrite(String nodeId, String markerFieldName) {
         String fileName = ParticleLogSink.getAbsoluteFileName();
         Pattern linePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogLineRegexp);
         Pattern valuePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogHexByteValueRegexp);
 
-        String registerNameOfInterest = new String("Particle.magicEndByte");
+        String registerNameOfInterest = new String("Particle." + markerFieldName);
 
         byte lastValue = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {

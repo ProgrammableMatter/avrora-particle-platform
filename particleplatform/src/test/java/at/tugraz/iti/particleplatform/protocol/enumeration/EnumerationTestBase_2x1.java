@@ -38,7 +38,7 @@ public class EnumerationTestBase_2x1 {
     static private final Logger LOGGER = LoggerFactory.getLogger(EnumerationTestBase_2x1.class);
     protected static short numberOfRows = 2;
     protected static short numberOfColumns = 1;
-    protected static double simulationSeconds = 1E-3 * 30f;
+    protected static double simulationSeconds = 1E-3 * 40;
     static private Options mainOptions = null;// = new Options();
     static private FileOutputStream systemOutBuffer = null;// = new ByteArrayOutputStream();
     @Rule
@@ -111,7 +111,7 @@ public class EnumerationTestBase_2x1 {
 
     @Test
     public void testMagicByte() {
-        ParticlePlatformTestUtils.testMagicBytes(numberOfColumns * numberOfRows);
+        ParticlePlatformTestUtils.testMarkerBytes(numberOfColumns * numberOfRows);
     }
 
     @Test
