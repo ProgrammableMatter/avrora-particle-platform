@@ -92,14 +92,14 @@ public class ParticlePlatformNetworkTest {
         }
 
         for (TestableOnParticleStateChangeWatch.NameValueGlue nameValueGlue : list) {
-            if (nameValueGlue.getName().compareTo("ParticleState.node.state") == 0) {
+            if (nameValueGlue.getName().compareTo("Particle.node.state") == 0) {
                 nodeStateToTypeGlueMap.get(nameValueGlue.getPlatformId()).nodeState = nameValueGlue
                         .getReadableValue();
                 nodeStateToTypeGlueMap.get(nameValueGlue.getPlatformId()).address =
                         ParticlePlatformNetworkConnector.linearToAddressMappingImpl(nameValueGlue
                                 .getPlatformId(), rows).toString();
             }
-            if (nameValueGlue.getName().compareTo("ParticleState.node.type") == 0) {
+            if (nameValueGlue.getName().compareTo("Particle.node.type") == 0) {
                 nodeStateToTypeGlueMap.get(nameValueGlue.getPlatformId()).nodeType = nameValueGlue
                         .getReadableValue();
                 nodeStateToTypeGlueMap.get(nameValueGlue.getPlatformId()).address =
@@ -114,20 +114,20 @@ public class ParticlePlatformNetworkTest {
                     "state:" + entry.getValue().nodeState + ", @" + entry.getValue().address);
         }
 
-        assertEquals(nodeStateToTypeGlueMap.get(0).nodeType, "NODE_TYPE_ORIGIN");
-        assertEquals(nodeStateToTypeGlueMap.get(1).nodeType, "NODE_TYPE_INTER_NODE");
-        assertEquals(nodeStateToTypeGlueMap.get(2).nodeType, "NODE_TYPE_INTER_NODE");
-        assertEquals(nodeStateToTypeGlueMap.get(3).nodeType, "NODE_TYPE_TAIL");
+        assertEquals("NODE_TYPE_ORIGIN", nodeStateToTypeGlueMap.get(0).nodeType);
+        assertEquals("NODE_TYPE_INTER_NODE", nodeStateToTypeGlueMap.get(1).nodeType);
+        assertEquals("NODE_TYPE_INTER_NODE", nodeStateToTypeGlueMap.get(2).nodeType);
+        assertEquals("NODE_TYPE_TAIL", nodeStateToTypeGlueMap.get(3).nodeType);
 
-        assertEquals(nodeStateToTypeGlueMap.get(4).nodeType, "NODE_TYPE_INTER_HEAD");
-        assertEquals(nodeStateToTypeGlueMap.get(5).nodeType, "NODE_TYPE_INTER_NODE");
-        assertEquals(nodeStateToTypeGlueMap.get(6).nodeType, "NODE_TYPE_INTER_NODE");
-        assertEquals(nodeStateToTypeGlueMap.get(7).nodeType, "NODE_TYPE_TAIL");
+        assertEquals("NODE_TYPE_INTER_HEAD", nodeStateToTypeGlueMap.get(4).nodeType);
+        assertEquals("NODE_TYPE_INTER_NODE", nodeStateToTypeGlueMap.get(5).nodeType);
+        assertEquals("NODE_TYPE_INTER_NODE", nodeStateToTypeGlueMap.get(6).nodeType);
+        assertEquals("NODE_TYPE_TAIL", nodeStateToTypeGlueMap.get(7).nodeType);
 
-        assertEquals(nodeStateToTypeGlueMap.get(8).nodeType, "NODE_TYPE_INTER_NODE");
-        assertEquals(nodeStateToTypeGlueMap.get(9).nodeType, "NODE_TYPE_INTER_NODE");
-        assertEquals(nodeStateToTypeGlueMap.get(10).nodeType, "NODE_TYPE_INTER_NODE");
-        assertEquals(nodeStateToTypeGlueMap.get(11).nodeType, "NODE_TYPE_TAIL");
+        assertEquals("NODE_TYPE_INTER_NODE", nodeStateToTypeGlueMap.get(8).nodeType);
+        assertEquals("NODE_TYPE_INTER_NODE", nodeStateToTypeGlueMap.get(9).nodeType);
+        assertEquals("NODE_TYPE_INTER_NODE", nodeStateToTypeGlueMap.get(10).nodeType);
+        assertEquals("NODE_TYPE_TAIL", nodeStateToTypeGlueMap.get(11).nodeType);
     }
 
     @Test
