@@ -48,10 +48,17 @@
       "STATE_TYPE_SYNC_NEIGHBOUR",
       "STATE_TYPE_SYNC_NEIGHBOUR_DONE",
       "STATE_TYPE_SEND_SET_NETWORK_GEOMETRY",
+      "STATE_TYPE_EXECUTE_ACTUATION_COMMAND",
       "STATE_TYPE_IDLE",
       "STATE_TYPE_ERRONEOUS",
       "STATE_TYPE_STALE",
       "STATE_TYPE_SLEEP_MODE"
+    ],
+    "HeatingLevelType": [
+      "HEATING_LEVEL_TYPE_MAXIMUM",
+      "HEATING_LEVEL_TYPE_STRONG",
+      "HEATING_LEVEL_TYPE_MEDIUM",
+      "HEATING_LEVEL_TYPE_WEAK"
     ],
     "PackageHeaderId": [
       "PACKAGE_HEADER_ID_TYPE_ENUMERATE",
@@ -76,6 +83,12 @@
       "DECODER_STATE_TYPE_DECODING",
       "DECODER_STATE_TYPE_POST_TIMEOUT_PROCESS"
     ],
+    "ActuationStateType": [
+      "ACTUATION_STATE_TYPE_IDLE",
+      "ACTUATION_STATE_TYPE_START",
+      "ACTUATION_STATE_TYPE_WORKING",
+      "ACTUATION_STATE_TYPE_DONE"
+    ],
     "XmissionType": [
       "STATE_TYPE_XMISSION_TYPE_ENABLED_TX",
       "STATE_TYPE_XMISSION_TYPE_ENABLED_TX_RX",
@@ -88,8 +101,10 @@
     "NodeType": 2,
     "CommunicationInitiatorStateTypes": 2,
     "StateType": 2,
+    "HeatingLevelType": 2,
     "PackageHeaderId": 2,
     "ManchesterDecodingStateType": 2,
+    "ActuationStateType": 2,
     "XmissionType": 2
   },
   "labels": {
@@ -357,7 +372,7 @@
       {
         "property": "__structEndMarker",
         "type": "hex",
-        "address": "globalStateBase+327"
+        "address": "globalStateBase+340"
       }
     ],
     "Particle.node": [
@@ -2175,6 +2190,78 @@
         "property": "(__pad[7:3] | isSimultaneousTransmissionEnabled[2] | isBroadcastEnabled[1] | hasNetworkGeometryDiscoveryBreadCrumb[0])",
         "type": "bit",
         "address": "globalStateBase+326"
+      }
+    ],
+    "Particle.actuationCommand.actuators": [
+      {
+        "property": "(__pad[7:4] | eastRight[3] | eastLeft[2] | northRight[1] | northLeft[0])",
+        "type": "bit",
+        "address": "globalStateBase+327"
+      }
+    ],
+    "Particle.actuationCommand.actuationPower": [
+      {
+        "property": "(__pad[7:2] | dutyCycleLevel[1:0])",
+        "type": "bit",
+        "address": "globalStateBase+328"
+      }
+    ],
+    "Particle.actuationCommand": [
+      {
+        "property": "executionState",
+        "type": "ActuationStateType",
+        "address": "globalStateBase+329"
+      },
+      {
+        "property": "(__pad[7:1] | isScheduled[0])",
+        "type": "bit",
+        "address": "globalStateBase+335"
+      }
+    ],
+    "Particle.actuationCommand.actuationStart": [
+      {
+        "property": "periodTimeStamp[1]",
+        "type": "unsigned",
+        "address": "globalStateBase+332"
+      },
+      {
+        "property": "periodTimeStamp",
+        "type": "unsigned int",
+        "address": "globalStateBase+331"
+      }
+    ],
+    "Particle.actuationCommand.actuationEnd": [
+      {
+        "property": "periodTimeStamp[1]",
+        "type": "unsigned",
+        "address": "globalStateBase+334"
+      },
+      {
+        "property": "periodTimeStamp",
+        "type": "unsigned int",
+        "address": "globalStateBase+333"
+      }
+    ],
+    "Particle.localTime": [
+      {
+        "property": "numTimeIntervalPassed[1]",
+        "type": "unsigned",
+        "address": "globalStateBase+337"
+      },
+      {
+        "property": "numTimeIntervalPassed",
+        "type": "unsigned int",
+        "address": "globalStateBase+336"
+      },
+      {
+        "property": "interruptDelay[1]",
+        "type": "unsigned",
+        "address": "globalStateBase+339"
+      },
+      {
+        "property": "interruptDelay",
+        "type": "unsigned int",
+        "address": "globalStateBase+338"
       }
     ]
   }
