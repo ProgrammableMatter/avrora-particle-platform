@@ -2194,7 +2194,7 @@
     ],
     "Particle.actuationCommand.actuators": [
       {
-        "property": "(__pad[7:4] | eastRight[3] | eastLeft[2] | northRight[1] | northLeft[0])",
+        "property": "(__pad[7:6] | southRight[5] | southLeft[4] | eastRight[3] | eastLeft[2] | northRight[1] | northLeft[0])",
         "type": "bit",
         "address": "globalStateBase+327"
       }
@@ -2244,12 +2244,12 @@
     ],
     "Particle.localTime": [
       {
-        "property": "numTimeIntervalPassed[1]",
+        "property": "numTimePeriodsPassed[1]",
         "type": "unsigned",
         "address": "globalStateBase+337"
       },
       {
-        "property": "numTimeIntervalPassed",
+        "property": "numTimePeriodsPassed",
         "type": "unsigned int",
         "address": "globalStateBase+336"
       },
