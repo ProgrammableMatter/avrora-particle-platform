@@ -49,6 +49,10 @@
       "STATE_TYPE_SYNC_NEIGHBOUR_DONE",
       "STATE_TYPE_SEND_SET_NETWORK_GEOMETRY",
       "STATE_TYPE_EXECUTE_ACTUATION_COMMAND",
+      "STATE_TYPE_SENDING_PACKAGE_TO_NORTH",
+      "STATE_TYPE_SENDING_PACKAGE_TO_EAST",
+      "STATE_TYPE_SENDING_PACKAGE_TO_EAST_AND_SOUTH",
+      "STATE_TYPE_SENDING_PACKAGE_TO_SOUTH",
       "STATE_TYPE_IDLE",
       "STATE_TYPE_ERRONEOUS",
       "STATE_TYPE_STALE",
@@ -353,7 +357,7 @@
       {
         "property": "__structEndMarker",
         "type": "hex",
-        "address": "globalStateBase+378"
+        "address": "globalStateBase+394"
       }
     ],
     "Particle.node": [
@@ -2255,95 +2259,135 @@
         "address": "globalStateBase+342"
       },
       {
-        "property": "receive[0]",
+        "property": "receivePimpl[0]",
         "type": "hex16",
         "address": "globalStateBase+344"
       },
       {
-        "property": "protocol[0]",
+        "property": "txHighPimpl[0]",
         "type": "hex16",
         "address": "globalStateBase+346"
+      },
+      {
+        "property": "txLowPimpl[0]",
+        "type": "hex16",
+        "address": "globalStateBase+348"
+      },
+      {
+        "property": "protocol[0]",
+        "type": "hex16",
+        "address": "globalStateBase+350"
       }
     ],
     "Particle.directionOrientedPorts.east": [
       {
         "property": "discoveryPulseCounter[0]",
         "type": "hex16",
-        "address": "globalStateBase+348"
+        "address": "globalStateBase+352"
       },
       {
         "property": "txPort[0]",
         "type": "hex16",
-        "address": "globalStateBase+350"
+        "address": "globalStateBase+354"
       },
       {
         "property": "rxPort[0]",
         "type": "hex16",
-        "address": "globalStateBase+352"
+        "address": "globalStateBase+356"
       },
       {
-        "property": "receive[0]",
+        "property": "receivePimpl[0]",
         "type": "hex16",
-        "address": "globalStateBase+354"
+        "address": "globalStateBase+358"
+      },
+      {
+        "property": "txHighPimpl[0]",
+        "type": "hex16",
+        "address": "globalStateBase+360"
+      },
+      {
+        "property": "txLowPimpl[0]",
+        "type": "hex16",
+        "address": "globalStateBase+362"
       },
       {
         "property": "protocol[0]",
         "type": "hex16",
-        "address": "globalStateBase+356"
+        "address": "globalStateBase+364"
       }
     ],
     "Particle.directionOrientedPorts.south": [
       {
         "property": "discoveryPulseCounter[0]",
         "type": "hex16",
-        "address": "globalStateBase+358"
+        "address": "globalStateBase+366"
       },
       {
         "property": "txPort[0]",
         "type": "hex16",
-        "address": "globalStateBase+360"
+        "address": "globalStateBase+368"
       },
       {
         "property": "rxPort[0]",
         "type": "hex16",
-        "address": "globalStateBase+362"
+        "address": "globalStateBase+370"
       },
       {
-        "property": "receive[0]",
+        "property": "receivePimpl[0]",
         "type": "hex16",
-        "address": "globalStateBase+364"
+        "address": "globalStateBase+372"
+      },
+      {
+        "property": "txHighPimpl[0]",
+        "type": "hex16",
+        "address": "globalStateBase+374"
+      },
+      {
+        "property": "txLowPimpl[0]",
+        "type": "hex16",
+        "address": "globalStateBase+376"
       },
       {
         "property": "protocol[0]",
         "type": "hex16",
-        "address": "globalStateBase+366"
+        "address": "globalStateBase+378"
       }
     ],
     "Particle.directionOrientedPorts.simultaneous": [
       {
         "property": "discoveryPulseCounter[0]",
         "type": "hex16",
-        "address": "globalStateBase+368"
+        "address": "globalStateBase+380"
       },
       {
         "property": "txPort[0]",
         "type": "hex16",
-        "address": "globalStateBase+370"
+        "address": "globalStateBase+382"
       },
       {
         "property": "rxPort[0]",
         "type": "hex16",
-        "address": "globalStateBase+372"
+        "address": "globalStateBase+384"
       },
       {
-        "property": "receive[0]",
+        "property": "receivePimpl[0]",
         "type": "hex16",
-        "address": "globalStateBase+374"
+        "address": "globalStateBase+386"
+      },
+      {
+        "property": "txHighPimpl[0]",
+        "type": "hex16",
+        "address": "globalStateBase+388"
+      },
+      {
+        "property": "txLowPimpl[0]",
+        "type": "hex16",
+        "address": "globalStateBase+390"
       },
       {
         "property": "protocol[0]",
         "type": "hex16",
-        "address": "globalStateBase+376"
+        "address": "globalStateBase+392"
       }
     ]
   }
