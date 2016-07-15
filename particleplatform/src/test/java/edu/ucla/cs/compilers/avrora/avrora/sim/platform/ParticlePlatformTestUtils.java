@@ -174,8 +174,7 @@ public class ParticlePlatformTestUtils {
      * @param byteNumber        [0-3]
      * @return the value last written to the buffer
      */
-    public static byte getLastXmissionBufferWrite(String nodeNumber, boolean receptionBuffer, String
-            cardinalDirection, int byteNumber) throws Exception {
+    public static byte getLastXmissionBufferWrite(String nodeNumber, boolean receptionBuffer, String cardinalDirection, int byteNumber) {
 
         String fileName = ParticleLogSink.getAbsoluteFileName();
 
@@ -225,14 +224,12 @@ public class ParticlePlatformTestUtils {
             return lastValue;
         } catch (FileNotFoundException e) {
             Assert.assertTrue(false);
-            throw e;
         } catch (IOException e) {
             Assert.assertTrue(false);
-            throw e;
         } catch (IllegalStateException e) {
             Assert.assertTrue(false);
-            throw e;
         }
+        return 0;
     }
 
     /**
@@ -266,58 +263,28 @@ public class ParticlePlatformTestUtils {
      * reception buffer. All 4 buffer bytes are compared.
      */
     public static void assertTxBufferEqualsRxBuffer() {
-        byte[] txSouthBuffer = new byte[7];
+        int numberBufferBytes = 8;
         try {
             // data written to transmission buffer
-            txSouthBuffer[0] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("1", false, "south", 0);
-            txSouthBuffer[1] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("1", false, "south", 1);
-            txSouthBuffer[2] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("1", false, "south", 2);
-            txSouthBuffer[3] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("1", false, "south", 3);
-            txSouthBuffer[4] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("1", false, "south", 4);
-            txSouthBuffer[5] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("1", false, "south", 5);
-            txSouthBuffer[6] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("1", false, "south", 6);
+            byte[] txSouthBuffer = new byte[numberBufferBytes];
+            IntStream.range(0, numberBufferBytes).forEach(idx -> txSouthBuffer[idx] =
+                    ParticlePlatformTestUtils.getLastXmissionBufferWrite("1", false, "south", idx));
 
             // data written to reception buffer (in reverse order)
-            byte[] rxNorthBuffer = new byte[7];
-            rxNorthBuffer[0] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", 0);
-            rxNorthBuffer[1] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", 1);
-            rxNorthBuffer[2] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", 2);
-            rxNorthBuffer[3] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", 3);
-            rxNorthBuffer[4] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", 4);
-            rxNorthBuffer[5] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", 5);
-            rxNorthBuffer[6] = ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", 6);
+            byte[] rxNorthBuffer = new byte[numberBufferBytes];
+            IntStream.range(0, numberBufferBytes).forEach(idx -> rxNorthBuffer[idx] =
+                    ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", idx));
 
             System.out.println("byte | transmitted | received");
             System.out.println("-----+-------------+-----------");
-            System.out.println("0    | 0b" + fixedLengthLeftPaddedZerosString(Integer.toBinaryString
-                    (txSouthBuffer[0] & 0xff)) + "  | 0b" +
-                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[0] & 0xff)));
-            System.out.println("1    | 0b" + fixedLengthLeftPaddedZerosString(Integer.toBinaryString
-                    (txSouthBuffer[1] & 0xff)) + "  | 0b" +
-                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[1] & 0xff)));
-            System.out.println("2    | 0b" + fixedLengthLeftPaddedZerosString(Integer.toBinaryString
-                    (txSouthBuffer[2] & 0xff)) + "  | 0b" +
-                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[2] & 0xff)));
-            System.out.println("3    | 0b" + fixedLengthLeftPaddedZerosString(Integer.toBinaryString
-                    (txSouthBuffer[3] & 0xff)) + "  | 0b" +
-                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[3] & 0xff)));
-            System.out.println("4    | 0b" + fixedLengthLeftPaddedZerosString(Integer.toBinaryString
-                    (txSouthBuffer[4] & 0xff)) + "  | 0b" +
-                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[4] & 0xff)));
-            System.out.println("5    | 0b" + fixedLengthLeftPaddedZerosString(Integer.toBinaryString
-                    (txSouthBuffer[5] & 0xff)) + "  | 0b" +
-                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[5] & 0xff)));
-            System.out.println("6    | 0b" + fixedLengthLeftPaddedZerosString(Integer.toBinaryString
-                    (txSouthBuffer[6] & 0xff)) + "  | 0b" +
-                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[6] & 0xff)));
+            IntStream.range(0, numberBufferBytes).forEach(idx -> System.out.println(idx + "    | 0b" +
+                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(txSouthBuffer[idx] & 0xff)) + "" +
+                    "  " +
+                    "| 0b" +
+                    fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[idx] & 0xff))));
 
-            assertBufferByte(txSouthBuffer, 0, rxNorthBuffer, 0);
-            assertBufferByte(txSouthBuffer, 1, rxNorthBuffer, 1);
-            assertBufferByte(txSouthBuffer, 2, rxNorthBuffer, 2);
-            assertBufferByte(txSouthBuffer, 3, rxNorthBuffer, 3);
-            assertBufferByte(txSouthBuffer, 4, rxNorthBuffer, 4);
-            assertBufferByte(txSouthBuffer, 5, rxNorthBuffer, 5);
-            assertBufferByte(txSouthBuffer, 6, rxNorthBuffer, 6);
+            IntStream.range(0, numberBufferBytes).forEach(idx -> assertBufferByte(txSouthBuffer, idx,
+                    rxNorthBuffer, idx));
         } catch (Exception e) {
             e.printStackTrace();
             assertTrue(false);
@@ -337,7 +304,8 @@ public class ParticlePlatformTestUtils {
         System.out.println("nodeId | address | type | state");
         System.out.println("-------+---------+------+-------");
         for (Map.Entry<Integer, NodeAddressStateGlue> entry : nodeIdAddresses.entrySet()) {
-            System.out.println(entry.getKey() + "      | (" + entry.getValue().row + "," + entry.getValue().column + ")   | " + entry.getValue().type + " | " + entry.getValue().state);
+            System.out.println(entry.getKey() + "      | (" + entry.getValue().row + "," + entry.getValue()
+                    .column + ")   | " + entry.getValue().type + " | " + entry.getValue().state);
         }
         System.out.println();
 
@@ -361,7 +329,8 @@ public class ParticlePlatformTestUtils {
     }
 
     private static void testMarkerBytes(String nodeId) {
-        assertEquals((byte) (0xaa & 0xff), (byte) (ParticlePlatformTestUtils.getAndAssertOneAndOnlyStartMarkerWrite(nodeId) & 0xff));
+        assertEquals((byte) (0xaa & 0xff), (byte) (ParticlePlatformTestUtils
+                .getAndAssertOneAndOnlyStartMarkerWrite(nodeId) & 0xff));
 
         assertEquals((byte) (0xaa & 0xff), (byte) (ParticlePlatformTestUtils
                 .getAndAssertOneAndOnlyEndMarkerWrite(nodeId) & 0xff));
