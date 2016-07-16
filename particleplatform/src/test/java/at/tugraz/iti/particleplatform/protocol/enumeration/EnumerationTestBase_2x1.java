@@ -3,16 +3,6 @@
  * Raoul Rubien
  */
 
-/*
- * Copyright (c) 2016
- * Raoul Rubien
- */
-
-/*
- * Copyright (c) 2016
- * Raoul Rubien
- */
-
 package at.tugraz.iti.particleplatform.protocol.enumeration;
 
 import at.tugraz.iti.avrora.particleplatform.communication.TransmissionTest;

@@ -3,7 +3,6 @@
  * Raoul Rubien
  */
 
-
 package at.tugraz.iti.particleplatform.protocol.enumeration;
 
 import org.junit.BeforeClass;
