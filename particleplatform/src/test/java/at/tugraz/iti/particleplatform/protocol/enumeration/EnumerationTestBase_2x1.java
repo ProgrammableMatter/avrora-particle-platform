@@ -39,6 +39,10 @@ public class EnumerationTestBase_2x1 {
     protected static short numberOfRows = 2;
     protected static short numberOfColumns = 1;
     protected static double simulationSeconds = 1E-3 * 40;
+    protected static String userHomeDirectory = System.getProperty("user.home") + "/";
+    protected static String firmwaresBaseDirectory = ".CLion2016" +
+            ".1/system/cmake/generated/avr-c14d54a/c14d54a/Debug/";
+    protected static String firmware = "particle-simulation/main/ParticleSimulation.elf";
     static private Options mainOptions = null;// = new Options();
     static private FileOutputStream systemOutBuffer = null;// = new ByteArrayOutputStream();
     @Rule
@@ -77,13 +81,10 @@ public class EnumerationTestBase_2x1 {
         ParticleLogSink.getInstance(true).log("   0  0:00:00.00000000000  " + TransmissionTest.class
                 .getSimpleName() + "[BeforeClass] <- (TEST)");
         ParticlePlatformTestUtils.registerDefaultTestExtensions();
-        String firmware = System.getProperty("user.home") + "/" +
-                "" +
-                ".CLion2016.1/system/cmake/generated/avr-c14d54a/c14d54a/Debug/particle-simulation/main" +
-                "/ParticleSimulation.elf";
 
         Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, numberOfRows,
-                numberOfColumns, simulationSeconds, firmware, null);
+                numberOfColumns, simulationSeconds, userHomeDirectory + firmwaresBaseDirectory + firmware,
+                null);
         ParticlePlatformTestUtils.resetMonitorId();
         ParticlePlatformTestUtils.startSimulation(mainOptions, action);
 
