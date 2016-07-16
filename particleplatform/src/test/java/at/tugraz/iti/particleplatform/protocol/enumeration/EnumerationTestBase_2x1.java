@@ -20,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static junit.framework.TestCase.assertFalse;
 
@@ -30,9 +32,11 @@ public class EnumerationTestBase_2x1 {
     protected static short numberOfColumns = 1;
     protected static double simulationSeconds = 1E-3 * 40;
     protected static String userHomeDirectory = System.getProperty("user.home") + "/";
-    protected static String firmwaresBaseDirectory = ".CLion2016" +
+    protected static String firmwaresBaseDirectory = ".CLion2016" + "" +
             ".1/system/cmake/generated/avr-c14d54a/c14d54a/Debug/";
     protected static String firmware = "particle-simulation/main/ParticleSimulation.elf";
+    protected static Map<Integer, String> nodeIdToState = new HashMap<>();
+    protected static Map<Integer, String> nodeIdToType = new HashMap<>();
     static private Options mainOptions = null;// = new Options();
     static private FileOutputStream systemOutBuffer = null;// = new ByteArrayOutputStream();
     @Rule
@@ -83,10 +87,10 @@ public class EnumerationTestBase_2x1 {
         systemOutBuffer.close();
 
         File tempFile = new File(temporaryFileName);
-        BufferedReader foo = new BufferedReader(new FileReader(tempFile));
+        BufferedReader inFile = new BufferedReader(new FileReader(tempFile));
 
         if (tempFile.length() < (1024 * 1024 * 6)) {
-            foo.lines().forEach(n -> {
+            inFile.lines().forEach(n -> {
                 System.out.println(n);
             });
         }
@@ -96,8 +100,23 @@ public class EnumerationTestBase_2x1 {
     public void test_simulate_MxN_network_without_attached_transmitting_communication_unit() throws
             Exception {
         int numberOfNodes = numberOfRows * numberOfColumns;
-        ParticlePlatformTestUtils.assertCorrectlyEnumeratedNodes(numberOfRows, numberOfColumns,
-                numberOfNodes);
+        Map<Integer, ParticlePlatformTestUtils.NodeAddressStateGlue> nodeIdAddresses =
+                ParticlePlatformTestUtils.getLastNodeAddresses();
+        ParticlePlatformTestUtils.assertCorrectlyEnumeratedNodes(numberOfRows, numberOfColumns, numberOfNodes, nodeIdAddresses);
+
+        if (nodeIdToType == null) {
+            nodeIdToType = new HashMap<>();
+            nodeIdToType.put(0, "NODE_TYPE_ORIGIN");
+            nodeIdToType.put(1, "NODE_TYPE_TAIL");
+        }
+        ParticlePlatformTestUtils.assertCorrectTypes(nodeIdAddresses, nodeIdToType);
+
+        if (nodeIdToState == null) {
+            nodeIdToState = new HashMap<>();
+            nodeIdToState.put(0, "STATE_TYPE_IDLE");
+            nodeIdToState.put(1, "STATE_TYPE_IDLE");
+        }
+        ParticlePlatformTestUtils.assertCorrectStates(nodeIdAddresses, nodeIdToState);
     }
 
     @Test

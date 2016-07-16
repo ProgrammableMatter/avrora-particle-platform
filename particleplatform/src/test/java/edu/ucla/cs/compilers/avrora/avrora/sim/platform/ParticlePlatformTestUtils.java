@@ -174,7 +174,8 @@ public class ParticlePlatformTestUtils {
      * @param byteNumber        [0-3]
      * @return the value last written to the buffer
      */
-    public static byte getLastXmissionBufferWrite(String nodeNumber, boolean receptionBuffer, String cardinalDirection, int byteNumber) {
+    public static byte getLastXmissionBufferWrite(String nodeNumber, boolean receptionBuffer, String
+            cardinalDirection, int byteNumber) {
 
         String fileName = ParticleLogSink.getAbsoluteFileName();
 
@@ -297,10 +298,38 @@ public class ParticlePlatformTestUtils {
         });
     }
 
-    public static void assertCorrectlyEnumeratedNodes(short networkRows, int networkColumns, int
-            numberOfNodes) throws Exception {
+    public static void assertCorrectTypes(Map<Integer, ParticlePlatformTestUtils.NodeAddressStateGlue>
+                                                  nodeIdAddresses, Map<Integer, String> expectedTypes) {
+        assertEquals("number node addresses [" + nodeIdAddresses.size() + "] do not equal number node types" +
+                " [" +
+                expectedTypes.size() + "]", nodeIdAddresses.size(), expectedTypes.size());
+        for (Map.Entry<Integer, NodeAddressStateGlue> nodeAddressStateGlueEntry : nodeIdAddresses.entrySet
+                ()) {
+            assertTrue("nodeId [" + nodeAddressStateGlueEntry.getKey() + "]: expected type [" +
+                    expectedTypes.get(nodeAddressStateGlueEntry.getKey()) + "] but was " +
+                    "[" + nodeAddressStateGlueEntry.getValue().type + "]", expectedTypes.get
+                    (nodeAddressStateGlueEntry.getKey()).equals(nodeAddressStateGlueEntry.getValue().type));
+        }
+    }
 
-        Map<Integer, NodeAddressStateGlue> nodeIdAddresses = getLastNodeAddresses();
+    public static void assertCorrectStates(Map<Integer, ParticlePlatformTestUtils.NodeAddressStateGlue>
+                                                   nodeIdAddresses, Map<Integer, String> expectedStates) {
+        assertEquals(nodeIdAddresses.size(), expectedStates.size());
+        assertEquals("number node addresses [" + nodeIdAddresses.size() + "] do not equal number node " +
+                "states [" +
+                expectedStates.size() + "]", nodeIdAddresses.size(), expectedStates.size());
+        for (Map.Entry<Integer, NodeAddressStateGlue> nodeAddressStateGlueEntry : nodeIdAddresses.entrySet
+                ()) {
+            assertTrue("nodeId [" + nodeAddressStateGlueEntry.getKey() + "]: expected state [" +
+                    expectedStates.get(nodeAddressStateGlueEntry.getKey()) + "] but was " +
+                    "[" + nodeAddressStateGlueEntry.getValue().state + "]", expectedStates.get
+                    (nodeAddressStateGlueEntry.getKey()).equals(nodeAddressStateGlueEntry.getValue().state));
+        }
+    }
+
+    public static void assertCorrectlyEnumeratedNodes(short networkRows, int networkColumns, int
+            numberOfNodes, Map<Integer, NodeAddressStateGlue> nodeIdAddresses) throws Exception {
+
         System.out.println("nodeId | address | type | state");
         System.out.println("-------+---------+------+-------");
         for (Map.Entry<Integer, NodeAddressStateGlue> entry : nodeIdAddresses.entrySet()) {
@@ -316,8 +345,8 @@ public class ParticlePlatformTestUtils {
                     "but got [" + value.row + "]", expectedAddress.getRow(), value.row);
             assertEquals("nodeId [" + value.nodeId + "]: expected column [" + expectedAddress.getColumn() +
                     "] but got [" + value.column + "]", expectedAddress.getColumn(), value.column);
-            assertEquals("nodeId [" + value.nodeId + "]: STATE_TYPE_IDLE but was [" + value.state + "]",
-                    "STATE_TYPE_IDLE", value.state);
+//            assertEquals("nodeId [" + value.nodeId + "]: STATE_TYPE_IDLE but was [" + value.state + "]",
+//                    "STATE_TYPE_IDLE", value.state);
         }
 
         for (int nodeNumber = 0; nodeNumber < numberOfNodes; nodeNumber++) {
@@ -326,6 +355,72 @@ public class ParticlePlatformTestUtils {
         }
         Assert.assertEquals("expected number of nodes [" + networkRows * networkColumns + "] but got [" +
                 nodeIdAddresses.size() + "]", networkRows * networkColumns, nodeIdAddresses.size());
+    }
+
+    public static Map<Integer, NodeAddressStateGlue> getLastNodeAddresses() throws Exception {
+
+        String fileName = ParticleLogSink.getAbsoluteFileName();
+
+        Map<Integer, NodeAddressStateGlue> nodeIdToAddress = new HashMap<>();
+
+        Pattern linePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogLineRegexp);
+        Pattern valuePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogIntValueRegexp);
+
+        try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.length() <= 0) {
+                    continue;
+                }
+
+                Matcher m = linePattern.matcher(line);
+                if (m.matches()) {
+                    Integer mcuId = Integer.parseInt(m.group(1));
+                    if (!nodeIdToAddress.containsKey(mcuId)) {
+                        NodeAddressStateGlue nag = new NodeAddressStateGlue();
+                        nag.nodeId = mcuId;
+                        nodeIdToAddress.put(mcuId, nag);
+                    }
+                    String registerName = m.group(4).trim();
+                    if (registerName.compareTo("Particle.node.address.row") == 0) {
+                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                        if (valueMatcher.matches()) {
+                            nodeIdToAddress.get(mcuId).row = Integer.parseInt(valueMatcher.group(1));
+                        }
+                    } else if (registerName.compareTo("Particle.node.address.column") == 0) {
+                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                        if (valueMatcher.matches()) {
+                            nodeIdToAddress.get(mcuId).column = Integer.parseInt(valueMatcher.group(1));
+                        }
+                    } else if (registerName.compareTo("Particle.node.state") == 0) {
+                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                        if (valueMatcher.matches()) {
+                            nodeIdToAddress.get(mcuId).state = valueMatcher.group(1);
+                        }
+                    } else if (registerName.compareTo("Particle.node.type") == 0) {
+                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                        if (valueMatcher.matches()) {
+                            nodeIdToAddress.get(mcuId).type = valueMatcher.group(1);
+                        }
+                    }
+                } else {
+                    Assert.assertTrue("line not parse-able: " + line, false);
+                }
+            }
+            br.close();
+        } catch (FileNotFoundException e) {
+            Assert.assertTrue(false);
+            throw e;
+        } catch (IOException e) {
+            Assert.assertTrue(false);
+            throw e;
+        } catch (IllegalStateException e) {
+            Assert.assertTrue(false);
+            throw e;
+        }
+
+        return nodeIdToAddress;
     }
 
     private static void testMarkerBytes(String nodeId) {
@@ -459,72 +554,6 @@ public class ParticlePlatformTestUtils {
         assertEquals("tx-buffer[" + txId + "] vs. rx-buffer[" + rxId + "]: expected/tx [0b" + Integer
                 .toBinaryString(txBuffer[txId] & 0xff) + "] but got/rx " +
                 "[0b" + Integer.toBinaryString(rxBuffer[rxId] & 0xff) + "]", txBuffer[txId], rxBuffer[rxId]);
-    }
-
-    private static Map<Integer, NodeAddressStateGlue> getLastNodeAddresses() throws Exception {
-
-        String fileName = ParticleLogSink.getAbsoluteFileName();
-
-        Map<Integer, NodeAddressStateGlue> nodeIdToAddress = new HashMap<>();
-
-        Pattern linePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogLineRegexp);
-        Pattern valuePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogIntValueRegexp);
-
-        try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (line.length() <= 0) {
-                    continue;
-                }
-
-                Matcher m = linePattern.matcher(line);
-                if (m.matches()) {
-                    Integer mcuId = Integer.parseInt(m.group(1));
-                    if (!nodeIdToAddress.containsKey(mcuId)) {
-                        NodeAddressStateGlue nag = new NodeAddressStateGlue();
-                        nag.nodeId = mcuId;
-                        nodeIdToAddress.put(mcuId, nag);
-                    }
-                    String registerName = m.group(4).trim();
-                    if (registerName.compareTo("Particle.node.address.row") == 0) {
-                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
-                        if (valueMatcher.matches()) {
-                            nodeIdToAddress.get(mcuId).row = Integer.parseInt(valueMatcher.group(1));
-                        }
-                    } else if (registerName.compareTo("Particle.node.address.column") == 0) {
-                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
-                        if (valueMatcher.matches()) {
-                            nodeIdToAddress.get(mcuId).column = Integer.parseInt(valueMatcher.group(1));
-                        }
-                    } else if (registerName.compareTo("Particle.node.state") == 0) {
-                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
-                        if (valueMatcher.matches()) {
-                            nodeIdToAddress.get(mcuId).state = valueMatcher.group(1);
-                        }
-                    } else if (registerName.compareTo("Particle.node.type") == 0) {
-                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
-                        if (valueMatcher.matches()) {
-                            nodeIdToAddress.get(mcuId).type = valueMatcher.group(1);
-                        }
-                    }
-                } else {
-                    Assert.assertTrue("line not parse-able: " + line, false);
-                }
-            }
-            br.close();
-        } catch (FileNotFoundException e) {
-            Assert.assertTrue(false);
-            throw e;
-        } catch (IOException e) {
-            Assert.assertTrue(false);
-            throw e;
-        } catch (IllegalStateException e) {
-            Assert.assertTrue(false);
-            throw e;
-        }
-
-        return nodeIdToAddress;
     }
 
     public static class NodeAddressStateGlue {
