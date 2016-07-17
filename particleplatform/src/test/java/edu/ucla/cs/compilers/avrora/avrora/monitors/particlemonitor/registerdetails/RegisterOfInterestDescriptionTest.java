@@ -5,11 +5,11 @@
 
 package edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.registerdetails;
 
+import at.tugraz.iti.SimulationTestUtils;
 import edu.ucla.cs.compilers.avrora.avrora.TestLogger;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.ParticleLogSink;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformNetworkConnector;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformTest;
-import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformTestUtils;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.AfterClass;
@@ -44,7 +44,7 @@ public class RegisterOfInterestDescriptionTest {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
         RegisterOfInterestDescription registerDescription = null;
-        String descriptionFileName = ParticlePlatformTestUtils.getFilePath("ParticleRegisterDescription" +
+        String descriptionFileName = SimulationTestUtils.getFilePath("ParticleRegisterDescription" +
                 ".json");
 
         try {

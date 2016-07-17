@@ -5,6 +5,7 @@
 
 package edu.ucla.cs.compilers.avrora.avrora.sim.platform;
 
+import at.tugraz.iti.SimulationTestUtils;
 import edu.ucla.cs.compilers.avrora.avrora.TestLogger;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.TestableParticlePlatformMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.TestableParticlePlatformMonitor.TestableMonitorImpl;
@@ -49,14 +50,14 @@ public class ParticlePlatformTest {
 
     @BeforeClass
     public static void startSimulation() throws NoSuchFieldException, IllegalAccessException {
-        ParticlePlatformTestUtils.resetMonitorId();
+        SimulationTestUtils.resetMonitorId();
         LOGGER.debug("BEFORE CLASS: {}", ParticlePlatformTest.class.getSimpleName());
         ParticleLogSink.deleteInstance();
         ParticleLogSink.getInstance(true).log("   0  0:00:00.00000000000  " + ParticlePlatformTest.class
                 .getSimpleName() + "[BeforeClass] <- (TEST)");
-        ParticlePlatformTestUtils.registerDefaultTestExtensions();
-        Option.Str action = ParticlePlatformTestUtils.setUpDefaultSimulationOptions(mainOptions);
-        ParticlePlatformTestUtils.startSimulation(mainOptions, action);
+        SimulationTestUtils.registerDefaultTestExtensions();
+        Option.Str action = SimulationTestUtils.setUpDefaultSimulationOptions(mainOptions);
+        SimulationTestUtils.startSimulation(mainOptions, action);
 
         monitor = TestableParticlePlatformMonitor.getInstance().getImplementation();
         probes = monitor.getProbes();
@@ -64,14 +65,14 @@ public class ParticlePlatformTest {
         registerToWriteCount = watch.getRegisterWriteCount();
     }
 
-    private static String[] toLines(String text) {
-        return text.split("\\\\n");
-    }
-
     @AfterClass
     public static void cleanup() {
         ParticleLogSink.deleteInstance();
         ParticlePlatformNetworkConnector.reset();
+    }
+
+    private static String[] toLines(String text) {
+        return text.split("\\\\n");
     }
 
     @Test
@@ -226,8 +227,8 @@ public class ParticlePlatformTest {
 
         String fileName = ParticleLogSink.getAbsoluteFileName();
 
-        Pattern linePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogLineRegexp);
-        Pattern udrPattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogUdrValueRegexp);
+        Pattern linePattern = Pattern.compile(SimulationTestUtils.simulationLogLineRegexp);
+        Pattern udrPattern = Pattern.compile(SimulationTestUtils.simulationLogUdrValueRegexp);
         StringBuilder udrMessageBuilder = new StringBuilder();
 
         try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {

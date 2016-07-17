@@ -5,6 +5,7 @@
 
 package edu.ucla.cs.compilers.avrora.avrora.sim.platform;
 
+import at.tugraz.iti.SimulationTestUtils;
 import edu.ucla.cs.compilers.avrora.avrora.TestLogger;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.TestableParticlePlatformMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.ParticleLogSink;
@@ -23,8 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ParticlePlatformNetworkTest {
     static final Options mainOptions = new Options();
@@ -46,21 +47,21 @@ public class ParticlePlatformNetworkTest {
     public static void startSimulation() throws NoSuchFieldException, IllegalAccessException, IOException {
         System.setOut(new PrintStream(systemOutBuffer));
 
-        ParticlePlatformTestUtils.resetMonitorId();
+        SimulationTestUtils.resetMonitorId();
         LOGGER.debug("BEFORE CLASS: {}", ParticlePlatformNetworkTest.class.getSimpleName());
         ParticleLogSink.deleteInstance();
         ParticleLogSink.getInstance(true).log("   0  0:00:00.00000000000  " +
                 ParticlePlatformNetworkConnectorTest.class.getSimpleName() + "[BeforeClass] <- (TEST)");
 
-        ParticlePlatformTestUtils.registerDefaultTestExtensions();
+        SimulationTestUtils.registerDefaultTestExtensions();
         String firmware = System.getProperty("user.home") + "/" + ".CLion2016" +
                 ".1/system/cmake/generated/avr-c14d54a/c14d54a/Debug/particle-simulation/main" +
                 "/ParticleSimulation.elf";
 
         double simulationSeconds = 7000E-6 * 1;
-        Option.Str action = ParticlePlatformTestUtils.setUpSimulationOptions(mainOptions, rows, columns,
+        Option.Str action = SimulationTestUtils.setUpSimulationOptions(mainOptions, rows, columns,
                 simulationSeconds, firmware, null);
-        ParticlePlatformTestUtils.startSimulation(mainOptions, action);
+        SimulationTestUtils.startSimulation(mainOptions, action);
 
         TestableParticlePlatformMonitor.TestableMonitorImpl monitor = TestableParticlePlatformMonitor
                 .getInstance().getImplementation();
@@ -132,12 +133,13 @@ public class ParticlePlatformNetworkTest {
 
     @Test
     public void testMagicByte() {
-        ParticlePlatformTestUtils.testMarkerBytes(rows * columns);
+//        markerBytesInspectors.forEach(i -> i.postInspectionAssert());
+        assertTrue(false);
     }
 
     @Test
     public void testNoDestroyedReturnStackAddress() {
-        assertFalse("found erroneous keyword [destroy] in output", systemOutBuffer.toString().contains
-                ("destroy"));
+//        noDestroyedReturnAddressOnStackInspector.postInspectionAssert();
+        assertTrue(false);
     }
 }

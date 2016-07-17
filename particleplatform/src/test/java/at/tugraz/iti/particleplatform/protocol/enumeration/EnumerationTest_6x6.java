@@ -6,6 +6,7 @@
 
 package at.tugraz.iti.particleplatform.protocol.enumeration;
 
+import at.tugraz.iti.SimulationTestBase_1x1;
 import org.junit.BeforeClass;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 /**
  * Created by Raoul Rubien on 27.05.16.
  */
-public class EnumerationTest_6x6 extends EnumerationTestBase_2x1 {
+public class EnumerationTest_6x6 extends SimulationTestBase_1x1 {
     @BeforeClass
     public static void startSimulation() throws IllegalAccessException, NoSuchFieldException, IOException {
         numberOfRows = 6;
@@ -102,6 +103,6 @@ public class EnumerationTest_6x6 extends EnumerationTestBase_2x1 {
         nodeIdToState.put(34, "STATE_TYPE_IDLE");
         nodeIdToState.put(35, "STATE_TYPE_IDLE");
 
-        EnumerationTestBase_2x1.startSimulation();
+        SimulationTestBase_1x1.startSimulation();
     }
 }

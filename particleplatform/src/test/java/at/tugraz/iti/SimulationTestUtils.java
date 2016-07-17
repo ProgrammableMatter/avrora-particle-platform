@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016
+ * Copyright (c) 17.07.2016
  * Raoul Rubien
  */
 
-package edu.ucla.cs.compilers.avrora.avrora.sim.platform;
+package at.tugraz.iti;
 
 import edu.ucla.cs.compilers.avrora.avrora.Defaults;
 import edu.ucla.cs.compilers.avrora.avrora.actions.Action;
@@ -12,6 +12,10 @@ import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticleInterruptMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticlePlatformMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.TestableParticlePlatformMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.ParticleLogSink;
+import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatform;
+import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformNetworkConnector;
+import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformTest;
+import edu.ucla.cs.compilers.avrora.avrora.sim.platform.PlatformAddress;
 import edu.ucla.cs.compilers.avrora.avrora.sim.types.ParticleSimulation;
 import edu.ucla.cs.compilers.avrora.cck.text.StringUtil;
 import edu.ucla.cs.compilers.avrora.cck.util.Option;
@@ -20,22 +24,22 @@ import edu.ucla.cs.compilers.avrora.cck.util.Util;
 import org.junit.Assert;
 import org.slf4j.Logger;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by rubienr on 13.03.16.
- */
-public class ParticlePlatformTestUtils {
+public class SimulationTestUtils {
 
     /**
      * to be parsed: <br/> 0  0:00:00.00022075371  SRAM[D.out.(D7 | D6 | D5 | D4 | EAST_RX | STH_RX | D1 |
@@ -44,12 +48,10 @@ public class ParticlePlatformTestUtils {
      */
     public final static String simulationLogLineRegexp = "^\\s*(\\d+)\\s*(\\d:\\d\\d:\\d\\d.\\d+)\\s*(\\w+)" +
             "" + "\\[(.+)\\]\\s*<-\\s*(.*)\\s*$";
-
     /**
      * to be parsed: ('c') <br/> group 1 ... char value without ('')
      */
     public final static String simulationLogUdrValueRegexp = "^\\s*\\('(.*)'\\)\\s*$";
-
     /**
      * to be parsed: (4) <br/> group 1 ... int value
      */
@@ -59,8 +61,7 @@ public class ParticlePlatformTestUtils {
      * to be parsed: (0xff)<br/> group 1 ... 0xff without ()
      */
     public final static String simulationLogHexByteValueRegexp = "^\\s*\\(0x(.*)\\)\\s*$";
-
-    private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ParticlePlatformTestUtils.class);
+    private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(SimulationTestUtils.class);
 
     public static void registerDefaultTestExtensions() {
         Defaults.addPlatform("particle", ParticlePlatform.Factory.class);
@@ -99,20 +100,15 @@ public class ParticlePlatformTestUtils {
                 "-invocations-only=false -low-addresses=true -particle-log-file=true " +
                 "-particle-facets=state,break,wires " +
                 "-input=atmel -throughput=true " +
-                ParticlePlatformTestUtils.getFilePath(particleFirmwareFile));
+                SimulationTestUtils.getFilePath(particleFirmwareFile));
 
         if (null != mainCommunicationUnitFirmware) {
-            cliArgs.append(" ").append(ParticlePlatformTestUtils.getFilePath(mainCommunicationUnitFirmware));
+            cliArgs.append(" ").append(SimulationTestUtils.getFilePath(mainCommunicationUnitFirmware));
         }
 
         mainOptions.parseCommandLine(cliArgs.toString().split(" "));
         return action;
     }
-
-//    public static Option.Str setUpSimulationOptions(Options mainOptions, short rows, short columns) {
-//        return setUpSimulationOptions(mainOptions, rows, columns, 350E-6, "ParticleSimulationIoTest.elf",
-// null);
-//    }
 
     /**
      * Tries to find the file in the resources else it returns the unmodified file name.
@@ -166,74 +162,6 @@ public class ParticlePlatformTestUtils {
     }
 
     /**
-     * returns the last write to one transmission or reception byte in buffer
-     *
-     * @param nodeNumber        the node number/id as string
-     * @param receptionBuffer   true for reception, false else
-     * @param cardinalDirection north, east, south, west
-     * @param byteNumber        [0-3]
-     * @return the value last written to the buffer
-     */
-    public static byte getLastXmissionBufferWrite(String nodeNumber, boolean receptionBuffer, String
-            cardinalDirection, int byteNumber) {
-
-        String fileName = ParticleLogSink.getAbsoluteFileName();
-
-        Pattern linePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogLineRegexp);
-        Pattern valuePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogHexByteValueRegexp);
-        StringBuilder bufferByte = new StringBuilder();
-
-        StringBuilder registerNameOfInterest = new StringBuilder("Particle.communication.ports.");
-
-        // globalState.ports.rx.north.buffer
-        if (receptionBuffer) {
-            registerNameOfInterest.append("rx.");
-        } else {
-            registerNameOfInterest.append("tx.");
-        }
-        registerNameOfInterest.append(cardinalDirection + ".buffer.bytes[");
-        registerNameOfInterest.append(byteNumber + "]");
-
-        try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
-            String line;
-
-            byte lastValue = -1;
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (line.length() <= 0) {
-                    continue;
-                }
-                Matcher m = linePattern.matcher(line);
-                if (m.matches()) {
-
-                    String mcuId = m.group(1);
-                    if (nodeNumber.compareTo(mcuId) == 0) {
-
-                        String registerName = m.group(4);
-                        if (registerName.compareTo(registerNameOfInterest.toString()) == 0) {
-                            Matcher valueMatcher = valuePattern.matcher(m.group(5));
-                            if (valueMatcher.matches()) {
-                                lastValue = (byte) (Integer.parseInt(valueMatcher.group(1), 16) & 0xff);
-                            }
-                        }
-                    }
-                } else {
-                    Assert.assertTrue("line not parse-able: " + line, false);
-                }
-            }
-            br.close();
-            return lastValue;
-        } catch (FileNotFoundException e) {
-            Assert.assertTrue(false);
-        } catch (IOException e) {
-            Assert.assertTrue(false);
-        } catch (IllegalStateException e) {
-            Assert.assertTrue(false);
-        }
-        return 0;
-    }
-
-    /**
      * reverse the byte bits
      *
      * @param toBeReversed input byte
@@ -263,18 +191,17 @@ public class ParticlePlatformTestUtils {
      * Asserts that the last value written to the transmission buffer equals the last value written to the
      * reception buffer. All 4 buffer bytes are compared.
      */
-    public static void assertTxBufferEqualsRxBuffer() {
+    public static void assertTxBufferEqualsRxBuffer(Map<Integer, Map<Integer,
+            LastXmissionBufferWriteInspector>> nodeIdToByteNumberToInspector) {
         int numberBufferBytes = 8;
         try {
             // data written to transmission buffer
             byte[] txSouthBuffer = new byte[numberBufferBytes];
-            IntStream.range(0, numberBufferBytes).forEach(idx -> txSouthBuffer[idx] =
-                    ParticlePlatformTestUtils.getLastXmissionBufferWrite("1", false, "south", idx));
+            IntStream.range(0, numberBufferBytes).forEach(idx -> txSouthBuffer[idx] = nodeIdToByteNumberToInspector.get(1).get(idx).getLastValue());
 
-            // data written to reception buffer (in reverse order)
+            // data written to reception buffer
             byte[] rxNorthBuffer = new byte[numberBufferBytes];
-            IntStream.range(0, numberBufferBytes).forEach(idx -> rxNorthBuffer[idx] =
-                    ParticlePlatformTestUtils.getLastXmissionBufferWrite("0", true, "north", idx));
+            IntStream.range(0, numberBufferBytes).forEach(idx -> rxNorthBuffer[idx] = nodeIdToByteNumberToInspector.get(0).get(idx).getLastValue());
 
             System.out.println("byte | transmitted | received");
             System.out.println("-----+-------------+-----------");
@@ -292,13 +219,11 @@ public class ParticlePlatformTestUtils {
         }
     }
 
-    public static void testMarkerBytes(int numberNodes) {
-        IntStream.range(0, numberNodes).forEach(n -> {
-            ParticlePlatformTestUtils.testMarkerBytes(Integer.toString(n));
-        });
+    public static void testMarkerBytes(Set<SimulationTestUtils.MarkerByteInspector> markerBytesInspectors) {
+        markerBytesInspectors.forEach(i -> i.postInspectionAssert());
     }
 
-    public static void assertCorrectTypes(Map<Integer, ParticlePlatformTestUtils.NodeAddressStateGlue>
+    public static void assertCorrectTypes(Map<Integer, SimulationTestUtils.NodeAddressStateGlue>
                                                   nodeIdAddresses, Map<Integer, String> expectedTypes) {
         assertEquals("number node addresses [" + nodeIdAddresses.size() + "] do not equal number node types" +
                 " [" +
@@ -312,24 +237,7 @@ public class ParticlePlatformTestUtils {
         }
     }
 
-    public static void assertCorrectStates(Map<Integer, ParticlePlatformTestUtils.NodeAddressStateGlue>
-                                                   nodeIdAddresses, Map<Integer, String> expectedStates) {
-        assertEquals(nodeIdAddresses.size(), expectedStates.size());
-        assertEquals("number node addresses [" + nodeIdAddresses.size() + "] do not equal number node " +
-                "states [" +
-                expectedStates.size() + "]", nodeIdAddresses.size(), expectedStates.size());
-        for (Map.Entry<Integer, NodeAddressStateGlue> nodeAddressStateGlueEntry : nodeIdAddresses.entrySet
-                ()) {
-            assertTrue("nodeId [" + nodeAddressStateGlueEntry.getKey() + "]: expected state [" +
-                    expectedStates.get(nodeAddressStateGlueEntry.getKey()) + "] but was " +
-                    "[" + nodeAddressStateGlueEntry.getValue().state + "]", expectedStates.get
-                    (nodeAddressStateGlueEntry.getKey()).equals(nodeAddressStateGlueEntry.getValue().state));
-        }
-    }
-
-    public static void assertCorrectlyEnumeratedNodes(short networkRows, int networkColumns, int
-            numberOfNodes, Map<Integer, NodeAddressStateGlue> nodeIdAddresses) throws Exception {
-
+    public static void printNetworkStatus(Map<Integer, NodeAddressStateGlue> nodeIdAddresses) {
         System.out.println("nodeId | address | type | state");
         System.out.println("-------+---------+------+-------");
         for (Map.Entry<Integer, NodeAddressStateGlue> entry : nodeIdAddresses.entrySet()) {
@@ -337,6 +245,37 @@ public class ParticlePlatformTestUtils {
                     .column + ")   | " + entry.getValue().type + " | " + entry.getValue().state);
         }
         System.out.println();
+    }
+
+    public static void assertCorrectStates(Map<Integer, SimulationTestUtils.NodeAddressStateGlue>
+                                                   nodeIdAddresses, Map<Integer, String> expectedStates) {
+        assertEquals(nodeIdAddresses.size(), expectedStates.size());
+        assertEquals("number node addresses [" + nodeIdAddresses.size() + "] do not equal number node " +
+                "states [" +
+                expectedStates.size() + "]", nodeIdAddresses.size(), expectedStates.size());
+        for (Map.Entry<Integer, SimulationTestUtils.NodeAddressStateGlue> nodeAddressStateGlueEntry :
+                nodeIdAddresses.entrySet()) {
+            assertTrue("nodeId [" + nodeAddressStateGlueEntry.getKey() + "]: expected state [" +
+                    expectedStates.get(nodeAddressStateGlueEntry.getKey()) + "] but was " +
+                    "[" + nodeAddressStateGlueEntry.getValue().state + "]", expectedStates.get
+                    (nodeAddressStateGlueEntry.getKey()).equals(nodeAddressStateGlueEntry.getValue().state));
+        }
+    }
+
+    public static void iterateLogFileLines(Set<LineInspector> inspectors) {
+        String fileName = ParticleLogSink.getAbsoluteFileName();
+        inspectors.stream().parallel().forEach(i -> {
+//        inspectors.stream().forEach(i -> {
+            try (Stream<String> linesStream = Files.lines(Paths.get(fileName))) {
+                linesStream.forEachOrdered(line -> i.inspect(line));
+            } catch (IOException e) {
+                Assert.assertTrue(false);
+            }
+        });
+    }
+
+    public static void assertCorrectlyEnumeratedNodes(short networkRows, int networkColumns, int
+            numberOfNodes, Map<Integer, NodeAddressStateGlue> nodeIdAddresses) throws Exception {
 
         for (NodeAddressStateGlue value : nodeIdAddresses.values()) {
             PlatformAddress expectedAddress = ParticlePlatformNetworkConnector.linearToAddressMappingImpl
@@ -345,8 +284,6 @@ public class ParticlePlatformTestUtils {
                     "but got [" + value.row + "]", expectedAddress.getRow(), value.row);
             assertEquals("nodeId [" + value.nodeId + "]: expected column [" + expectedAddress.getColumn() +
                     "] but got [" + value.column + "]", expectedAddress.getColumn(), value.column);
-//            assertEquals("nodeId [" + value.nodeId + "]: STATE_TYPE_IDLE but was [" + value.state + "]",
-//                    "STATE_TYPE_IDLE", value.state);
         }
 
         for (int nodeNumber = 0; nodeNumber < numberOfNodes; nodeNumber++) {
@@ -355,80 +292,6 @@ public class ParticlePlatformTestUtils {
         }
         Assert.assertEquals("expected number of nodes [" + networkRows * networkColumns + "] but got [" +
                 nodeIdAddresses.size() + "]", networkRows * networkColumns, nodeIdAddresses.size());
-    }
-
-    public static Map<Integer, NodeAddressStateGlue> getLastNodeAddresses() throws Exception {
-
-        String fileName = ParticleLogSink.getAbsoluteFileName();
-
-        Map<Integer, NodeAddressStateGlue> nodeIdToAddress = new HashMap<>();
-
-        Pattern linePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogLineRegexp);
-        Pattern valuePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogIntValueRegexp);
-
-        try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (line.length() <= 0) {
-                    continue;
-                }
-
-                Matcher m = linePattern.matcher(line);
-                if (m.matches()) {
-                    Integer mcuId = Integer.parseInt(m.group(1));
-                    if (!nodeIdToAddress.containsKey(mcuId)) {
-                        NodeAddressStateGlue nag = new NodeAddressStateGlue();
-                        nag.nodeId = mcuId;
-                        nodeIdToAddress.put(mcuId, nag);
-                    }
-                    String registerName = m.group(4).trim();
-                    if (registerName.compareTo("Particle.node.address.row") == 0) {
-                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
-                        if (valueMatcher.matches()) {
-                            nodeIdToAddress.get(mcuId).row = Integer.parseInt(valueMatcher.group(1));
-                        }
-                    } else if (registerName.compareTo("Particle.node.address.column") == 0) {
-                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
-                        if (valueMatcher.matches()) {
-                            nodeIdToAddress.get(mcuId).column = Integer.parseInt(valueMatcher.group(1));
-                        }
-                    } else if (registerName.compareTo("Particle.node.state") == 0) {
-                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
-                        if (valueMatcher.matches()) {
-                            nodeIdToAddress.get(mcuId).state = valueMatcher.group(1);
-                        }
-                    } else if (registerName.compareTo("Particle.node.type") == 0) {
-                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
-                        if (valueMatcher.matches()) {
-                            nodeIdToAddress.get(mcuId).type = valueMatcher.group(1);
-                        }
-                    }
-                } else {
-                    Assert.assertTrue("line not parse-able: " + line, false);
-                }
-            }
-            br.close();
-        } catch (FileNotFoundException e) {
-            Assert.assertTrue(false);
-            throw e;
-        } catch (IOException e) {
-            Assert.assertTrue(false);
-            throw e;
-        } catch (IllegalStateException e) {
-            Assert.assertTrue(false);
-            throw e;
-        }
-
-        return nodeIdToAddress;
-    }
-
-    private static void testMarkerBytes(String nodeId) {
-        assertEquals((byte) (0xaa & 0xff), (byte) (ParticlePlatformTestUtils
-                .getAndAssertOneAndOnlyStartMarkerWrite(nodeId) & 0xff));
-
-        assertEquals((byte) (0xaa & 0xff), (byte) (ParticlePlatformTestUtils
-                .getAndAssertOneAndOnlyEndMarkerWrite(nodeId) & 0xff));
     }
 
     /**
@@ -484,69 +347,13 @@ public class ParticlePlatformTestUtils {
         return file.getAbsolutePath();
     }
 
-    private static byte getAndAssertOneAndOnlyStartMarkerWrite(String nodeId) {
-        return getAndAssertOneAndOnlyByteMarkerWrite(nodeId, "__structStartMarker");
-    }
-
-    private static byte getAndAssertOneAndOnlyEndMarkerWrite(String nodeId) {
-        return getAndAssertOneAndOnlyByteMarkerWrite(nodeId, "__structEndMarker");
-    }
-
-    private static byte getAndAssertOneAndOnlyByteMarkerWrite(String nodeId, String markerFieldName) {
-        String fileName = ParticleLogSink.getAbsoluteFileName();
-        Pattern linePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogLineRegexp);
-        Pattern valuePattern = Pattern.compile(ParticlePlatformTestUtils.simulationLogHexByteValueRegexp);
-
-        String registerNameOfInterest = new String("Particle." + markerFieldName);
-
-        byte lastValue = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (line.length() <= 0) {
-                    continue;
-                }
-                Matcher m = linePattern.matcher(line);
-                if (m.matches()) {
-
-                    String mcuId = m.group(1);
-                    if (nodeId.compareTo(mcuId) == 0) {
-
-                        String registerName = m.group(4);
-                        if (registerName.compareTo(registerNameOfInterest.toString()) == 0) {
-                            Matcher valueMatcher = valuePattern.matcher(m.group(5));
-                            if (valueMatcher.matches()) {
-                                if (lastValue != 0) {
-                                    assertTrue("detected multiple nonzero writes to " +
-                                            registerNameOfInterest, false);
-                                }
-                                lastValue = (byte) (Integer.parseInt(valueMatcher.group(1), 16) & 0xff);
-                            }
-                        }
-                    }
-                } else {
-                    Assert.assertTrue("line not parse-able: " + line, false);
-                }
-            }
-        } catch (FileNotFoundException e) {
-            Assert.assertTrue(false);
-        } catch (IOException e) {
-            Assert.assertTrue(false);
-        } catch (IllegalStateException e) {
-            Assert.assertTrue(false);
-        }
-        return lastValue;
-    }
-
     private static void assertMirroredBufferByte(byte[] txBuffer, int txId, byte[] rxBuffer, int rxId) {
 
         assertEquals("tx-buffer[" + txId + "] vs. rx-buffer[" + rxId + "]: expected/tx [0b" + Integer
-                .toBinaryString(ParticlePlatformTestUtils.msb2lsb(txBuffer[txId]) & 0xff) + "] but " +
+                .toBinaryString(SimulationTestUtils.msb2lsb(txBuffer[txId]) & 0xff) + "] but " +
                 "got/rx " +
-                "[0b" + Integer.toBinaryString(rxBuffer[rxId] & 0xff) + "]", ParticlePlatformTestUtils
-                .msb2lsb(txBuffer[txId]), rxBuffer[rxId]);
+                "[0b" + Integer.toBinaryString(rxBuffer[rxId] & 0xff) + "]", SimulationTestUtils.msb2lsb
+                (txBuffer[txId]), rxBuffer[rxId]);
     }
 
     private static void assertBufferByte(byte[] txBuffer, int txId, byte[] rxBuffer, int rxId) {
@@ -556,11 +363,199 @@ public class ParticlePlatformTestUtils {
                 "[0b" + Integer.toBinaryString(rxBuffer[rxId] & 0xff) + "]", txBuffer[txId], rxBuffer[rxId]);
     }
 
+    public static abstract class LineInspector {
+        protected List<String> assertions = new ArrayList<>();
+
+        public void postInspectionAssert() {
+            assertions.stream().forEach(System.out::print);
+            assertEquals(0, assertions.size());
+        }
+
+        public void clear() {
+            assertions.clear();
+        }
+
+        abstract void inspect(String line);
+    }
+
+    public static class MarkerByteInspector extends LineInspector {
+        private final String registerNameOfInterest;
+        String nodeId;
+        String markerFieldName;
+        Pattern linePattern = Pattern.compile(SimulationTestUtils.simulationLogLineRegexp);
+        Pattern valuePattern = Pattern.compile(SimulationTestUtils.simulationLogHexByteValueRegexp);
+        byte lastValue = -1;
+
+        /**
+         * @param nodeId          node id
+         * @param markerFieldName "__structStartMarker" or "__structEndMarker"
+         */
+        public MarkerByteInspector(String nodeId, String markerFieldName) {
+            this.nodeId = nodeId;
+            this.markerFieldName = markerFieldName;
+            registerNameOfInterest = new String("Particle." + markerFieldName);
+        }
+
+        public void inspect(String line) {
+
+            Matcher m = linePattern.matcher(line);
+            if (m.matches()) {
+
+                String mcuId = m.group(1);
+                if (nodeId.compareTo(mcuId) == 0) {
+
+                    String registerName = m.group(4);
+                    if (registerName.compareTo(registerNameOfInterest.toString()) == 0) {
+                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                        if (valueMatcher.matches()) {
+                            if (lastValue != -1) {
+                                assertions.add("detected multiple nonzero writes to " +
+                                        registerNameOfInterest + "in line [" + line + "]");
+                            }
+                            lastValue = (byte) (Integer.parseInt(valueMatcher.group(1), 16) & 0xff);
+                        }
+                    }
+                }
+            } else {
+                assertions.add("line not parse-able: " + line);
+            }
+        }
+
+        @Override
+        public void postInspectionAssert() {
+            int magicValue = 0xaa;
+            if (magicValue != (0xff & lastValue)) {
+                assertions.add("expected [" + Integer.toHexString(magicValue) + "] but found [" + Integer
+                        .toHexString(0xff & lastValue) + "] ");
+            }
+            super.postInspectionAssert();
+        }
+
+        public byte getLastValue() {
+            postInspectionAssert();
+            return lastValue;
+        }
+    }
+
+    public static class LastXmissionBufferWriteInspector extends LineInspector {
+        private final StringBuilder registerNameOfInterest;
+        private Pattern linePattern = Pattern.compile(SimulationTestUtils.simulationLogLineRegexp);
+        private Pattern valuePattern = Pattern.compile(SimulationTestUtils.simulationLogHexByteValueRegexp);
+        private String nodeNumber;
+        private byte lastValue = -1;
+
+        /**
+         * filters the last write to one transmission or reception byte in buffer
+         *
+         * @param nodeNumber        the node number/id as string
+         * @param isReceptionBuffer true for reception, false else
+         * @param cardinalDirection north, east, south, west
+         * @param byteNumber        [0-3]
+         */
+        public LastXmissionBufferWriteInspector(String nodeNumber, boolean isReceptionBuffer, String
+                cardinalDirection, int byteNumber) {
+            this.nodeNumber = nodeNumber;
+            registerNameOfInterest = new StringBuilder("Particle.communication.ports.");
+            if (isReceptionBuffer) {
+                registerNameOfInterest.append("rx.");
+            } else {
+                registerNameOfInterest.append("tx.");
+            }
+            registerNameOfInterest.append(cardinalDirection + ".buffer.bytes[");
+            registerNameOfInterest.append(byteNumber + "]");
+        }
+
+        /**
+         * filters the last write to one transmission or reception byte in buffer
+         *
+         * @return the last written value
+         */
+        public byte getLastValue() {
+            return lastValue;
+        }
+
+        public void inspect(String line) {
+            Matcher m = linePattern.matcher(line);
+            if (m.matches()) {
+                String mcuId = m.group(1);
+                if (nodeNumber.compareTo(mcuId) == 0) {
+                    String registerName = m.group(4);
+                    if (registerName.compareTo(registerNameOfInterest.toString()) == 0) {
+                        Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                        if (valueMatcher.matches()) {
+                            lastValue = (byte) (Integer.parseInt(valueMatcher.group(1), 16) & 0xff);
+                        }
+                    }
+                }
+            } else {
+                assertions.add("line not parse-able: " + line);
+            }
+        }
+    }
+
+    public static class LastNodeAddressesInspector extends LineInspector {
+        public Map<Integer, NodeAddressStateGlue> nodeIdToAddress = new HashMap<>();
+        private Pattern linePattern = Pattern.compile(SimulationTestUtils.simulationLogLineRegexp);
+        private Pattern valuePattern = Pattern.compile(SimulationTestUtils.simulationLogIntValueRegexp);
+
+        public void inspect(String line) {
+
+            Matcher m = linePattern.matcher(line);
+            if (m.matches()) {
+                Integer mcuId = Integer.parseInt(m.group(1));
+                if (!nodeIdToAddress.containsKey(mcuId)) {
+                    NodeAddressStateGlue nag = new NodeAddressStateGlue();
+                    nag.nodeId = mcuId;
+                    nodeIdToAddress.put(mcuId, nag);
+                }
+                String registerName = m.group(4).trim();
+                if (registerName.compareTo("Particle.node.address.row") == 0) {
+                    Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                    if (valueMatcher.matches()) {
+                        nodeIdToAddress.get(mcuId).row = Integer.parseInt(valueMatcher.group(1));
+                    }
+                } else if (registerName.compareTo("Particle.node.address.column") == 0) {
+                    Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                    if (valueMatcher.matches()) {
+                        nodeIdToAddress.get(mcuId).column = Integer.parseInt(valueMatcher.group(1));
+                    }
+                } else if (registerName.compareTo("Particle.node.state") == 0) {
+                    Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                    if (valueMatcher.matches()) {
+                        nodeIdToAddress.get(mcuId).state = valueMatcher.group(1);
+                    }
+                } else if (registerName.compareTo("Particle.node.type") == 0) {
+                    Matcher valueMatcher = valuePattern.matcher(m.group(5));
+                    if (valueMatcher.matches()) {
+                        nodeIdToAddress.get(mcuId).type = valueMatcher.group(1);
+                    }
+                }
+            } else {
+                assertions.add("line not parse-able: " + line);
+            }
+        }
+
+        public Map<Integer, NodeAddressStateGlue> getNodeIdToAddress() {
+            postInspectionAssert();
+            return nodeIdToAddress;
+        }
+    }
+
+    public static class NoDestroyedReturnAddressOnStackInspector extends LineInspector {
+
+        @Override
+        void inspect(String line) {
+            if (line.contains("destroy")) {
+                assertions.add("found erroneous keyword [destroy] in output [" + line + "]");
+            }
+        }
+    }
+
     public static class NodeAddressStateGlue {
-        int nodeId = -1;
-        int row = -1;
-        int column = -1;
-        String state = "<invalid>";
-        String type = "<invalid>";
+        public int nodeId = -1;
+        public int row = -1;
+        public int column = -1;
+        public String state = "<invalid>";
+        public String type = "<invalid>";
     }
 }

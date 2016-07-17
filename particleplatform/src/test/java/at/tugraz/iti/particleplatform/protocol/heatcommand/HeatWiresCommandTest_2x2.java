@@ -5,7 +5,8 @@
 
 package at.tugraz.iti.particleplatform.protocol.heatcommand;
 
-import at.tugraz.iti.particleplatform.protocol.enumeration.EnumerationTestBase_2x1;
+import at.tugraz.iti.SimulationTestBase_1x1;
+import at.tugraz.iti.particleplatform.protocol.enumeration.EnumerationTest_2x1;
 import org.junit.BeforeClass;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 /**
  * Created by Raoul Rubien on 16.07.16.
  */
-public class HeatWiresCommandTest_2x2 extends EnumerationTestBase_2x1 {
+public class HeatWiresCommandTest_2x2 extends SimulationTestBase_1x1 {
     @BeforeClass
     public static void startSimulation() throws IllegalAccessException, NoSuchFieldException, IOException {
         numberOfRows = 2;
@@ -34,6 +35,6 @@ public class HeatWiresCommandTest_2x2 extends EnumerationTestBase_2x1 {
         nodeIdToState.put(2, "STATE_TYPE_IDLE");
         nodeIdToState.put(3, "STATE_TYPE_IDLE");
 
-        EnumerationTestBase_2x1.startSimulation();
+        EnumerationTest_2x1.startSimulation();
     }
 }
