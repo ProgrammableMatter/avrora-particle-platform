@@ -28,6 +28,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ParticlePlatformNetworkTest {
+
+//    xxxo
+
     static final Options mainOptions = new Options();
     static final ByteArrayOutputStream systemOutBuffer = new ByteArrayOutputStream();
     private static final Logger LOGGER = LoggerFactory.getLogger(ParticlePlatformNetworkTest.class);

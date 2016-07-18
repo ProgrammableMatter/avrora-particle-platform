@@ -32,10 +32,18 @@ import java.util.stream.IntStream;
 
 public class SimulationTestBase_1x1 {
 
-    static private final Logger LOGGER = LoggerFactory.getLogger(SimulationTestBase_1x1.class);
-    public static Set<SimulationTestUtils.LineInspector> inspectors = new HashSet<>();
-    public static Map<Integer, Map<Integer, SimulationTestUtils.LastXmissionBufferWriteInspector>>
+    public static final Set<SimulationTestUtils.LineInspector> inspectors = new HashSet<>();
+    public static final Map<Integer, Map<Integer, SimulationTestUtils.LastXmissionBufferWriteInspector>>
             nodeIdToByteNumberToInspector = new HashMap<>();
+    protected static final Map<Integer, String> nodeIdToState = new HashMap<>();
+    protected static final Map<Integer, String> nodeIdToType = new HashMap<>();
+    protected static final SimulationTestUtils.LastNodeAddressesInspector lastNodeAddressesInspector = new
+            SimulationTestUtils.LastNodeAddressesInspector();
+    static private final Logger LOGGER = LoggerFactory.getLogger(SimulationTestBase_1x1.class);
+    private static final Set<SimulationTestUtils.MarkerByteInspector> markerBytesInspectors = new HashSet<>();
+    private static final SimulationTestUtils.NoDestroyedReturnAddressOnStackInspector
+            noDestroyedReturnAddressOnStackInspector = new SimulationTestUtils
+            .NoDestroyedReturnAddressOnStackInspector();
     protected static short numberOfRows = 2;
     protected static short numberOfColumns = 1;
     protected static double simulationSeconds = 1E-3 * 40;
@@ -44,15 +52,8 @@ public class SimulationTestBase_1x1 {
             ".1/system/cmake/generated/avr-c14d54a/c14d54a/Debug/";
     protected static String firmware = "particle-simulation/main/ParticleSimulation.elf";
     protected static String communicationUnitFirmware = null;
-    protected static Map<Integer, String> nodeIdToState = new HashMap<>();
-    protected static Map<Integer, String> nodeIdToType = new HashMap<>();
-    protected static SimulationTestUtils.LastNodeAddressesInspector lastNodeAddressesInspector = new
-            SimulationTestUtils.LastNodeAddressesInspector();
     static private Options mainOptions = null;
     static private FileOutputStream systemOutBuffer = null;
-    private static Set<SimulationTestUtils.MarkerByteInspector> markerBytesInspectors = new HashSet<>();
-    private static SimulationTestUtils.NoDestroyedReturnAddressOnStackInspector
-            noDestroyedReturnAddressOnStackInspector;
     @Rule
     public TestLogger testLogger = new TestLogger(LOGGER);
 
@@ -62,6 +63,7 @@ public class SimulationTestBase_1x1 {
         ParticlePlatformNetworkConnector.reset();
 
         mainOptions = null;
+
         if (systemOutBuffer != null) {
             try {
                 systemOutBuffer.close();
@@ -70,12 +72,23 @@ public class SimulationTestBase_1x1 {
             }
         }
         systemOutBuffer = null;
+
         numberOfRows = -1;
         numberOfColumns = -1;
+
+        nodeIdToState.clear();
+        nodeIdToType.clear();
+
+        inspectors.clear();
+        lastNodeAddressesInspector.clear();
+        markerBytesInspectors.clear();
+        noDestroyedReturnAddressOnStackInspector.clear();
+        nodeIdToByteNumberToInspector.clear();
     }
 
     @BeforeClass
     public static void startSimulation() throws NoSuchFieldException, IllegalAccessException, IOException {
+        // bypass System.out for post processing
         String temporaryFileName = "/tmp/avrora-testcase.txt";
         new File(temporaryFileName).delete();
         systemOutBuffer = new FileOutputStream(temporaryFileName);
@@ -83,62 +96,58 @@ public class SimulationTestBase_1x1 {
 
         mainOptions = new Options();
         System.out.println("started tests with (" + numberOfRows + "x" + numberOfColumns + ") network " +
-                "dimension");
+                "dimension \nfirmware [" + firmware + "] and \ncommunication unit [" + communicationUnitFirmware + "]");
         LOGGER.debug("BEFORE CLASS: {}", SimulationTestBase_1x1.class.getSimpleName());
         ParticleLogSink.deleteInstance();
         ParticleLogSink.getInstance(true).log("   0  0:00:00.00000000000  " + TransmissionTest.class
                 .getSimpleName() + "[BeforeClass] <- (TEST)");
         SimulationTestUtils.registerDefaultTestExtensions();
 
+        // set up simulation arguments
         String communicationUnitFirmwareFilePath = null;
-
+        Option.Str action = null;
         if (null != communicationUnitFirmware) {
-            Option.Str action = SimulationTestUtils.setUpSimulationOptions(mainOptions, numberOfRows,
+            action = SimulationTestUtils.setUpSimulationOptions(mainOptions, numberOfRows,
                     numberOfColumns, simulationSeconds, userHomeDirectory + firmwaresBaseDirectory +
                     firmware, userHomeDirectory + firmwaresBaseDirectory + communicationUnitFirmware);
         } else {
-            Option.Str action = SimulationTestUtils.setUpSimulationOptions(mainOptions, numberOfRows,
+            action = SimulationTestUtils.setUpSimulationOptions(mainOptions, numberOfRows,
                     numberOfColumns, simulationSeconds, userHomeDirectory + firmwaresBaseDirectory +
                     firmware, null);
         }
-        Option.Str action = SimulationTestUtils.setUpSimulationOptions(mainOptions, numberOfRows,
-                numberOfColumns, simulationSeconds, userHomeDirectory + firmwaresBaseDirectory + firmware,
-                communicationUnitFirmwareFilePath);
         SimulationTestUtils.resetMonitorId();
         SimulationTestUtils.startSimulation(mainOptions, action);
 
+        // reset System.out
         System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
         systemOutBuffer.flush();
         systemOutBuffer.close();
-
         File tempFile = new File(temporaryFileName);
         BufferedReader inFile = new BufferedReader(new FileReader(tempFile));
 
         // set up log file inspectors
-        inspectors.add(lastNodeAddressesInspector);
+        int totalNumberMcus = numberOfRows * numberOfColumns;
+        if (communicationUnitFirmware != null) {
+            totalNumberMcus++;
+        }
+        IntStream.range(0, totalNumberMcus).forEach(mcuId -> {
+            markerBytesInspectors.add(new SimulationTestUtils.MarkerByteInspector(Integer.toString(mcuId),
+                    "__structStartMarker"));
 
-        IntStream.range(0, numberOfRows * numberOfColumns).forEach(nodeIdToState -> {
-            markerBytesInspectors.add(new SimulationTestUtils.MarkerByteInspector(Integer.toString
-                    (nodeIdToState), "__structStartMarker"));
-
-            markerBytesInspectors.add(new SimulationTestUtils.MarkerByteInspector(Integer.toString
-                    (nodeIdToState), "__structEndMarker"));
+            markerBytesInspectors.add(new SimulationTestUtils.MarkerByteInspector(Integer.toString(mcuId),
+                    "__structEndMarker"));
         });
-
         inspectors.addAll(markerBytesInspectors);
-        noDestroyedReturnAddressOnStackInspector = new SimulationTestUtils
-                .NoDestroyedReturnAddressOnStackInspector();
+        inspectors.add(lastNodeAddressesInspector);
         inspectors.add(noDestroyedReturnAddressOnStackInspector);
-
         inspectors.stream().forEach(i -> i.clear());
 
         // inspect log file
         SimulationTestUtils.iterateLogFileLines(inspectors);
 
+        // eventually print log if not too exhausting
         if (tempFile.length() < (1024 * 1024 * 6)) {
-            inFile.lines().forEach(n -> {
-                System.out.println(n);
-            });
+            inFile.lines().forEachOrdered(System.out::println);
         }
     }
 
@@ -153,15 +162,13 @@ public class SimulationTestBase_1x1 {
         SimulationTestUtils.assertCorrectlyEnumeratedNodes(numberOfRows, numberOfColumns, numberOfNodes,
                 lastNodeAddressesInspector.getNodeIdToAddress());
 
-        if (nodeIdToType == null) {
-            nodeIdToType = new HashMap<>();
+        if (nodeIdToType.isEmpty()) {
             nodeIdToType.put(0, "NODE_TYPE_ORIGIN");
             nodeIdToType.put(1, "NODE_TYPE_TAIL");
         }
         SimulationTestUtils.assertCorrectTypes(lastNodeAddressesInspector.getNodeIdToAddress(), nodeIdToType);
 
-        if (nodeIdToState == null) {
-            nodeIdToState = new HashMap<>();
+        if (nodeIdToState.isEmpty()) {
             nodeIdToState.put(0, "STATE_TYPE_IDLE");
             nodeIdToState.put(1, "STATE_TYPE_IDLE");
         }
@@ -171,7 +178,7 @@ public class SimulationTestBase_1x1 {
 
     @Test
     public void testMarkerBytes() {
-        markerBytesInspectors.forEach(i -> i.postInspectionAssert());
+        markerBytesInspectors.parallelStream().forEach(i -> i.postInspectionAssert());
     }
 
     @Test

@@ -11,7 +11,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 public class ReceptionTest extends SimulationTestBase_1x1 {
     @BeforeClass
@@ -38,12 +37,12 @@ public class ReceptionTest extends SimulationTestBase_1x1 {
 
         SimulationTestUtils.assertTxBufferEqualsRxBuffer(nodeIdToByteNumberToInspector);
 
-        nodeIdToType = new HashMap<>();
+        nodeIdToType.clear();
         nodeIdToType.put(0, "NODE_TYPE_ORIGIN");
         nodeIdToType.put(1, "NODE_TYPE_MASTER");
         SimulationTestUtils.assertCorrectTypes(lastNodeAddressesInspector.getNodeIdToAddress(), nodeIdToType);
 
-        nodeIdToState = new HashMap<>();
+        nodeIdToState.clear();
         nodeIdToState.put(0, "STATE_TYPE_IDLE");
         nodeIdToState.put(1, "STATE_TYPE_UNDEFINED");
         SimulationTestUtils.assertCorrectStates(lastNodeAddressesInspector.getNodeIdToAddress(),

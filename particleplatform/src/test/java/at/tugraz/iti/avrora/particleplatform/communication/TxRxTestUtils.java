@@ -17,7 +17,7 @@ public class TxRxTestUtils {
 
     public static void addByteNumberInspectors() {
         // generate tx rx byte buffer inspectors for node 0 and 1
-        SimulationTestBase_1x1.nodeIdToByteNumberToInspector = new HashMap<>();
+        SimulationTestBase_1x1.nodeIdToByteNumberToInspector.clear();
         SimulationTestBase_1x1.nodeIdToByteNumberToInspector.put(0, new HashMap<>());
         SimulationTestBase_1x1.nodeIdToByteNumberToInspector.put(1, new HashMap<>());
 

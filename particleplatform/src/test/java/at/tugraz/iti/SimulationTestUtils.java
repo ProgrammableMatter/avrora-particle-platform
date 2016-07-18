@@ -197,21 +197,24 @@ public class SimulationTestUtils {
         try {
             // data written to transmission buffer
             byte[] txSouthBuffer = new byte[numberBufferBytes];
-            IntStream.range(0, numberBufferBytes).forEach(idx -> txSouthBuffer[idx] = nodeIdToByteNumberToInspector.get(1).get(idx).getLastValue());
+            IntStream.range(0, numberBufferBytes).forEachOrdered(idx -> txSouthBuffer[idx] =
+                    nodeIdToByteNumberToInspector.get(1).get(idx).getLastValue());
 
             // data written to reception buffer
             byte[] rxNorthBuffer = new byte[numberBufferBytes];
-            IntStream.range(0, numberBufferBytes).forEach(idx -> rxNorthBuffer[idx] = nodeIdToByteNumberToInspector.get(0).get(idx).getLastValue());
+            IntStream.range(0, numberBufferBytes).forEachOrdered(idx -> rxNorthBuffer[idx] =
+                    nodeIdToByteNumberToInspector.get(0).get(idx).getLastValue());
 
             System.out.println("byte | transmitted | received");
             System.out.println("-----+-------------+-----------");
-            IntStream.range(0, numberBufferBytes).forEach(idx -> System.out.println(idx + "    | 0b" +
+            IntStream.range(0, numberBufferBytes).forEachOrdered(idx -> System.out.println(idx + "    | 0b" +
                     fixedLengthLeftPaddedZerosString(Integer.toBinaryString(txSouthBuffer[idx] & 0xff)) + "" +
                     "  " +
                     "| 0b" +
                     fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[idx] & 0xff))));
+            System.out.println();
 
-            IntStream.range(0, numberBufferBytes).forEach(idx -> assertBufferByte(txSouthBuffer, idx,
+            IntStream.range(0, numberBufferBytes).parallel().forEach(idx -> assertBufferByte(txSouthBuffer, idx,
                     rxNorthBuffer, idx));
         } catch (Exception e) {
             e.printStackTrace();
@@ -219,9 +222,9 @@ public class SimulationTestUtils {
         }
     }
 
-    public static void testMarkerBytes(Set<SimulationTestUtils.MarkerByteInspector> markerBytesInspectors) {
-        markerBytesInspectors.forEach(i -> i.postInspectionAssert());
-    }
+//    public static void testMarkerBytes(Set<SimulationTestUtils.MarkerByteInspector> markerBytesInspectors) {
+//        markerBytesInspectors.forEach(i -> i.postInspectionAssert());
+//    }
 
     public static void assertCorrectTypes(Map<Integer, SimulationTestUtils.NodeAddressStateGlue>
                                                   nodeIdAddresses, Map<Integer, String> expectedTypes) {
@@ -367,7 +370,7 @@ public class SimulationTestUtils {
         protected List<String> assertions = new ArrayList<>();
 
         public void postInspectionAssert() {
-            assertions.stream().forEach(System.out::print);
+            assertions.stream().forEachOrdered(System.out::println);
             assertEquals(0, assertions.size());
         }
 
@@ -381,10 +384,10 @@ public class SimulationTestUtils {
     public static class MarkerByteInspector extends LineInspector {
         private final String registerNameOfInterest;
         String nodeId;
-        String markerFieldName;
         Pattern linePattern = Pattern.compile(SimulationTestUtils.simulationLogLineRegexp);
         Pattern valuePattern = Pattern.compile(SimulationTestUtils.simulationLogHexByteValueRegexp);
         byte lastValue = -1;
+        private List<String> valueFoundMessages = new ArrayList<>();
 
         /**
          * @param nodeId          node id
@@ -392,7 +395,6 @@ public class SimulationTestUtils {
          */
         public MarkerByteInspector(String nodeId, String markerFieldName) {
             this.nodeId = nodeId;
-            this.markerFieldName = markerFieldName;
             registerNameOfInterest = new String("Particle." + markerFieldName);
         }
 
@@ -413,6 +415,9 @@ public class SimulationTestUtils {
                                         registerNameOfInterest + "in line [" + line + "]");
                             }
                             lastValue = (byte) (Integer.parseInt(valueMatcher.group(1), 16) & 0xff);
+                            valueFoundMessages.add("found value [" + Integer.toHexString(0xff & lastValue)
+                                    + "] in" +
+                                    " line [" + line + "]");
                         }
                     }
                 }
@@ -423,10 +428,11 @@ public class SimulationTestUtils {
 
         @Override
         public void postInspectionAssert() {
+            valueFoundMessages.stream().forEachOrdered(System.out::println);
             int magicValue = 0xaa;
             if (magicValue != (0xff & lastValue)) {
                 assertions.add("expected [" + Integer.toHexString(magicValue) + "] but found [" + Integer
-                        .toHexString(0xff & lastValue) + "] ");
+                        .toHexString(0xff & lastValue) + "] for [" + nodeId + "][" + registerNameOfInterest + "]");
             }
             super.postInspectionAssert();
         }
@@ -542,6 +548,14 @@ public class SimulationTestUtils {
     }
 
     public static class NoDestroyedReturnAddressOnStackInspector extends LineInspector {
+
+        @Override
+        public void postInspectionAssert() {
+            if (assertions.isEmpty()) {
+                System.out.println("no return address destruction found");
+            }
+            super.postInspectionAssert();
+        }
 
         @Override
         void inspect(String line) {
