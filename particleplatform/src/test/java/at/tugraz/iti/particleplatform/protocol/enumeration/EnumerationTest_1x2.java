@@ -10,13 +10,15 @@ import org.junit.BeforeClass;
 
 import java.io.IOException;
 
-
 /**
  * Created by Raoul Rubien on 27.05.16.
  */
 public class EnumerationTest_1x2 extends SimulationTestBase_1x1 {
     @BeforeClass
     public static void startSimulation() throws IllegalAccessException, NoSuchFieldException, IOException {
+        firmware = "particle-simulation/main/ParticleSimulation.elf";
+        communicationUnitFirmware = null;
+
         numberOfRows = 1;
         numberOfColumns = 2;
 
@@ -27,6 +29,7 @@ public class EnumerationTest_1x2 extends SimulationTestBase_1x1 {
         nodeIdToState.clear();
         nodeIdToState.put(0, "STATE_TYPE_IDLE");
         nodeIdToState.put(1, "STATE_TYPE_IDLE");
+
         SimulationTestBase_1x1.startSimulation();
     }
 }

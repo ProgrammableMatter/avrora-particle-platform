@@ -46,21 +46,21 @@ public class SimulationTestUtils {
      * D0)] <- (0b00001100) <br/> group 1 ... mcu number<br/> group 2 ... timestamp<br/> group 3 ... domain
      * (SRAM, WIRE, ...)<br/> group 4 ... register name<br/> group 5 ... register value assigned<br/>
      */
-    public final static String simulationLogLineRegexp = "^\\s*(\\d+)\\s*(\\d:\\d\\d:\\d\\d.\\d+)\\s*(\\w+)" +
+    public static final String simulationLogLineRegexp = "^\\s*(\\d+)\\s*(\\d:\\d\\d:\\d\\d.\\d+)\\s*(\\w+)" +
             "" + "\\[(.+)\\]\\s*<-\\s*(.*)\\s*$";
     /**
      * to be parsed: ('c') <br/> group 1 ... char value without ('')
      */
-    public final static String simulationLogUdrValueRegexp = "^\\s*\\('(.*)'\\)\\s*$";
+    public static final String simulationLogUdrValueRegexp = "^\\s*\\('(.*)'\\)\\s*$";
     /**
      * to be parsed: (4) <br/> group 1 ... int value
      */
-    public final static String simulationLogIntValueRegexp = "^\\s*\\((.*)\\)\\s*$";
+    public static final String simulationLogIntValueRegexp = "^\\s*\\((.*)\\)\\s*$";
 
     /**
      * to be parsed: (0xff)<br/> group 1 ... 0xff without ()
      */
-    public final static String simulationLogHexByteValueRegexp = "^\\s*\\(0x(.*)\\)\\s*$";
+    public static final String simulationLogHexByteValueRegexp = "^\\s*\\(0x(.*)\\)\\s*$";
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(SimulationTestUtils.class);
 
     public static void registerDefaultTestExtensions() {
@@ -268,7 +268,6 @@ public class SimulationTestUtils {
     public static void iterateLogFileLines(Set<LineInspector> inspectors) {
         String fileName = ParticleLogSink.getAbsoluteFileName();
         inspectors.stream().parallel().forEach(i -> {
-//        inspectors.stream().forEach(i -> {
             try (Stream<String> linesStream = Files.lines(Paths.get(fileName))) {
                 linesStream.forEachOrdered(line -> i.inspect(line));
             } catch (IOException e) {
@@ -366,7 +365,7 @@ public class SimulationTestUtils {
                 "[0b" + Integer.toBinaryString(rxBuffer[rxId] & 0xff) + "]", txBuffer[txId], rxBuffer[rxId]);
     }
 
-    public static abstract class LineInspector {
+    public abstract static class LineInspector {
         protected List<String> assertions = new ArrayList<>();
 
         public void postInspectionAssert() {
@@ -500,7 +499,7 @@ public class SimulationTestUtils {
     }
 
     public static class LastNodeAddressesInspector extends LineInspector {
-        public Map<Integer, NodeAddressStateGlue> nodeIdToAddress = new HashMap<>();
+        private Map<Integer, NodeAddressStateGlue> nodeIdToAddress = new HashMap<>();
         private Pattern linePattern = Pattern.compile(SimulationTestUtils.simulationLogLineRegexp);
         private Pattern valuePattern = Pattern.compile(SimulationTestUtils.simulationLogIntValueRegexp);
 
@@ -544,6 +543,12 @@ public class SimulationTestUtils {
         public Map<Integer, NodeAddressStateGlue> getNodeIdToAddress() {
             postInspectionAssert();
             return nodeIdToAddress;
+        }
+
+        @Override
+        public void clear() {
+            nodeIdToAddress.clear();
+            super.clear();
         }
     }
 

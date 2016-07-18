@@ -17,6 +17,9 @@ import java.io.IOException;
 public class EnumerationTest_6x6 extends SimulationTestBase_1x1 {
     @BeforeClass
     public static void startSimulation() throws IllegalAccessException, NoSuchFieldException, IOException {
+        firmware = "particle-simulation/main/ParticleSimulation.elf";
+        communicationUnitFirmware = null;
+
         numberOfRows = 6;
         numberOfColumns = 6;
         simulationSeconds = 1E-3 * 150;
