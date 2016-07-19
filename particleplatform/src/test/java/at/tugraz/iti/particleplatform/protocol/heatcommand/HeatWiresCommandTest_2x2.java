@@ -20,6 +20,7 @@ public class HeatWiresCommandTest_2x2 extends SimulationTestBase_1x1 {
         numberOfColumns = 2;
         simulationSeconds = 1E-3 * 60;
         firmware = "particle-simulation-heatwires-test/main/ParticleSimulationHeatWiresCommandTest.elf";
+        communicationUnitFirmware = null;
 
         nodeIdToType.clear();
         nodeIdToType.put(0, "NODE_TYPE_ORIGIN");

@@ -30,8 +30,8 @@ public class ParticlePlatformNetworkConnectorTest {
     public static void startSimulation() {
         LOGGER.debug("BEFORE CLASS: {}", ParticlePlatformNetworkConnectorTest.class.getSimpleName());
         ParticleLogSink.deleteInstance();
-        ParticleLogSink.getInstance(true).log("   0  0:00:00.00000000000  " + ParticlePlatformNetworkTest
-                .class.getSimpleName() + "[BeforeClass] <- (TEST)");
+        ParticleLogSink.getInstance(true).log("   0  0:00:00.00000000000  " +
+                ParticlePlatformNetworkConnectorTest.class.getSimpleName() + "[BeforeClass] <- (TEST)");
     }
 
     @AfterClass

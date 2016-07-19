@@ -21,6 +21,7 @@ public class HeatWiresRangeCommandTest_2x2 extends SimulationTestBase_1x1 {
         simulationSeconds = 1E-3 * 60;
         firmware = "particle-simulation-heatwiresrange-test/main" +
                 "/ParticleSimulationHeatWiresRangeCommandTest.elf";
+        communicationUnitFirmware = null;
 
         nodeIdToType.clear();
         nodeIdToType.put(0, "NODE_TYPE_ORIGIN");
@@ -33,6 +34,7 @@ public class HeatWiresRangeCommandTest_2x2 extends SimulationTestBase_1x1 {
         nodeIdToState.put(1, "STATE_TYPE_IDLE");
         nodeIdToState.put(2, "STATE_TYPE_IDLE");
         nodeIdToState.put(3, "STATE_TYPE_IDLE");
+
         SimulationTestBase_1x1.startSimulation();
     }
 }

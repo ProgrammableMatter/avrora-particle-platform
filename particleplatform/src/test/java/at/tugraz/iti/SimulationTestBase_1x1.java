@@ -186,7 +186,7 @@ public class SimulationTestBase_1x1 {
         System.out.println("log size:           " + fileLengthBytes / (1024 * 1024) + "[MB] (" +
                 fileLengthBytes + "[b])");
         System.out.println("sim. time:          " + simulationSeconds + "[s]");
-        System.out.println("sim. real duration: " + lastSimulationRealDuration + "[ms]");
+        System.out.println("sim. real duration: " + lastSimulationRealDuration / 1000.0 + "[s]");
         System.out.println();
     }
 
