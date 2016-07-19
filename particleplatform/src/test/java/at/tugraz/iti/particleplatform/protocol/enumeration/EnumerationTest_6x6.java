@@ -7,9 +7,11 @@
 package at.tugraz.iti.particleplatform.protocol.enumeration;
 
 import at.tugraz.iti.SimulationTestBase_1x1;
+import at.tugraz.iti.SimulationTestUtils;
 import org.junit.BeforeClass;
 
 import java.io.IOException;
+import java.util.stream.IntStream;
 
 /**
  * Created by Raoul Rubien on 27.05.16.
@@ -68,42 +70,14 @@ public class EnumerationTest_6x6 extends SimulationTestBase_1x1 {
         nodeIdToType.put(35, "NODE_TYPE_TAIL");
 
         nodeIdToState.clear();
-        nodeIdToState.put(0, "STATE_TYPE_IDLE");
-        nodeIdToState.put(1, "STATE_TYPE_IDLE");
-        nodeIdToState.put(2, "STATE_TYPE_IDLE");
-        nodeIdToState.put(3, "STATE_TYPE_IDLE");
-        nodeIdToState.put(4, "STATE_TYPE_IDLE");
-        nodeIdToState.put(5, "STATE_TYPE_IDLE");
-        nodeIdToState.put(6, "STATE_TYPE_IDLE");
-        nodeIdToState.put(7, "STATE_TYPE_IDLE");
-        nodeIdToState.put(8, "STATE_TYPE_IDLE");
-        nodeIdToState.put(9, "STATE_TYPE_IDLE");
-        nodeIdToState.put(10, "STATE_TYPE_IDLE");
-        nodeIdToState.put(11, "STATE_TYPE_IDLE");
-        nodeIdToState.put(12, "STATE_TYPE_IDLE");
-        nodeIdToState.put(13, "STATE_TYPE_IDLE");
-        nodeIdToState.put(14, "STATE_TYPE_IDLE");
-        nodeIdToState.put(15, "STATE_TYPE_IDLE");
-        nodeIdToState.put(16, "STATE_TYPE_IDLE");
-        nodeIdToState.put(17, "STATE_TYPE_IDLE");
-        nodeIdToState.put(18, "STATE_TYPE_IDLE");
-        nodeIdToState.put(19, "STATE_TYPE_IDLE");
-        nodeIdToState.put(20, "STATE_TYPE_IDLE");
-        nodeIdToState.put(21, "STATE_TYPE_IDLE");
-        nodeIdToState.put(22, "STATE_TYPE_IDLE");
-        nodeIdToState.put(23, "STATE_TYPE_IDLE");
-        nodeIdToState.put(24, "STATE_TYPE_IDLE");
-        nodeIdToState.put(25, "STATE_TYPE_IDLE");
-        nodeIdToState.put(26, "STATE_TYPE_IDLE");
-        nodeIdToState.put(27, "STATE_TYPE_IDLE");
-        nodeIdToState.put(28, "STATE_TYPE_IDLE");
-        nodeIdToState.put(29, "STATE_TYPE_IDLE");
-        nodeIdToState.put(30, "STATE_TYPE_IDLE");
-        nodeIdToState.put(31, "STATE_TYPE_IDLE");
-        nodeIdToState.put(32, "STATE_TYPE_IDLE");
-        nodeIdToState.put(33, "STATE_TYPE_IDLE");
-        nodeIdToState.put(34, "STATE_TYPE_IDLE");
-        nodeIdToState.put(35, "STATE_TYPE_IDLE");
+        IntStream.range(0, numberOfRows * numberOfColumns).forEach(idx -> nodeIdToState.put(idx,
+                "STATE_TYPE_IDLE"));
+
+        executeTimeSyncPackageFunctionCallInspector.add(new SimulationTestUtils
+                .ExecuteSynchronizeLocalTimePackageFunctionCallInspector(0, 0));
+        IntStream.range(1, numberOfRows * numberOfColumns).forEach(idx ->
+                executeTimeSyncPackageFunctionCallInspector.add(new SimulationTestUtils
+                        .ExecuteSynchronizeLocalTimePackageFunctionCallInspector(idx, 1)));
 
         SimulationTestBase_1x1.startSimulation();
     }

@@ -16,10 +16,7 @@ import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.ParticleLogS
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformNetworkConnector;
 import edu.ucla.cs.compilers.avrora.cck.util.Option;
 import edu.ucla.cs.compilers.avrora.cck.util.Options;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,16 +30,20 @@ import java.util.stream.IntStream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+@Ignore
 public class SimulationTestBase_1x1 {
 
     public static final Set<SimulationTestUtils.LineInspector> inspectors = new HashSet<>();
     public static final Map<Integer, Map<Integer, SimulationTestUtils.LastXmissionBufferWriteInspector>>
             nodeIdToByteNumberToInspector = new HashMap<>();
+    public static final String temporaryFileName = System.getProperty("java.io.tmpdir") +
+            "/particle-junit-simulation-test-temp-output.log";
     protected static final Map<Integer, String> nodeIdToState = new HashMap<>();
     protected static final Map<Integer, String> nodeIdToType = new HashMap<>();
     protected static final SimulationTestUtils.LastNodeAddressesInspector lastNodeAddressesInspector = new
             SimulationTestUtils.LastNodeAddressesInspector();
-    private static final String temporaryFileName = "/tmp/avrora-testcase.txt";
+    protected static final Set<SimulationTestUtils.FunctionCallInspector>
+            executeTimeSyncPackageFunctionCallInspector = new HashSet<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(SimulationTestBase_1x1.class);
     private static final Set<SimulationTestUtils.MarkerByteInspector> markerBytesInspectors = new HashSet<>();
     private static final SimulationTestUtils.NoDestroyedReturnAddressOnStackInspector
@@ -91,6 +92,7 @@ public class SimulationTestBase_1x1 {
 
         inspectors.clear();
         lastNodeAddressesInspector.clear();
+        executeTimeSyncPackageFunctionCallInspector.clear();
         markerBytesInspectors.clear();
         noDestroyedReturnAddressOnStackInspector.clear();
         nodeIdToByteNumberToInspector.clear();
@@ -155,6 +157,7 @@ public class SimulationTestBase_1x1 {
         });
         inspectors.addAll(markerBytesInspectors);
         inspectors.add(lastNodeAddressesInspector);
+        inspectors.addAll(executeTimeSyncPackageFunctionCallInspector);
         inspectors.add(noDestroyedReturnAddressOnStackInspector);
         inspectors.stream().forEach(i -> i.clear());
 
@@ -182,6 +185,7 @@ public class SimulationTestBase_1x1 {
         System.out.println("network:            (" + numberOfRows + "x" + numberOfColumns + ")");
         System.out.println("firmware:           " + firmware);
         System.out.println("communication unit: " + communicationUnitFirmware);
+        System.out.println("log file:           " + temporaryFileName);
         long fileLengthBytes = new File(temporaryFileName).length();
         System.out.println("log size:           " + fileLengthBytes / (1024 * 1024) + "[MB] (" +
                 fileLengthBytes + "[b])");
@@ -227,5 +231,11 @@ public class SimulationTestBase_1x1 {
         SimulationTestUtils.printNetworkStatus(lastNodeAddressesInspector.getNodeIdToAddress());
         SimulationTestUtils.assertCorrectStates(lastNodeAddressesInspector.getNodeIdToAddress(),
                 nodeIdToState);
+    }
+
+    @Test
+    public void testPostSimulation_corretNumberOfExecuteSyncTimePackageFunctionCalls() {
+        SimulationTestUtils.printNetworkStatus(lastNodeAddressesInspector.getNodeIdToAddress());
+        executeTimeSyncPackageFunctionCallInspector.stream().parallel().forEach(i -> i.postInspectionAssert());
     }
 }

@@ -11,13 +11,13 @@ import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticleCallMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticleInterruptMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.ParticlePlatformMonitor;
 import edu.ucla.cs.compilers.avrora.avrora.monitors.TestableParticlePlatformMonitor;
-import edu.ucla.cs.compilers.avrora.avrora.monitors.particlemonitor.ParticleLogSink;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatform;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformNetworkConnector;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.ParticlePlatformTest;
 import edu.ucla.cs.compilers.avrora.avrora.sim.platform.PlatformAddress;
 import edu.ucla.cs.compilers.avrora.avrora.sim.types.ParticleSimulation;
 import edu.ucla.cs.compilers.avrora.cck.text.StringUtil;
+import edu.ucla.cs.compilers.avrora.cck.text.Terminal;
 import edu.ucla.cs.compilers.avrora.cck.util.Option;
 import edu.ucla.cs.compilers.avrora.cck.util.Options;
 import edu.ucla.cs.compilers.avrora.cck.util.Util;
@@ -42,12 +42,27 @@ import static org.junit.Assert.assertEquals;
 public class SimulationTestUtils {
 
     /**
-     * to be parsed: <br/> 0  0:00:00.00022075371  SRAM[D.out.(D7 | D6 | D5 | D4 | EAST_RX | STH_RX | D1 |
-     * D0)] <- (0b00001100) <br/> group 1 ... mcu number<br/> group 2 ... timestamp<br/> group 3 ... domain
+     * to be parsed: <br/> "   0  0:00:00.00022075371  SRAM[D.out.(D7 | D6 | D5 | D4 | EAST_RX | STH_RX | D1 |
+     * D0)] <- (0b00001100)" <br/> group 1 ... mcu number<br/> group 2 ... timestamp<br/> group 3 ... domain
      * (SRAM, WIRE, ...)<br/> group 4 ... register name<br/> group 5 ... register value assigned<br/>
      */
-    public static final String simulationLogLineRegexp = "^\\s*(\\d+)\\s*(\\d:\\d\\d:\\d\\d.\\d+)\\s*(\\w+)" +
+    public static final String simulationLogLineRegisterWriteRegexp = "^\\s*(\\d+)\\s*(\\d:\\d\\d:\\d\\d" +
+            ".\\d+)\\s*(\\w+)" +
             "" + "\\[(.+)\\]\\s*<-\\s*(.*)\\s*$";
+
+    /**
+     * to be parsed: <br/><br/> "   1  0:00:00.02676525031
+     * main:particleLoop:particleTick:receiveNorth:interpretRxBuffer:
+     *
+     * @ 0x1408 --(CALL)-> executeSynchronizeLocalTimePackage" <br/> or <br/> "   1  0:00:00.02677125035
+     * main:particleLoop:particleTick:receiveNorth:interpretRxBuffer: @ 0x0C4C <-(RET )--
+     * executeSynchronizeLocalTimePackage" <br/><br/> group 1 ... mcu number <br/> group 1 ... timestamp <br/>
+     * group 2 ... stacked function names <br/> group 3 ... at address <br/> group 4 ... CALL or RET <br/>
+     * group 5 ... function name
+     */
+    public static final String simulationLogLineFunctionCallReturnRegexp = "^\\s*(\\d+)\\s*" + "" +
+            "(\\d:\\d\\d:\\d\\d.\\d+)\\s*([\\w+:]+)\\s*@\\s*(0x\\w+)\\s*[<-]-\\s*\\((.*)\\)-[>-]\\s*(.*)$";
+
     /**
      * to be parsed: ('c') <br/> group 1 ... char value without ('')
      */
@@ -61,6 +76,12 @@ public class SimulationTestUtils {
      * to be parsed: (0xff)<br/> group 1 ... 0xff without ()
      */
     public static final String simulationLogHexByteValueRegexp = "^\\s*\\(0x(.*)\\)\\s*$";
+
+    /**
+     * to be parsed: (0bxxxxxxxx)<br/> group 1 ... xxxxxxxx without ()
+     */
+    public static final String simulationLogBitByteValueRegexp = "^\\s*\\(0b(.*)\\)\\s*$";
+
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(SimulationTestUtils.class);
 
     public static void registerDefaultTestExtensions() {
@@ -134,6 +155,7 @@ public class SimulationTestUtils {
      */
     public static void startSimulation(Options mainOptions, Option.Str action) {
 
+        Terminal.useColors = false;
         Action a = Defaults.getAction(action.get());
         if (a == null) {
             Util.userError("Unknown Action", StringUtil.quote(action.get()));
@@ -214,8 +236,8 @@ public class SimulationTestUtils {
                     fixedLengthLeftPaddedZerosString(Integer.toBinaryString(rxNorthBuffer[idx] & 0xff))));
             System.out.println();
 
-            IntStream.range(0, numberBufferBytes).parallel().forEach(idx -> assertBufferByte(txSouthBuffer, idx,
-                    rxNorthBuffer, idx));
+            IntStream.range(0, numberBufferBytes).parallel().forEach(idx -> assertBufferByte(txSouthBuffer,
+                    idx, rxNorthBuffer, idx));
         } catch (Exception e) {
             e.printStackTrace();
             assertTrue(false);
@@ -266,7 +288,7 @@ public class SimulationTestUtils {
     }
 
     public static void iterateLogFileLines(Set<LineInspector> inspectors) {
-        String fileName = ParticleLogSink.getAbsoluteFileName();
+        String fileName = SimulationTestBase_1x1.temporaryFileName;
         inspectors.stream().parallel().forEach(i -> {
             try (Stream<String> linesStream = Files.lines(Paths.get(fileName))) {
                 linesStream.forEachOrdered(line -> i.inspect(line));
@@ -317,8 +339,8 @@ public class SimulationTestUtils {
         Option.Str action = mainOptions.newOption("action", "simulate", "");
 
         //mainOptions.newOption("input", "auto", "");
-        mainOptions.newOption("action", "simulate", "");
         mainOptions.newOption("colors", true, "");
+        mainOptions.newOption("action", "simulate", "");
         mainOptions.newOption("banner", false, "");
         mainOptions.newOption("status", true, "");
         mainOptions.newOption("status-timing", true, "");
@@ -383,7 +405,7 @@ public class SimulationTestUtils {
     public static class MarkerByteInspector extends LineInspector {
         private final String registerNameOfInterest;
         String nodeId;
-        Pattern linePattern = Pattern.compile(SimulationTestUtils.simulationLogLineRegexp);
+        Pattern linePattern = Pattern.compile(SimulationTestUtils.simulationLogLineRegisterWriteRegexp);
         Pattern valuePattern = Pattern.compile(SimulationTestUtils.simulationLogHexByteValueRegexp);
         byte lastValue = -1;
         private List<String> valueFoundMessages = new ArrayList<>();
@@ -420,8 +442,6 @@ public class SimulationTestUtils {
                         }
                     }
                 }
-            } else {
-                assertions.add("line not parse-able: " + line);
             }
         }
 
@@ -430,8 +450,7 @@ public class SimulationTestUtils {
             valueFoundMessages.stream().forEachOrdered(System.out::println);
             int magicValue = 0xaa;
             if (magicValue != (0xff & lastValue)) {
-                assertions.add("expected [" + Integer.toHexString(magicValue) + "] but found [" + Integer
-                        .toHexString(0xff & lastValue) + "] for [" + nodeId + "][" + registerNameOfInterest + "]");
+                assertions.add("expected [" + Integer.toHexString(magicValue) + "] but found [" + Integer.toHexString(0xff & lastValue) + "] for [" + nodeId + "][" + registerNameOfInterest + "]");
             }
             super.postInspectionAssert();
         }
@@ -444,7 +463,8 @@ public class SimulationTestUtils {
 
     public static class LastXmissionBufferWriteInspector extends LineInspector {
         private final StringBuilder registerNameOfInterest;
-        private Pattern linePattern = Pattern.compile(SimulationTestUtils.simulationLogLineRegexp);
+        private Pattern linePattern = Pattern.compile(SimulationTestUtils
+                .simulationLogLineRegisterWriteRegexp);
         private Pattern valuePattern = Pattern.compile(SimulationTestUtils.simulationLogHexByteValueRegexp);
         private String nodeNumber;
         private byte lastValue = -1;
@@ -492,15 +512,14 @@ public class SimulationTestUtils {
                         }
                     }
                 }
-            } else {
-                assertions.add("line not parse-able: " + line);
             }
         }
     }
 
     public static class LastNodeAddressesInspector extends LineInspector {
         private Map<Integer, NodeAddressStateGlue> nodeIdToAddress = new HashMap<>();
-        private Pattern linePattern = Pattern.compile(SimulationTestUtils.simulationLogLineRegexp);
+        private Pattern linePattern = Pattern.compile(SimulationTestUtils
+                .simulationLogLineRegisterWriteRegexp);
         private Pattern valuePattern = Pattern.compile(SimulationTestUtils.simulationLogIntValueRegexp);
 
         public void inspect(String line) {
@@ -535,8 +554,6 @@ public class SimulationTestUtils {
                         nodeIdToAddress.get(mcuId).type = valueMatcher.group(1);
                     }
                 }
-            } else {
-                assertions.add("line not parse-able: " + line);
             }
         }
 
@@ -567,6 +584,143 @@ public class SimulationTestUtils {
             if (line.contains("destroy")) {
                 assertions.add("found erroneous keyword [destroy] in output [" + line + "]");
             }
+        }
+    }
+
+    public static class SramRegisterBitValueInspector extends LineInspector {
+        private final String registerOfInterest;
+        private final String expectedValue;
+        private final List<String> messages = new ArrayList<>();
+        private final Pattern bitValuePattern = Pattern.compile(SimulationTestUtils
+                .simulationLogBitByteValueRegexp);
+        private final Pattern linePattern = Pattern.compile(SimulationTestUtils
+                .simulationLogLineRegisterWriteRegexp);
+        private String lastValue = "<undefined>";
+        private int mcuId;
+
+        public SramRegisterBitValueInspector(int mcuId, String registerOfInterest, String expectedValue) {
+            this.mcuId = mcuId;
+            this.registerOfInterest = registerOfInterest;
+            this.expectedValue = expectedValue;
+        }
+
+        @Override
+        public void postInspectionAssert() {
+            if (lastValue.compareTo(expectedValue) != 0) {
+                assertions.add("expected [" + expectedValue + "] but found [" + lastValue + "] for mcu [" +
+                        mcuId + "]");
+            }
+            messages.stream().forEachOrdered(System.out::println);
+            super.postInspectionAssert();
+        }
+
+        @Override
+        public void clear() {
+            messages.clear();
+            super.clear();
+        }
+
+        @Override
+        void inspect(String line) {
+            Matcher m = linePattern.matcher(line);
+            if (m.matches()) {
+                Integer mcuId = Integer.parseInt(m.group(1));
+                String domain = m.group(3);
+                String registerName = m.group(4);
+                if (mcuId == this.mcuId && domain.compareTo("SRAM") == 0 && registerOfInterest.compareTo
+                        (registerName) == 0) {
+                    String registerRawValue = m.group(5);
+                    Matcher valueMatcher = bitValuePattern.matcher(registerRawValue);
+                    if (valueMatcher.matches()) {
+                        lastValue = valueMatcher.group(1);
+                        messages.add("found value [" + lastValue + "] in line [" + line + "]");
+                    }
+                }
+            }
+        }
+    }
+
+    public static class FunctionCallInspector extends LineInspector {
+        private final Pattern linePattern = Pattern.compile(SimulationTestUtils
+                .simulationLogLineFunctionCallReturnRegexp);
+        private final List<String> messages = new ArrayList<>();
+        private final int expectedCalls;
+        private final String expectedFunctionName;
+        private int numCalls;
+        private int mcuId;
+
+        /**
+         * @param mcuId         the mcu number
+         * @param functionName  the desired function name to look for
+         * @param expectedCalls if greater than -1, the exact amount of calls, otherwise number calls is
+         *                      ignored
+         */
+        public FunctionCallInspector(int mcuId, String functionName, int expectedCalls) {
+            this.mcuId = mcuId;
+            this.expectedFunctionName = functionName;
+            this.expectedCalls = expectedCalls;
+            this.numCalls = 0;
+        }
+
+        @Override
+        public void postInspectionAssert() {
+            messages.stream().forEachOrdered(System.out::println);
+            if (expectedCalls >= 0) {
+                if (expectedCalls != numCalls) {
+                    assertions.add("expected [" + expectedCalls + "] but found [" + numCalls + "] calls to " +
+                            "[" +
+                            expectedFunctionName + "] at mcu [" + mcuId + "]");
+                }
+            }
+            super.postInspectionAssert();
+        }
+
+        @Override
+        public void clear() {
+            messages.clear();
+            super.clear();
+        }
+
+        @Override
+        void inspect(String line) {
+            Matcher m = linePattern.matcher(line);
+            if (m.matches()) {
+                Integer mcuId = Integer.parseInt(m.group(1));
+                String stackedFuncNames = m.group(3);
+                String callOrRet = m.group(5);
+                String functionName = m.group(6);
+                if (mcuId == this.mcuId && callOrRet.compareTo("CALL") == 0 && functionName.compareTo
+                        (expectedFunctionName) == 0) {
+                    messages.add("found [" + stackedFuncNames + functionName + "] call in line [" + line +
+                            "]");
+                    numCalls++;
+                }
+            }
+        }
+    }
+
+    public static class ExecuteSynchronizeLocalTimePackageFunctionCallInspector extends
+            FunctionCallInspector {
+
+        /**
+         * @param mcuId         the mcu number
+         * @param expectedCalls if greater than -1, the exact amount of calls, otherwise number calls is
+         */
+        public ExecuteSynchronizeLocalTimePackageFunctionCallInspector(int mcuId, int expectedCalls) {
+            super(mcuId, "executeSynchronizeLocalTimePackage", expectedCalls);
+        }
+    }
+
+    public static class IsActuationScheduledInspector extends SramRegisterBitValueInspector {
+        public IsActuationScheduledInspector(int mcuId, String expectedValue) {
+            super(mcuId, "Particle.actuationCommand.(__pad[7:1] | isScheduled[0])", expectedValue);
+        }
+    }
+
+    public static class ActuationCommandInspector extends SramRegisterBitValueInspector {
+        public ActuationCommandInspector(int mcuId, String expectedValue) {
+            super(mcuId, "Particle.actuationCommand.actuators.(__pad[7:6] | southRight[5] | southLeft[4] | " +
+                    "" + "eastRight[3] | eastLeft[2] | northRight[1] | northLeft[0])", expectedValue);
         }
     }
 

@@ -6,6 +6,7 @@
 package at.tugraz.iti.particleplatform.protocol.enumeration;
 
 import at.tugraz.iti.SimulationTestBase_1x1;
+import at.tugraz.iti.SimulationTestUtils;
 import org.junit.BeforeClass;
 
 import java.io.IOException;
@@ -29,6 +30,11 @@ public class EnumerationTest_1x2 extends SimulationTestBase_1x1 {
         nodeIdToState.clear();
         nodeIdToState.put(0, "STATE_TYPE_IDLE");
         nodeIdToState.put(1, "STATE_TYPE_IDLE");
+
+        executeTimeSyncPackageFunctionCallInspector.add(new SimulationTestUtils
+                .ExecuteSynchronizeLocalTimePackageFunctionCallInspector(0, 0));
+        executeTimeSyncPackageFunctionCallInspector.add(new SimulationTestUtils
+                .ExecuteSynchronizeLocalTimePackageFunctionCallInspector(1, 1));
 
         SimulationTestBase_1x1.startSimulation();
     }

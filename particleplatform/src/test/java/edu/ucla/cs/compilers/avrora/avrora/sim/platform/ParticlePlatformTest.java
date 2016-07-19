@@ -227,7 +227,7 @@ public class ParticlePlatformTest {
 
         String fileName = ParticleLogSink.getAbsoluteFileName();
 
-        Pattern linePattern = Pattern.compile(SimulationTestUtils.simulationLogLineRegexp);
+        Pattern linePattern = Pattern.compile(SimulationTestUtils.simulationLogLineRegisterWriteRegexp);
         Pattern udrPattern = Pattern.compile(SimulationTestUtils.simulationLogUdrValueRegexp);
         StringBuilder udrMessageBuilder = new StringBuilder();
 

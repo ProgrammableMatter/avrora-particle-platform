@@ -5,7 +5,7 @@
 
 package at.tugraz.iti.particleplatform.protocol.heatcommand;
 
-import at.tugraz.iti.SimulationTestBase_1x1;
+import at.tugraz.iti.SimulationTestUtils;
 import org.junit.BeforeClass;
 
 import java.io.IOException;
@@ -13,28 +13,28 @@ import java.io.IOException;
 /**
  * Created by Raoul Rubien on 16.07.16.
  */
-public class HeatWiresRangeCommandTest_2x2 extends SimulationTestBase_1x1 {
+public class HeatWiresRangeCommandTest_2x2 extends HeatWiresCommandTestBase_2x2 {
+
     @BeforeClass
     public static void startSimulation() throws IllegalAccessException, NoSuchFieldException, IOException {
-        numberOfRows = 2;
-        numberOfColumns = 2;
-        simulationSeconds = 1E-3 * 60;
+
         firmware = "particle-simulation-heatwiresrange-test/main" +
                 "/ParticleSimulationHeatWiresRangeCommandTest.elf";
-        communicationUnitFirmware = null;
 
-        nodeIdToType.clear();
-        nodeIdToType.put(0, "NODE_TYPE_ORIGIN");
-        nodeIdToType.put(1, "NODE_TYPE_TAIL");
-        nodeIdToType.put(2, "NODE_TYPE_INTER_NODE");
-        nodeIdToType.put(3, "NODE_TYPE_TAIL");
+        isActuationScheduledInspectors.add(new SimulationTestUtils.IsActuationScheduledInspector(0,
+                "00000001"));
+        isActuationScheduledInspectors.add(new SimulationTestUtils.IsActuationScheduledInspector(1,
+                "00000000"));
+        isActuationScheduledInspectors.add(new SimulationTestUtils.IsActuationScheduledInspector(2,
+                "00000001"));
+        isActuationScheduledInspectors.add(new SimulationTestUtils.IsActuationScheduledInspector(3,
+                "00000001"));
 
-        nodeIdToState.clear();
-        nodeIdToState.put(0, "STATE_TYPE_IDLE");
-        nodeIdToState.put(1, "STATE_TYPE_IDLE");
-        nodeIdToState.put(2, "STATE_TYPE_IDLE");
-        nodeIdToState.put(3, "STATE_TYPE_IDLE");
+        actuationCommandInspectors.add(new SimulationTestUtils.ActuationCommandInspector(0, "00000100"));
+        actuationCommandInspectors.add(new SimulationTestUtils.ActuationCommandInspector(1, "00000000"));
+        actuationCommandInspectors.add(new SimulationTestUtils.ActuationCommandInspector(2, "00010010"));
+        actuationCommandInspectors.add(new SimulationTestUtils.ActuationCommandInspector(3, "00000010"));
 
-        SimulationTestBase_1x1.startSimulation();
+        HeatWiresCommandTestBase_2x2.startSimulation();
     }
 }
