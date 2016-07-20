@@ -287,8 +287,9 @@ public class SimulationTestUtils {
         }
     }
 
-    public static void iterateLogFileLines(Set<LineInspector> inspectors) {
+    public static long iterateLogFileLines(Set<LineInspector> inspectors) {
         String fileName = SimulationTestBase_1x1.temporaryFileName;
+        long startTimestamp = System.currentTimeMillis();
         inspectors.stream().parallel().forEach(i -> {
             try (Stream<String> linesStream = Files.lines(Paths.get(fileName))) {
                 linesStream.forEachOrdered(line -> i.inspect(line));
@@ -296,6 +297,7 @@ public class SimulationTestUtils {
                 Assert.assertTrue(false);
             }
         });
+        return System.currentTimeMillis() - startTimestamp;
     }
 
     public static void assertCorrectlyEnumeratedNodes(short networkRows, int networkColumns, int
@@ -421,6 +423,10 @@ public class SimulationTestUtils {
 
         public void inspect(String line) {
 
+            if (!line.contains(registerNameOfInterest)) {
+                return;
+            }
+
             Matcher m = linePattern.matcher(line);
             if (m.matches()) {
 
@@ -450,7 +456,9 @@ public class SimulationTestUtils {
             valueFoundMessages.stream().forEachOrdered(System.out::println);
             int magicValue = 0xaa;
             if (magicValue != (0xff & lastValue)) {
-                assertions.add("expected [" + Integer.toHexString(magicValue) + "] but found [" + Integer.toHexString(0xff & lastValue) + "] for [" + nodeId + "][" + registerNameOfInterest + "]");
+                assertions.add("expected [" + Integer.toHexString(magicValue) + "] but found [" + Integer
+                        .toHexString(0xff & lastValue) + "] for [" + nodeId + "][" + registerNameOfInterest
+                        + "]");
             }
             super.postInspectionAssert();
         }
@@ -500,6 +508,11 @@ public class SimulationTestUtils {
         }
 
         public void inspect(String line) {
+
+            if (!line.contains(registerNameOfInterest)) {
+                return;
+            }
+
             Matcher m = linePattern.matcher(line);
             if (m.matches()) {
                 String mcuId = m.group(1);
@@ -523,6 +536,10 @@ public class SimulationTestUtils {
         private Pattern valuePattern = Pattern.compile(SimulationTestUtils.simulationLogIntValueRegexp);
 
         public void inspect(String line) {
+
+            if (!line.contains("Particle.node.")) {
+                return;
+            }
 
             Matcher m = linePattern.matcher(line);
             if (m.matches()) {
@@ -622,6 +639,11 @@ public class SimulationTestUtils {
 
         @Override
         void inspect(String line) {
+
+            if (!line.contains(registerOfInterest)) {
+                return;
+            }
+
             Matcher m = linePattern.matcher(line);
             if (m.matches()) {
                 Integer mcuId = Integer.parseInt(m.group(1));
@@ -683,6 +705,11 @@ public class SimulationTestUtils {
 
         @Override
         void inspect(String line) {
+
+            if (!line.contains(expectedFunctionName)) {
+                return;
+            }
+
             Matcher m = linePattern.matcher(line);
             if (m.matches()) {
                 Integer mcuId = Integer.parseInt(m.group(1));

@@ -61,6 +61,7 @@ public class SimulationTestBase_1x1 {
     private static String firmwaresBaseDirectory = ".CLion2016" + "" +
             ".1/system/cmake/generated/avr-c14d54a/c14d54a/Debug/";
     private static long lastSimulationRealDuration = -1;
+    private static long lastInspectionDuration;
 
     static {
         FileOutputStream foo = null;
@@ -162,7 +163,7 @@ public class SimulationTestBase_1x1 {
         inspectors.stream().forEach(i -> i.clear());
 
         // inspect log file
-        SimulationTestUtils.iterateLogFileLines(inspectors);
+        lastInspectionDuration = SimulationTestUtils.iterateLogFileLines(inspectors);
 
         File tempFile = new File(temporaryFileName);
 
@@ -182,15 +183,16 @@ public class SimulationTestBase_1x1 {
     @Test
     public void printTestSettings() {
         System.out.println();
-        System.out.println("network:            (" + numberOfRows + "x" + numberOfColumns + ")");
-        System.out.println("firmware:           " + firmware);
-        System.out.println("communication unit: " + communicationUnitFirmware);
-        System.out.println("log file:           " + temporaryFileName);
+        System.out.println("network:             (" + numberOfRows + "x" + numberOfColumns + ")");
+        System.out.println("firmware:            " + firmware);
+        System.out.println("communication unit:  " + communicationUnitFirmware);
+        System.out.println("log file:            " + temporaryFileName);
         long fileLengthBytes = new File(temporaryFileName).length();
-        System.out.println("log size:           " + fileLengthBytes / (1024 * 1024) + "[MB] (" +
-                fileLengthBytes + "[b])");
-        System.out.println("sim. time:          " + simulationSeconds + "[s]");
-        System.out.println("sim. real duration: " + lastSimulationRealDuration / 1000.0 + "[s]");
+        System.out.println("log size:            " + fileLengthBytes / (1024 * 1024) + "[MB] (" +
+                fileLengthBytes + "[B])");
+        System.out.println("sim. time:           " + simulationSeconds + "[s]");
+        System.out.println("sim. real duration:  " + lastSimulationRealDuration / 1000.0 + "[s]");
+        System.out.println("inspection duration: " + lastInspectionDuration / 1000.0 + "[s]");
         System.out.println();
     }
 
