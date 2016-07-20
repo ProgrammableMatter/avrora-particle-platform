@@ -156,6 +156,7 @@ public class SimulationTestUtils {
     public static void startSimulation(Options mainOptions, Option.Str action) {
 
         Terminal.useColors = false;
+        Terminal.updateSystemOut();
         Action a = Defaults.getAction(action.get());
         if (a == null) {
             Util.userError("Unknown Action", StringUtil.quote(action.get()));
@@ -410,6 +411,7 @@ public class SimulationTestUtils {
         Pattern linePattern = Pattern.compile(SimulationTestUtils.simulationLogLineRegisterWriteRegexp);
         Pattern valuePattern = Pattern.compile(SimulationTestUtils.simulationLogHexByteValueRegexp);
         byte lastValue = -1;
+        String lastLine = null;
         private List<String> valueFoundMessages = new ArrayList<>();
 
         /**
@@ -445,6 +447,7 @@ public class SimulationTestUtils {
                             valueFoundMessages.add("found value [" + Integer.toHexString(0xff & lastValue)
                                     + "] in" +
                                     " line [" + line + "]");
+                            lastLine = line;
                         }
                     }
                 }
@@ -456,9 +459,8 @@ public class SimulationTestUtils {
             valueFoundMessages.stream().forEachOrdered(System.out::println);
             int magicValue = 0xaa;
             if (magicValue != (0xff & lastValue)) {
-                assertions.add("expected [" + Integer.toHexString(magicValue) + "] but found [" + Integer
-                        .toHexString(0xff & lastValue) + "] for [" + nodeId + "][" + registerNameOfInterest
-                        + "]");
+                assertions.add("expected [" + Integer.toHexString(magicValue) + "] but found [" + Integer.toHexString(0xff & lastValue) + "] mcu [" + nodeId + "] for [" +
+                        registerNameOfInterest + "] in line [" + lastLine + "]");
             }
             super.postInspectionAssert();
         }
