@@ -82,6 +82,11 @@ public class SimulationTestUtils {
      */
     public static final String simulationLogBitByteValueRegexp = "^\\s*\\(0b(.*)\\)\\s*$";
 
+    /**
+     * to be parsed: (xxxxxxxx)<br/> group 1 ... xxxxxxxx without ()
+     */
+    public static final String simulationLogStringValueRegexp = "^\\s*\\((.*)\\)\\s*$";
+
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(SimulationTestUtils.class);
 
     public static void registerDefaultTestExtensions() {
@@ -391,7 +396,7 @@ public class SimulationTestUtils {
     }
 
     public abstract static class LineInspector {
-        protected List<String> assertions = new ArrayList<>();
+        protected Set<String> assertions = new LinkedHashSet<>();
 
         public void postInspectionAssert() {
             assertions.stream().forEachOrdered(System.out::println);
@@ -459,7 +464,8 @@ public class SimulationTestUtils {
             valueFoundMessages.stream().forEachOrdered(System.out::println);
             int magicValue = 0xaa;
             if (magicValue != (0xff & lastValue)) {
-                assertions.add("expected [" + Integer.toHexString(magicValue) + "] but found [" + Integer.toHexString(0xff & lastValue) + "] mcu [" + nodeId + "] for [" +
+                assertions.add("expected [" + Integer.toHexString(magicValue) + "] but found [" + Integer
+                        .toHexString(0xff & lastValue) + "] mcu [" + nodeId + "] for [" +
                         registerNameOfInterest + "] in line [" + lastLine + "]");
             }
             super.postInspectionAssert();
@@ -609,7 +615,7 @@ public class SimulationTestUtils {
     public static class SramRegisterBitValueInspector extends LineInspector {
         private final String registerOfInterest;
         private final String expectedValue;
-        private final List<String> messages = new ArrayList<>();
+        private final Set<String> messages = new LinkedHashSet<>();
         private final Pattern bitValuePattern = Pattern.compile(SimulationTestUtils
                 .simulationLogBitByteValueRegexp);
         private final Pattern linePattern = Pattern.compile(SimulationTestUtils
@@ -750,6 +756,94 @@ public class SimulationTestUtils {
         public ActuationCommandInspector(int mcuId, String expectedValue) {
             super(mcuId, "Particle.actuationCommand.actuators.(__pad[7:6] | southRight[5] | southLeft[4] | " +
                     "" + "eastRight[3] | eastLeft[2] | northRight[1] | northLeft[0])", expectedValue);
+        }
+    }
+
+    public static class WireEventsInspector extends LineInspector {
+        private final String registerOfInterest;
+        private final Map<String, AtomicInteger> events = new HashMap<>();
+
+        private final Set<String> messages = new LinkedHashSet<>();
+        private final Pattern stringValuePattern = Pattern.compile(SimulationTestUtils
+                .simulationLogStringValueRegexp);
+        private final Pattern linePattern = Pattern.compile(SimulationTestUtils
+                .simulationLogLineRegisterWriteRegexp);
+        private final int maxHighEvents;
+        private final int minHighEvents;
+        private final int minLowEvents;
+        private final int maxLowEvents;
+        private int mcuId;
+
+        public WireEventsInspector(int mcuId, String registerOfInterest, int minToLowTransitionEvents, int
+                maxToLowTransisionEvents, int minToHighTransitionEvents, int maxToHighTransisionEvents) {
+            this.mcuId = mcuId;
+            this.registerOfInterest = registerOfInterest;
+            this.minLowEvents = minToLowTransitionEvents;
+            this.maxLowEvents = maxToLowTransisionEvents;
+            this.minHighEvents = minToHighTransitionEvents;
+            this.maxHighEvents = maxToHighTransisionEvents;
+        }
+
+        @Override
+        public void postInspectionAssert() {
+            messages.stream().forEachOrdered(System.out::println);
+            Assert.assertTrue(events.size() <= 2);
+            System.out.println();
+            System.out.println("WIRE " + registerOfInterest);
+            System.out.println("high events [" + events.get("high").get() + "] min [" + minHighEvents + "] " +
+                    "max [" + maxHighEvents + "]");
+            System.out.println("low events [" + events.get("low").get() + "] min [" + minLowEvents + "] max" +
+                    " [" + maxLowEvents + "]");
+            System.out.println();
+
+            Assert.assertTrue("expected high events >= minHighEvents: [" + events.get("high").get() + "] >=" +
+                    " [" + minHighEvents + "]", events.get("high").get() >= minHighEvents);
+            Assert.assertTrue("expected high events <= maxHighEvents: [" + events.get("high").get() + "] >=" +
+                    " [" + maxHighEvents + "]", events.get("high").get() <= maxHighEvents);
+            Assert.assertTrue("expected low events >= minLowEvents: [" + events.get("high").get() + "] >= " +
+                    "[" + minLowEvents + "]", events.get("low").get() >= minLowEvents);
+            Assert.assertTrue("expected low events >= maxLowEvents: [" + events.get("high").get() + "] >= " +
+                    "[" + maxLowEvents + "]", events.get("low").get() <= maxLowEvents);
+            super.postInspectionAssert();
+        }
+
+        @Override
+        public void clear() {
+            messages.clear();
+            super.clear();
+        }
+
+        public Map<String, AtomicInteger> getEvents() {
+            return events;
+        }
+
+        @Override
+        void inspect(String line) {
+
+            if (!line.contains(registerOfInterest)) {
+                return;
+            }
+
+            Matcher m = linePattern.matcher(line);
+            if (m.matches()) {
+                Integer mcuId = Integer.parseInt(m.group(1));
+                String domain = m.group(3);
+                String registerName = m.group(4);
+                if (mcuId == this.mcuId && domain.compareTo("WIRE") == 0 && registerOfInterest.compareTo
+                        (registerName) == 0) {
+                    String registerRawValue = m.group(5);
+                    Matcher valueMatcher = stringValuePattern.matcher(registerRawValue);
+                    if (valueMatcher.matches()) {
+                        String value = valueMatcher.group(1);
+                        messages.add("found value [" + value + "] in line [" + line + "]");
+                        if (!events.containsKey(value)) {
+                            events.put(value, new AtomicInteger(1));
+                        } else {
+                            events.get(value).incrementAndGet();
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -2284,12 +2284,12 @@
         "address": "globalStateBase+344"
       },
       {
-        "property": "interruptDelay[1]",
+        "property": "timePeriodInterruptDelay[1]",
         "type": "unsigned",
         "address": "globalStateBase+347"
       },
       {
-        "property": "interruptDelay",
+        "property": "timePeriodInterruptDelay",
         "type": "unsigned int",
         "address": "globalStateBase+346"
       }

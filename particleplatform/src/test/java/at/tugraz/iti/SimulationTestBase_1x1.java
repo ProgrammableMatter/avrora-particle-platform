@@ -168,7 +168,7 @@ public class SimulationTestBase_1x1 {
         File tempFile = new File(temporaryFileName);
 
         // eventually print log if not too exhausting
-        if (tempFile.length() < (1024 * 1024 * 6)) {
+        if (tempFile.length() < (1024 * 1024 * 2)) {
             (new BufferedReader(new FileReader(tempFile))).lines().forEachOrdered(System.out::println);
         }
 
