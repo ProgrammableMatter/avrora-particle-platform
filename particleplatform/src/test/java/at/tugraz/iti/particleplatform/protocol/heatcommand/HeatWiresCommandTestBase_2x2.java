@@ -29,15 +29,15 @@ public class HeatWiresCommandTestBase_2x2 extends SimulationTestBase_1x1 {
 
     protected static final Set<SimulationTestUtils.IsActuationScheduledInspector>
             isActuationScheduledInspectors = new HashSet<>();
-
     protected static final Set<SimulationTestUtils.ActuationCommandInspector> actuationCommandInspectors =
             new HashSet<>();
+    protected static final Set<SimulationTestUtils.WireEventsInspector> actuationWireEventsInspectors = new
+            HashSet<>();
 
     @BeforeClass
     public static void startSimulation() throws IllegalAccessException, NoSuchFieldException, IOException {
         numberOfRows = 2;
         numberOfColumns = 2;
-        simulationSeconds = 1E-3 * 60;
         communicationUnitFirmware = null;
 
         nodeIdToType.clear();
@@ -54,6 +54,7 @@ public class HeatWiresCommandTestBase_2x2 extends SimulationTestBase_1x1 {
 
         SimulationTestBase_1x1.inspectors.addAll(isActuationScheduledInspectors);
         SimulationTestBase_1x1.inspectors.addAll(actuationCommandInspectors);
+        SimulationTestBase_1x1.inspectors.addAll(actuationWireEventsInspectors);
 
         SimulationTestBase_1x1.startSimulation();
     }
@@ -62,6 +63,7 @@ public class HeatWiresCommandTestBase_2x2 extends SimulationTestBase_1x1 {
     public static void cleanup() {
         isActuationScheduledInspectors.clear();
         actuationCommandInspectors.clear();
+        actuationWireEventsInspectors.clear();
         SimulationTestBase_1x1.cleanup();
     }
 

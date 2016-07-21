@@ -17,6 +17,7 @@ public class HeatWiresCommandTest_2x2 extends HeatWiresCommandTestBase_2x2 {
 
     @BeforeClass
     public static void startSimulation() throws IllegalAccessException, NoSuchFieldException, IOException {
+        simulationSeconds = 1E-3 * 60;
 
         firmware = "particle-simulation-heatwires-test/main/ParticleSimulationHeatWiresCommandTest.elf";
 
@@ -31,8 +32,8 @@ public class HeatWiresCommandTest_2x2 extends HeatWiresCommandTestBase_2x2 {
 
         actuationCommandInspectors.add(new SimulationTestUtils.ActuationCommandInspector(0, "00000000"));
         actuationCommandInspectors.add(new SimulationTestUtils.ActuationCommandInspector(1, "00000000"));
-        actuationCommandInspectors.add(new SimulationTestUtils.ActuationCommandInspector(2, "00010000"));
-        actuationCommandInspectors.add(new SimulationTestUtils.ActuationCommandInspector(3, "00000010"));
+        actuationCommandInspectors.add(new SimulationTestUtils.ActuationCommandInspector(2, "00110000"));
+        actuationCommandInspectors.add(new SimulationTestUtils.ActuationCommandInspector(3, "00000011"));
 
         HeatWiresCommandTestBase_2x2.startSimulation();
     }

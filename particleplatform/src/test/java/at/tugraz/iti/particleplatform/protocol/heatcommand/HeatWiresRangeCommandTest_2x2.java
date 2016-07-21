@@ -18,6 +18,8 @@ public class HeatWiresRangeCommandTest_2x2 extends HeatWiresCommandTestBase_2x2 
     @BeforeClass
     public static void startSimulation() throws IllegalAccessException, NoSuchFieldException, IOException {
 
+        simulationSeconds = 1E-3 * 60;
+
         firmware = "particle-simulation-heatwiresrange-test/main" +
                 "/ParticleSimulationHeatWiresRangeCommandTest.elf";
 
