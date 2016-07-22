@@ -6,8 +6,8 @@ import edu.ucla.cs.compilers.avrora.avrora.sim.mcu.Microcontroller.Pin.Output;
 /**
  * Implements the {@link Output} interface and wraps {@link SmaWireLogic#setRxSwitchSignal(boolean)}. The
  * "*Output" suffix is seen from the viewpoint of an {@link edu.ucla.cs.compilers.avrora.avrora.sim.mcu
- * .Microcontroller.Pin.Output}.
- * In other words this class provides the input interface for the microcontroller's output.
+ * .Microcontroller.Pin.Output}. In other words this class provides the input interface for the
+ * microcontroller's output.
  *
  * @author Raoul Rubien
  */

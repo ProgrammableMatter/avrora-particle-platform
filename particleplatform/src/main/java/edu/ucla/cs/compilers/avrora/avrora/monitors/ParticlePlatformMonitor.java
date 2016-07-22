@@ -112,11 +112,22 @@ public class ParticlePlatformMonitor extends MonitorFactory {
                     .getSimpleName());
         }
 
-        /**
-         * @return default state change watch instance
-         */
-        protected OnParticleStateChangeWatch newOnStateChangeWatch() {
-            return new OnParticleStateChangeWatch(simulator, stateRegister, particleStateLogger);
+        @Override
+        public void report() {
+            removeWatches();
+
+            if (ParticleLogSink.isInstanceAlive()) {
+                TermUtil.printSeparator("Particle state log");
+                TermUtil.printThinSeparator();
+                Terminal.print("log file written to [" + ParticleLogSink.getAbsoluteFileName() + "]");
+                Terminal.nextln();
+                Terminal.nextln();
+
+//                ParticleLogSink.deleteInstance();
+                particleStateLogger = null;
+            }
+
+            onParticleStateChangeWatch.report();
         }
 
         private void insertWatches() {
@@ -163,16 +174,6 @@ public class ParticlePlatformMonitor extends MonitorFactory {
         }
 
         /**
-         * Constructs a new pin wire probe
-         *
-         * @param wire the wire to be watched
-         * @return a pin wire probe
-         */
-        protected PinWireProbe newPinWireProbe(PinWire wire) {
-            return new PinWireProbe(printer, wire, particleStateLogger);
-        }
-
-        /**
          * remove all inserted watches so far
          */
         private void removeWatches() {
@@ -199,28 +200,27 @@ public class ParticlePlatformMonitor extends MonitorFactory {
         }
 
         /**
+         * @return default state change watch instance
+         */
+        protected OnParticleStateChangeWatch newOnStateChangeWatch() {
+            return new OnParticleStateChangeWatch(simulator, stateRegister, particleStateLogger);
+        }
+
+        /**
+         * Constructs a new pin wire probe
+         *
+         * @param wire the wire to be watched
+         * @return a pin wire probe
+         */
+        protected PinWireProbe newPinWireProbe(PinWire wire) {
+            return new PinWireProbe(printer, wire, particleStateLogger);
+        }
+
+        /**
          * clears map of wire probes
          */
         protected void clearWireProbes() {
             wireProbes.clear();
-        }
-
-        @Override
-        public void report() {
-            removeWatches();
-
-            if (ParticleLogSink.isInstanceAlive()) {
-                TermUtil.printSeparator("Particle state log");
-                TermUtil.printThinSeparator();
-                Terminal.print("log file written to [" + ParticleLogSink.getAbsoluteFileName() + "]");
-                Terminal.nextln();
-                Terminal.nextln();
-
-//                ParticleLogSink.deleteInstance();
-                particleStateLogger = null;
-            }
-
-            onParticleStateChangeWatch.report();
         }
     }
 }

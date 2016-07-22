@@ -39,6 +39,16 @@ public class SmaWireLogic {
         }
     }
 
+    /**
+     * This method evaluates the logic output in regard to the inputs of {@link #setRxSwitchSignal(boolean)}
+     * and {@link #setTxSignal(boolean)}.
+     *
+     * @return the SmaWire output that is connected to the RX net (to the microcontroller intput)
+     */
+    public boolean evaluateRxSignal() {
+        return state.isRx();
+    }
+
     private void updateRx(boolean logicLevel) {
         if (state.isRx() != logicLevel) {
             state.setRx(logicLevel);
@@ -47,8 +57,8 @@ public class SmaWireLogic {
 
     /**
      * Combines the state of {@link SmaWireState} with the logic of the MosFet ICs using their implementation
-     * {@link #receptionTransistorImpl(boolean, boolean)} and {@link
-     * SmaWireLogic#transmissionTransistorImpl(boolean)}.
+     * {@link #receptionTransistorImpl(boolean, boolean)} and
+     * {@link SmaWireLogic#transmissionTransistorImpl(boolean)}.
      */
     private void evaluate() {
         updateRx(receptionTransistorImpl(state.isRxSwitch(), transmissionTransistorImpl(state.isTx())));
@@ -78,15 +88,5 @@ public class SmaWireLogic {
             return true; // VCC
         }
         return rx; // else MosFet is high-impedance and does not override tx
-    }
-
-    /**
-     * This method evaluates the logic output in regard to the inputs of {@link #setRxSwitchSignal(boolean)}
-     * and {@link #setTxSignal(boolean)}.
-     *
-     * @return the SmaWire output that is connected to the RX net (to the microcontroller intput)
-     */
-    public boolean evaluateRxSignal() {
-        return state.isRx();
     }
 }

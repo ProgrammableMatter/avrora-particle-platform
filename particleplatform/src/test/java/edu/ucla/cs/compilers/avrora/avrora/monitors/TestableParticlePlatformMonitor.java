@@ -59,6 +59,18 @@ public class TestableParticlePlatformMonitor extends ParticlePlatformMonitor {
             super(sim, particleStateLogger, monitorFacets);
         }
 
+        public TestableOnParticleStateChangeWatch getWatch() {
+            return (TestableOnParticleStateChangeWatch) onParticleStateChangeWatch;
+        }
+
+        /**
+         * @return the probe listing of instanciated testable probes so far
+         */
+        @SuppressWarnings("unchecked")
+        public Map<PinWire, TestablePinWireProbe> getProbes() {
+            return (Map) super.wireProbes;
+        }
+
         /**
          * @return a testable state change watch instance
          */
@@ -66,10 +78,6 @@ public class TestableParticlePlatformMonitor extends ParticlePlatformMonitor {
         protected OnParticleStateChangeWatch newOnStateChangeWatch() {
             return new TestableOnParticleStateChangeWatch(super.simulator, stateRegister, super
                     .particleStateLogger);
-        }
-
-        public TestableOnParticleStateChangeWatch getWatch() {
-            return (TestableOnParticleStateChangeWatch) onParticleStateChangeWatch;
         }
 
         /**
@@ -88,14 +96,6 @@ public class TestableParticlePlatformMonitor extends ParticlePlatformMonitor {
         @Override
         protected PinWireProbe newPinWireProbe(PinWire wire) {
             return new TestablePinWireProbe(super.simulator.getPrinter(), wire, super.particleStateLogger);
-        }
-
-        /**
-         * @return the probe listing of instanciated testable probes so far
-         */
-        @SuppressWarnings("unchecked")
-        public Map<PinWire, TestablePinWireProbe> getProbes() {
-            return (Map) super.wireProbes;
         }
     }
 }

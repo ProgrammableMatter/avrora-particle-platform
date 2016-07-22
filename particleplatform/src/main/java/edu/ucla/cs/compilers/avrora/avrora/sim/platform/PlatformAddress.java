@@ -7,8 +7,8 @@ package edu.ucla.cs.compilers.avrora.avrora.sim.platform;
 
 /**
  * Describes a address accroding to the platform wiring/placement. The {@link
- * ParticlePlatformNetworkConnector}
- * connects platforms in a rectangular matrix manner. Thus the top left platform is addressed (1,1).
+ * ParticlePlatformNetworkConnector} connects platforms in a rectangular matrix manner. Thus the top left
+ * platform is addressed (1,1).
  */
 public class PlatformAddress {
     private short row;
@@ -27,13 +27,11 @@ public class PlatformAddress {
     }
 
     /**
-     *
      * @return the column address
      */
     public short getColumn() {
         return column;
     }
-
 
     @Override
     public String toString() {

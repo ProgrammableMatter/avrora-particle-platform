@@ -90,18 +90,123 @@ public class ParticlePlatform extends Platform {
     }
 
     /**
-     * Add off-chip but on platform components such as LEDs, test points and sma wires. The SMA wire and
-     * MOSFET transistors are abstracted in the {@link SmaWireLogic}. The incoming transmission and local
-     * transmission_switch pin levels are evaluated by the {@link SmaWireLogic} and written to the local
-     * reception pin. Thus in contrary to the real SMA hardware placement, on software platforms the SMA
-     * abstraction resides only on the receiver side.
+     * @return references of all wires used on the platform
      */
-    protected void addOffChipDevices() {
-        connectCommunicationWires();
-        connectLeds();
-        connectTestPoints();
-        // leave a platform reference at the network connector
-        platformNetworkConnector.addParticlePlatform(this);
+    public Set<PinWire> getWires() {
+        Set<PinWire> wires = new HashSet<>(10);
+        wires.add(northWires.tx);
+        wires.add(northWires.rx);
+        wires.add(northWires.rxSwitch);
+
+        wires.add(southWires.tx);
+        wires.add(southWires.rx);
+        wires.add(southWires.rxSwitch);
+
+        wires.add(eastWires.tx);
+        wires.add(eastWires.rx);
+        wires.add(eastWires.rxSwitch);
+
+        for (PinWire signalLed : signalLeds) {
+            wires.add(signalLed);
+        }
+
+        for (PinWire testPoint : testPoints) {
+            wires.add(testPoint);
+        }
+        return wires;
+    }
+
+    /**
+     * Reads neighbours' outputs and feeds them to the current node's input.
+     */
+    public void propagateSignals() {
+
+        if (northNeighbor != null) {
+            if (westNeighbor != null) {
+                logger.warn("network wiring mismatch: north and west communication cannot occur " +
+                        "simultaneously");
+            }
+            propagateNorthNeighbourToLocal();
+        } else if (westNeighbor != null) {
+            propagateWestNeighbourToLocal();
+        }
+
+        if (southNeighbor != null) {
+            propagateSouthToLocal();
+        }
+
+        if (eastNeighbor != null) {
+            propagateEastNeighbourToLocal();
+        }
+    }
+
+    /**
+     * Attaches the south neighbour locally and a back reference at the south neighbour to this node.
+     *
+     * @param southNeighbor the south side neighbour
+     */
+    public void attachSouthNode(ParticlePlatform southNeighbor) {
+        this.southNeighbor = southNeighbor;
+        this.southNeighbor.attachNorthNode(this);
+    }
+
+    /**
+     * Attaches the east neighbour locally and a back reference at the east neighbour to this node.
+     *
+     * @param eastNeighbor the east side neighbour
+     */
+    public void attachEastNode(ParticlePlatform eastNeighbor) {
+        this.eastNeighbor = eastNeighbor;
+        this.eastNeighbor.attachWestNode(this);
+    }
+
+    /**
+     * Detaches the local reference to the south node and the south's node back reference.
+     */
+    public void detachSouthNode() {
+        if (this.southNeighbor != null) {
+            this.southNeighbor.detachNorthNode();
+            this.southNeighbor = null;
+        }
+    }
+
+    /**
+     * Detaches the local reference to the east node and the east's node back reference.
+     */
+    public void detachEastNode() {
+        if (this.eastNeighbor != null) {
+            this.eastNeighbor.detachWestNode();
+            this.eastNeighbor = null;
+        }
+    }
+
+    /**
+     * @return the transmission wire meant for the north communication port
+     */
+    public PinWire getNorthTx() {
+        return northWires.tx;
+    }
+
+    /**
+     * @return the transmission wire meant for the south communication port
+     */
+    public PinWire getSouthTx() {
+        return southWires.tx;
+    }
+
+    /**
+     * @return the transmission wire meant for the east communication port
+     */
+    public PinWire getEastTx() {
+        return eastWires.tx;
+    }
+
+    /**
+     * @return The transmission wire meant for the west communication port. Since there is no dedicated west
+     * communication port, this communication is passed via the north communication port.
+     */
+    public PinWire getWestTx() {
+        return northWires.tx;
     }
 
     private void connectTestPoints() {
@@ -189,57 +294,6 @@ public class ParticlePlatform extends Platform {
         eastWires.rxSwitch.wireOutput.enableOutput();
         mcu.getPin("PA6").connectOutput(eastWires.rxSwitch.wireOutput);
         eastWires.rxSwitch.enableConnect();
-    }
-
-    /**
-     * @return references of all wires used on the platform
-     */
-    public Set<PinWire> getWires() {
-        Set<PinWire> wires = new HashSet<>(10);
-        wires.add(northWires.tx);
-        wires.add(northWires.rx);
-        wires.add(northWires.rxSwitch);
-
-        wires.add(southWires.tx);
-        wires.add(southWires.rx);
-        wires.add(southWires.rxSwitch);
-
-        wires.add(eastWires.tx);
-        wires.add(eastWires.rx);
-        wires.add(eastWires.rxSwitch);
-
-        for (PinWire signalLed : signalLeds) {
-            wires.add(signalLed);
-        }
-
-        for (PinWire testPoint : testPoints) {
-            wires.add(testPoint);
-        }
-        return wires;
-    }
-
-    /**
-     * Reads neighbours' outputs and feeds them to the current node's input.
-     */
-    public void propagateSignals() {
-
-        if (northNeighbor != null) {
-            if (westNeighbor != null) {
-                logger.warn("network wiring mismatch: north and west communication cannot occur " +
-                        "simultaneously");
-            }
-            propagateNorthNeighbourToLocal();
-        } else if (westNeighbor != null) {
-            propagateWestNeighbourToLocal();
-        }
-
-        if (southNeighbor != null) {
-            propagateSouthToLocal();
-        }
-
-        if (eastNeighbor != null) {
-            propagateEastNeighbourToLocal();
-        }
     }
 
     /**
@@ -356,46 +410,6 @@ public class ParticlePlatform extends Platform {
         }
     }
 
-    /**
-     * Attaches the south neighbour locally and a back reference at the south neighbour to this node.
-     *
-     * @param southNeighbor the south side neighbour
-     */
-    public void attachSouthNode(ParticlePlatform southNeighbor) {
-        this.southNeighbor = southNeighbor;
-        this.southNeighbor.attachNorthNode(this);
-    }
-
-    /**
-     * Attaches the east neighbour locally and a back reference at the east neighbour to this node.
-     *
-     * @param eastNeighbor the east side neighbour
-     */
-    public void attachEastNode(ParticlePlatform eastNeighbor) {
-        this.eastNeighbor = eastNeighbor;
-        this.eastNeighbor.attachWestNode(this);
-    }
-
-    /**
-     * Detaches the local reference to the south node and the south's node back reference.
-     */
-    public void detachSouthNode() {
-        if (this.southNeighbor != null) {
-            this.southNeighbor.detachNorthNode();
-            this.southNeighbor = null;
-        }
-    }
-
-    /**
-     * Detaches the local reference to the east node and the east's node back reference.
-     */
-    public void detachEastNode() {
-        if (this.eastNeighbor != null) {
-            this.eastNeighbor.detachWestNode();
-            this.eastNeighbor = null;
-        }
-    }
-
     private void attachNorthNode(ParticlePlatform northNeighbor) {
         this.northNeighbor = northNeighbor;
     }
@@ -416,35 +430,6 @@ public class ParticlePlatform extends Platform {
 
     private void detachNorthNode() {
         this.northNeighbor = null;
-    }
-
-    /**
-     * @return the transmission wire meant for the north communication port
-     */
-    public PinWire getNorthTx() {
-        return northWires.tx;
-    }
-
-    /**
-     * @return the transmission wire meant for the south communication port
-     */
-    public PinWire getSouthTx() {
-        return southWires.tx;
-    }
-
-    /**
-     * @return the transmission wire meant for the east communication port
-     */
-    public PinWire getEastTx() {
-        return eastWires.tx;
-    }
-
-    /**
-     * @return The transmission wire meant for the west communication port. Since there is no dedicated west
-     * communication port, this communication is passed via the north communication port.
-     */
-    public PinWire getWestTx() {
-        return northWires.tx;
     }
 
     private PinWire getNorthRxSwitch() {
@@ -497,5 +482,20 @@ public class ParticlePlatform extends Platform {
             cd.newClock("external", 1);
             return new ParticlePlatform(new ATMega16(id, sim, cd, p));
         }
+    }
+
+    /**
+     * Add off-chip but on platform components such as LEDs, test points and sma wires. The SMA wire and
+     * MOSFET transistors are abstracted in the {@link SmaWireLogic}. The incoming transmission and local
+     * transmission_switch pin levels are evaluated by the {@link SmaWireLogic} and written to the local
+     * reception pin. Thus in contrary to the real SMA hardware placement, on software platforms the SMA
+     * abstraction resides only on the receiver side.
+     */
+    protected void addOffChipDevices() {
+        connectCommunicationWires();
+        connectLeds();
+        connectTestPoints();
+        // leave a platform reference at the network connector
+        platformNetworkConnector.addParticlePlatform(this);
     }
 }

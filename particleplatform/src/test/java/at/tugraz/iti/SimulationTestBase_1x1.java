@@ -239,6 +239,7 @@ public class SimulationTestBase_1x1 {
     public void testPostSimulation_expect_correctNumberCallsTo_executeSyncTimePackageFunction() {
         SimulationTestUtils.printNetworkStatus(lastNodeAddressesInspector.getNodeIdToAddress());
         assertFalse(executeTimeSyncPackageFunctionCallInspector.isEmpty());
-        executeTimeSyncPackageFunctionCallInspector.stream().parallel().forEach(i -> i.postInspectionAssert());
+        executeTimeSyncPackageFunctionCallInspector.stream().parallel().forEach(i -> i.postInspectionAssert
+                ());
     }
 }

@@ -113,12 +113,6 @@ public class ParticleSimulation extends Simulation {
         return new WiredNode(id, pf, p);
     }
 
-    @Override
-    protected void instantiateNodes() {
-        super.instantiateNodes();
-        ParticlePlatform.getPlatformNetworkConnector().initializeConnections();
-    }
-
     private void createNodes(String[] args, PlatformFactory platformFactory) throws Exception {
         short rows = (NODE_ROWS_COUNT.get() > 255) ? 255 : (short) NODE_ROWS_COUNT.get();
         short columns = (NODE_COLUMNS_COUNT.get() > 255) ? 255 : (short) NODE_COLUMNS_COUNT.get();
@@ -154,20 +148,6 @@ public class ParticleSimulation extends Simulation {
         }
     }
 
-    long processRandom() {
-        long low = RANDOM_START.getLow();
-        long size = RANDOM_START.getHigh() - low;
-        long delay = 0;
-        if (size > 0) {
-            Random r = getRandom();
-            delay = r.nextLong();
-            if (delay < 0) delay = -delay;
-            delay = delay % size;
-        }
-
-        return (low + delay);
-    }
-
     class WiredNode extends Simulation.Node {
 
         protected long startup;
@@ -197,5 +177,25 @@ public class ParticleSimulation extends Simulation {
                     getPlatform());
             super.remove();
         }
+    }
+
+    @Override
+    protected void instantiateNodes() {
+        super.instantiateNodes();
+        ParticlePlatform.getPlatformNetworkConnector().initializeConnections();
+    }
+
+    long processRandom() {
+        long low = RANDOM_START.getLow();
+        long size = RANDOM_START.getHigh() - low;
+        long delay = 0;
+        if (size > 0) {
+            Random r = getRandom();
+            delay = r.nextLong();
+            if (delay < 0) delay = -delay;
+            delay = delay % size;
+        }
+
+        return (low + delay);
     }
 }

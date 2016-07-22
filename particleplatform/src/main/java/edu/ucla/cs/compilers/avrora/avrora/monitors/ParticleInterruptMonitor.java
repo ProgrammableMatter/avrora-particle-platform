@@ -36,15 +36,6 @@ public class ParticleInterruptMonitor extends InterruptMonitor {
             particleLogSink = logSink;
         }
 
-        private void log(String domain, String state, int inum) {
-//            if (inum > 0) {
-            String details = "INT[#" + inum + "-" + domain + "] <- (" + state + ") " +
-                    "//" + props.getInterruptName(inum);
-            StringBuffer line = printer.getBuffer(20).append(details);
-            particleLogSink.log(line);
-//            }
-        }
-
         @Override
         public void fireBeforeInvoke(State s, int inum) {
             super.fireBeforeInvoke(s, inum);
@@ -73,6 +64,15 @@ public class ParticleInterruptMonitor extends InterruptMonitor {
         public void fireWhenUnposted(State s, int inum) {
             super.fireWhenUnposted(s, inum);
             log("post", "unposted", inum);
+        }
+
+        private void log(String domain, String state, int inum) {
+//            if (inum > 0) {
+            String details = "INT[#" + inum + "-" + domain + "] <- (" + state + ") " +
+                    "//" + props.getInterruptName(inum);
+            StringBuffer line = printer.getBuffer(20).append(details);
+            particleLogSink.log(line);
+//            }
         }
     }
 }

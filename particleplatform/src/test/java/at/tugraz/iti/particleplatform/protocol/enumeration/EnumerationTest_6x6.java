@@ -3,7 +3,6 @@
  * Raoul Rubien
  */
 
-
 package at.tugraz.iti.particleplatform.protocol.enumeration;
 
 import at.tugraz.iti.SimulationTestBase_1x1;

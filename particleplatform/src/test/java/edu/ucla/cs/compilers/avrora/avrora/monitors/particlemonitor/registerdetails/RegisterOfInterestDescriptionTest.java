@@ -44,8 +44,7 @@ public class RegisterOfInterestDescriptionTest {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
         RegisterOfInterestDescription registerDescription = null;
-        String descriptionFileName = SimulationTestUtils.getFilePath("ParticleRegisterDescription" +
-                ".json");
+        String descriptionFileName = SimulationTestUtils.getFilePath("ParticleRegisterDescription" + ".json");
 
         try {
             ClassLoader classLoader = getClass().getClassLoader();
