@@ -27,8 +27,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @Ignore
 public class SimulationTestBase_1x1 {
@@ -214,6 +213,7 @@ public class SimulationTestBase_1x1 {
 
     @Test
     public void testPostSimulation_expect_matching_markerBytes() {
+        assertFalse(markerBytesInspectors.isEmpty());
         markerBytesInspectors.parallelStream().forEach(i -> i.postInspectionAssert());
     }
 
@@ -238,6 +238,7 @@ public class SimulationTestBase_1x1 {
     @Test
     public void testPostSimulation_expect_correctNumberCallsTo_executeSyncTimePackageFunction() {
         SimulationTestUtils.printNetworkStatus(lastNodeAddressesInspector.getNodeIdToAddress());
+        assertFalse(executeTimeSyncPackageFunctionCallInspector.isEmpty());
         executeTimeSyncPackageFunctionCallInspector.stream().parallel().forEach(i -> i.postInspectionAssert());
     }
 }

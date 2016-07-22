@@ -766,6 +766,13 @@ public class SimulationTestUtils {
         }
     }
 
+    public static class ParticleProtocolFlagsInspector extends SramRegisterBitValueInspector {
+        public ParticleProtocolFlagsInspector(int mcuId, String expectedValue) {
+            super(mcuId, "Particle.protocol.(__pad[7:3] | isSimultaneousTransmissionEnabled[2] | " +
+                    "isBroadcastEnabled[1] | hasNetworkGeometryDiscoveryBreadCrumb[0])", expectedValue);
+        }
+    }
+
     public static class WireEventsInspector extends LineInspector {
         private final String registerOfInterest;
         private final Map<String, AtomicInteger> events = new HashMap<>();

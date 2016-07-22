@@ -6,6 +6,7 @@
 package at.tugraz.iti.avrora.particleplatform.communication;
 
 import at.tugraz.iti.SimulationTestBase_1x1;
+import at.tugraz.iti.SimulationTestUtils;
 import org.junit.BeforeClass;
 
 import java.io.IOException;
@@ -32,6 +33,11 @@ public class TransmissionTest extends ReceptionTest {
         nodeIdToState.put(1, "STATE_TYPE_UNDEFINED");
 
         TxRxTestUtils.addByteNumberInspectors();
+
+        executeTimeSyncPackageFunctionCallInspector.add(new SimulationTestUtils
+                .ExecuteSynchronizeLocalTimePackageFunctionCallInspector(0, 0));
+        executeTimeSyncPackageFunctionCallInspector.add(new SimulationTestUtils
+                .ExecuteSynchronizeLocalTimePackageFunctionCallInspector(1, 0));
 
         SimulationTestBase_1x1.startSimulation();
     }

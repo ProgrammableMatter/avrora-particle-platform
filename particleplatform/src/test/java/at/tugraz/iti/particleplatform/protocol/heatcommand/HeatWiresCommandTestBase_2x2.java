@@ -20,6 +20,9 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.IntStream;
+
+import static org.junit.Assert.assertFalse;
 
 /**
  * Created by Raoul Rubien on 16.07.2016
@@ -53,6 +56,12 @@ public class HeatWiresCommandTestBase_2x2 extends SimulationTestBase_1x1 {
         inspectors.addAll(isActuationScheduledInspectors);
         inspectors.addAll(actuationCommandFlagsInspectors);
 
+        executeTimeSyncPackageFunctionCallInspector.add(new SimulationTestUtils
+                .ExecuteSynchronizeLocalTimePackageFunctionCallInspector(0, 0));
+        IntStream.range(1, numberOfRows * numberOfColumns).forEach(idx ->
+                executeTimeSyncPackageFunctionCallInspector.add(new SimulationTestUtils
+                        .ExecuteSynchronizeLocalTimePackageFunctionCallInspector(idx, 1)));
+
         SimulationTestBase_1x1.startSimulation();
     }
 
@@ -65,11 +74,13 @@ public class HeatWiresCommandTestBase_2x2 extends SimulationTestBase_1x1 {
 
     @Test
     public void testPostSimulation_expect_scheduled_actuation() {
+        assertFalse(isActuationScheduledInspectors.isEmpty());
         isActuationScheduledInspectors.stream().parallel().forEach(i -> i.postInspectionAssert());
     }
 
     @Test
     public void testPostSimulation_expect_correct_actuation_command_stored() {
+        assertFalse(actuationCommandFlagsInspectors.isEmpty());
         actuationCommandFlagsInspectors.stream().parallel().forEach(i -> i.postInspectionAssert());
     }
 }

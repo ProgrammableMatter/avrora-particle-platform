@@ -35,6 +35,11 @@ public class ReceptionTest extends SimulationTestBase_1x1 {
 
         TxRxTestUtils.addByteNumberInspectors();
 
+        executeTimeSyncPackageFunctionCallInspector.add(new SimulationTestUtils
+                .ExecuteSynchronizeLocalTimePackageFunctionCallInspector(0, 0));
+        executeTimeSyncPackageFunctionCallInspector.add(new SimulationTestUtils
+                .ExecuteSynchronizeLocalTimePackageFunctionCallInspector(1, 0));
+
         SimulationTestBase_1x1.startSimulation();
     }
 

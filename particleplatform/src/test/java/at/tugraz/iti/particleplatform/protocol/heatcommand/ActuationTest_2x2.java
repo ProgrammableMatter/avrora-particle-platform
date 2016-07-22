@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.junit.Assert.assertFalse;
+
 /**
  * Created by Raoul Rubien on 16.07.16.
  */
@@ -73,6 +75,7 @@ public class ActuationTest_2x2 extends HeatWiresCommandTestBase_2x2 {
 
     @Test
     public void testPostSimulation_actuation_correctNumberOfWireEvents() {
+        assertFalse(actuationWireEventsInspectors.isEmpty());
         actuationWireEventsInspectors.parallelStream().forEach(i -> i.postInspectionAssert());
     }
 }

@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.junit.Assert.assertFalse;
+
 public class HeatWiresModeCommandTest_2x2 extends HeatWiresCommandTestBase_2x2 {
 
     protected static final Set<SimulationTestUtils.FunctionCallInspector>
@@ -27,6 +29,24 @@ public class HeatWiresModeCommandTest_2x2 extends HeatWiresCommandTestBase_2x2 {
         simulationSeconds = 1E-3 * 60;
 
         firmware = "particle-simulation-heatwiresmode-test/main/ParticleSimulationHeatwiresmodeTest.elf";
+
+        isActuationScheduledInspectors.add(new SimulationTestUtils.IsActuationScheduledInspector(0,
+                "00000000"));
+        isActuationScheduledInspectors.add(new SimulationTestUtils.IsActuationScheduledInspector(1,
+                "00000000"));
+        isActuationScheduledInspectors.add(new SimulationTestUtils.IsActuationScheduledInspector(2,
+                "00000000"));
+        isActuationScheduledInspectors.add(new SimulationTestUtils.IsActuationScheduledInspector(3,
+                "00000000"));
+
+        actuationCommandFlagsInspectors.add(new SimulationTestUtils.ActuationCommandFlagsInspector(0,
+                "00000000"));
+        actuationCommandFlagsInspectors.add(new SimulationTestUtils.ActuationCommandFlagsInspector(1,
+                "00000000"));
+        actuationCommandFlagsInspectors.add(new SimulationTestUtils.ActuationCommandFlagsInspector(2,
+                "00000000"));
+        actuationCommandFlagsInspectors.add(new SimulationTestUtils.ActuationCommandFlagsInspector(3,
+                "00000000"));
 
         executeHeatWiresModePackageFunctionCallInspector.add(new SimulationTestUtils.FunctionCallInspector
                 (0, "executeHeatWiresModePackage", 1));
@@ -59,12 +79,14 @@ public class HeatWiresModeCommandTest_2x2 extends HeatWiresCommandTestBase_2x2 {
 
     @Test
     public void testPostSimulation_executeHeatWiresModePackage() {
+        assertFalse(executeHeatWiresModePackageFunctionCallInspector.isEmpty());
         executeHeatWiresModePackageFunctionCallInspector.parallelStream().forEach(i -> i
                 .postInspectionAssert());
     }
 
     @Test
     public void testPostSimulation_expect_correct_actuation_power_flags() {
+        assertFalse(actuationPowerFlagsInspectors.isEmpty());
         actuationPowerFlagsInspectors.parallelStream().forEach(i -> i.postInspectionAssert());
     }
 }
