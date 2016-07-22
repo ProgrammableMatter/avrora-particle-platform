@@ -30,10 +30,14 @@ public class HeatWiresCommandTest_2x2 extends HeatWiresCommandTestBase_2x2 {
         isActuationScheduledInspectors.add(new SimulationTestUtils.IsActuationScheduledInspector(3,
                 "00000001"));
 
-        actuationCommandInspectors.add(new SimulationTestUtils.ActuationCommandInspector(0, "00000000"));
-        actuationCommandInspectors.add(new SimulationTestUtils.ActuationCommandInspector(1, "00000000"));
-        actuationCommandInspectors.add(new SimulationTestUtils.ActuationCommandInspector(2, "00110000"));
-        actuationCommandInspectors.add(new SimulationTestUtils.ActuationCommandInspector(3, "00000011"));
+        actuationCommandFlagsInspectors.add(new SimulationTestUtils.ActuationCommandFlagsInspector(0,
+                "00000000"));
+        actuationCommandFlagsInspectors.add(new SimulationTestUtils.ActuationCommandFlagsInspector(1,
+                "00000000"));
+        actuationCommandFlagsInspectors.add(new SimulationTestUtils.ActuationCommandFlagsInspector(2,
+                "00110000"));
+        actuationCommandFlagsInspectors.add(new SimulationTestUtils.ActuationCommandFlagsInspector(3,
+                "00000011"));
 
         HeatWiresCommandTestBase_2x2.startSimulation();
     }

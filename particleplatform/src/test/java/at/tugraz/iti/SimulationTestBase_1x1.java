@@ -213,30 +213,30 @@ public class SimulationTestBase_1x1 {
     }
 
     @Test
-    public void testPostSimulation_markerBytes() {
+    public void testPostSimulation_expect_matching_markerBytes() {
         markerBytesInspectors.parallelStream().forEach(i -> i.postInspectionAssert());
     }
 
     @Test
-    public void testPostSimulation_noDestroyedReturnAddressOnStack() {
+    public void testPostSimulation_expect_noDestroyedReturnAddressOnStack() {
         noDestroyedReturnAddressOnStackInspector.postInspectionAssert();
     }
 
     @Test
-    public void testPostSimulation_correctNodeTypes() {
+    public void testPostSimulation_expect_correctNodeTypes() {
         SimulationTestUtils.printNetworkStatus(lastNodeAddressesInspector.getNodeIdToAddress());
         SimulationTestUtils.assertCorrectTypes(lastNodeAddressesInspector.getNodeIdToAddress(), nodeIdToType);
     }
 
     @Test
-    public void testPostSimulation_correctNodeStates() {
+    public void testPostSimulation_expect_correctNodeStates() {
         SimulationTestUtils.printNetworkStatus(lastNodeAddressesInspector.getNodeIdToAddress());
         SimulationTestUtils.assertCorrectStates(lastNodeAddressesInspector.getNodeIdToAddress(),
                 nodeIdToState);
     }
 
     @Test
-    public void testPostSimulation_corretNumberOfExecuteSyncTimePackageFunctionCalls() {
+    public void testPostSimulation_expect_correctNumberCallsTo_executeSyncTimePackageFunction() {
         SimulationTestUtils.printNetworkStatus(lastNodeAddressesInspector.getNodeIdToAddress());
         executeTimeSyncPackageFunctionCallInspector.stream().parallel().forEach(i -> i.postInspectionAssert());
     }

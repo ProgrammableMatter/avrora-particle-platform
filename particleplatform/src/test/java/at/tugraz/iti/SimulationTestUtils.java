@@ -752,10 +752,17 @@ public class SimulationTestUtils {
         }
     }
 
-    public static class ActuationCommandInspector extends SramRegisterBitValueInspector {
-        public ActuationCommandInspector(int mcuId, String expectedValue) {
+    public static class ActuationCommandFlagsInspector extends SramRegisterBitValueInspector {
+        public ActuationCommandFlagsInspector(int mcuId, String expectedValue) {
             super(mcuId, "Particle.actuationCommand.actuators.(__pad[7:6] | southRight[5] | southLeft[4] | " +
                     "" + "eastRight[3] | eastLeft[2] | northRight[1] | northLeft[0])", expectedValue);
+        }
+    }
+
+    public static class ActuationPowerFlagsInspector extends SramRegisterBitValueInspector {
+        public ActuationPowerFlagsInspector(int mcuId, String expectedValue) {
+            super(mcuId, "Particle.actuationCommand.actuationPower.(__pad[7:2] | dutyCycleLevel[1:0])",
+                    expectedValue);
         }
     }
 
