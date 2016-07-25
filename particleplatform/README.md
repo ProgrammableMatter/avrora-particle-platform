@@ -24,7 +24,7 @@ visualization or other simulation tools.
 Build JAR with dependencies
 ===========================
 
-    mvn assembly:assembly
+    mvn assembly:assembly -DskipTests
 
 Start simulation
 ================
