@@ -5,5 +5,5 @@ SCRIPTPATH=`dirname $SCRIPT`
 OLDPWD=`pwd`
 
 cd $SCRIPTPATH
-mvn assembly:assembly -DskipTests
+mvn clean compile assembly:assembly -DskipTests
 cd $OLDPWD
