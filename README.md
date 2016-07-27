@@ -19,6 +19,9 @@ Among others the simulation allows to
 + log network/node interactions for later usage such as replay for 
 visualization or other simulation tools.
 
+Example
+-------
+[![how to video](./examples/howto-simulate-and-visalize.png)](./examples/howto-simulate-and-visalize.mp4)
 
 
 Build JAR with dependencies
