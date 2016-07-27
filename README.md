@@ -113,71 +113,15 @@ The json object is a description of registers to be monitored.
 It defines 
 
 + enums, 
-+ structures and 
-+ type sizes on the microcontroller.
++ structures
++ type sizes nd
++ the SRAM address on the microcontroller.
 
-**Enums:** "enums" object describes one or multiple types (i.e. *MyEnum*) that can
-be used as type later on. Each list entry corresponds to one enum value: 
-1st entry == 0, 2nd == 1 ...
-
-**Structs consists of:**
-* properties (name or text to be displayed after the value),
-* propertiyTypes (how the value is to be interpreted/printed),
-* propertyAddresses (start address of property)
-
-Properties are generally 1 byte width except of enums. Structures cannot be
-nested. Nested structures must be resolved byte by byte.
-
-**sizeofTypes:** not used yet
-
-### Short example
-One may use the auto [generator](https://github.com/ProgrammableMatter/software/tree/master/src/structs-to-json)
-written in python (see full [example](https://github.com/ProgrammableMatter/avrora-particle-platform/blob/master/particleplatform/src/main/resources/ParticleStateDescription.json)).
+One may use the auto [generator](https://github.com/ProgrammableMatter/cstruct-to-json)
+written in python (see full [example](https://github.com/ProgrammableMatter/avrora-particle-platform/blob/master/src/main/resources/ParticleRegisterDescription.json)).
 
 
-        {
-          // define enums
-          "enums": {
-            // some enum definistions
-            "<MyEnum>": [
-              // name of value 0
-              "STATE_TYPE_START",
-              // name of value 1
-              "STATE_TYPE_ACTIVE"
-            ]
-          },
-
-          // define structures
-          "structs": {
-            "<an-arbitrary-struct-name>": {
-              "properties": [
-                // the text following the value
-                "(TP | STH_SW | A5 | STH_TX | LED | A2 | NRTH_TX | NRTH_SW)"
-              ],
-              "propertyTypes": [
-                // how the value is printed: 
-                // int, char, unsigned char, hex, bit or enums, i.e. MyEnum
-                "bit"
-              ],
-              "propertyAddresses": [
-                // address as found in hexdump minus the offset: 80058-8000=58
-                58
-              ]
-            },
-        }
-
-          // define data type size in byte on microcontroller
-          "sizeofTypes": {
-            "MyEnum": 2,
-            "MyEnum2": 2,
-            "char": 1
-          }
-        }
-
-
-Obtaining property address for ParticleStateDescriptoin.json 
-------------------------------------------------------------
-
+### Obtaining property address for ParticleStateDescriptoin.json
 The property address corresponds to the symbol address obtained with 
 **readelf -a /path_to/node_firmware.elf** in the symtab minus the offset.
 As an example address of the symbol **ParticleAttributes**
