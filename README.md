@@ -20,8 +20,10 @@ Among others the simulation allows to
 visualization or other simulation tools.
 
 ### Example video
++ on GitHub
 <a href="./examples/howto-simulate-and-visualize.mp4"><img src="./examples/howto-simulate-and-visualize.png" width=100 /></a>
-
++ on Google
+<a href="https://drive.google.com/open?id=0Bx3U4CEhKK8dWkJTVE55cVZnZ28"><img src="./examples/howto-simulate-and-visualize.png" width=100 /></a>
 
 Build JAR with dependencies
 ===========================
