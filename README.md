@@ -20,7 +20,7 @@ Among others the simulation allows to
 visualization or other simulation tools.
 
 ### Example video
-<a href="./examples/howto-simulate-and-visalize.mp4"><img src="./examples/howto-simulate-and-visalize.png" width=100 /></a>
+<a href="./examples/howto-simulate-and-visualize.mp4"><img src="./examples/howto-simulate-and-visualize.png" width=100 /></a>
 
 
 Build JAR with dependencies
