@@ -54,7 +54,8 @@ public class ParticlePlatform extends Platform {
      */
     private SmaWireLogic northRxLogic = new SmaWireLogic(new SmaWireState());
     private SmaWireLogic southRxLogic = new SmaWireLogic(new SmaWireState());
-    private SmaWireLogic eastRxLogic = new SmaWireLogic(new SmaWireState());
+    //private SmaWireLogic eastRxLogic = new SmaWireLogic(new SmaWireState());
+
     /**
      * sets of LEDs and test points
      */
@@ -334,9 +335,14 @@ public class ParticlePlatform extends Platform {
             if (eastWires.rxSwitch.outputReady()) {
                 if (eastWires.rx.inputReady()) {
 
-                    eastRxLogic.setTxSignal(eastNeighbor.getWestTx().wireInput.read());
-                    eastRxLogic.setRxSwitchSignal(this.getEastRxSwitch().wireInput.read());
-                    this.eastWires.rx.wireOutput.write(eastRxLogic.evaluateRxSignal());
+                    // former implementation for particle platform with MOS-FET bridge at the east side
+//                    eastRxLogic.setTxSignal(eastNeighbor.getWestTx().wireInput.read());
+//                    eastRxLogic.setRxSwitchSignal(this.getEastRxSwitch().wireInput.read());
+//                    this.eastWires.rx.wireOutput.write(eastRxLogic.evaluateRxSignal());
+
+                    // former implementation's MOS-FET bridge replacement
+                    this.eastWires.rx.wireOutput.write(!eastNeighbor.getWestTx().wireInput.read());
+
 //                    LOGGER.debug("propagated [{}] from remote at east {} to local {}", eastRxLogic
 //                            .evaluateRxSignal(), eastNeighbor.getAddress(), localAddress);
                 } else {
@@ -363,9 +369,13 @@ public class ParticlePlatform extends Platform {
             if (northWires.rxSwitch.outputReady()) {
                 if (northWires.rx.inputReady()) {
 
-                    northRxLogic.setTxSignal(westNeighbor.getEastTx().wireInput.read());
-                    northRxLogic.setRxSwitchSignal(this.getWestRxSwitch().wireInput.read());
-                    this.northWires.rx.wireOutput.write(northRxLogic.evaluateRxSignal());
+                    // former implementation for particle platform with MOS-FET bridge at the east side
+//                    northRxLogic.setTxSignal(westNeighbor.getEastTx().wireInput.read());
+//                    northRxLogic.setRxSwitchSignal(this.getWestRxSwitch().wireInput.read());
+//                    this.northWires.rx.wireOutput.write(northRxLogic.evaluateRxSignal());
+
+                    // former implementation's MOS-FET bridge replacement
+                    this.northWires.rx.wireOutput.write(westNeighbor.getEastTx().wireInput.read());
 //                    LOGGER.debug("propagated [{}] from remote at west {} to local {}", northRxLogic
 //                            .evaluateRxSignal(), westNeighbor.getAddress(), localAddress);
                 } else {
