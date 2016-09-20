@@ -75,51 +75,59 @@ public class ParticlePlatformTest {
         return text.split("\\\\n");
     }
 
-    @Test
-    public void test_status0LedTransitions_expectCorrectAmount() {
-        Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "STATUS0");
-        int transitions = getNumRealTransitions(entry.getValue().getTransistions());
-        assertEquals(7, transitions);
-    }
 
     @Test
     public void test_status1LedTransitions_expectCorrectAmount() {
         Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "STATUS1");
         int transitions = getNumRealTransitions(entry.getValue().getTransistions());
+        assertEquals(5, transitions);
+    }
+
+    @Test
+    public void test_status2LedTransitions_expectCorrectAmount() {
+        Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "STATUS2");
+        int transitions = getNumRealTransitions(entry.getValue().getTransistions());
+        assertEquals(7, transitions);
+    }
+
+    @Test
+    public void test_status3LedTransitions_expectCorrectAmount() {
+        Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "STATUS3");
+        int transitions = getNumRealTransitions(entry.getValue().getTransistions());
         assertEquals(9, transitions);
     }
 
     @Test
-    public void test_errorLedTransitions_expectCorrectAmount() {
-        Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "ERROR");
+    public void test_status4LedTransitions_expectCorrectAmount() {
+        Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "STATUS4");
+        int transitions = getNumRealTransitions(entry.getValue().getTransistions());
+        assertEquals(11, transitions);
+    }
+
+    @Test
+    public void test_status5LedTransitions_expectCorrectAmount() {
+        Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "STATUS5");
         int transitions = getNumRealTransitions(entry.getValue().getTransistions());
         assertEquals(13, transitions);
     }
 
     @Test
-    public void test_heartbeatLedTransitions_expectCorrectAmount() {
-        Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "HEARTBEAT");
+    public void test_status6LedTransitions_expectCorrectAmount() {
+        Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "STATUS6");
         int transitions = getNumRealTransitions(entry.getValue().getTransistions());
-        assertEquals(11, transitions);
+        assertEquals(15, transitions);
     }
 
     @Test
     public void test_TestPint1Transitions_expectCorrectAmount() {
         Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "TP1");
         int transitions = getNumRealTransitions(entry.getValue().getTransistions());
-        assertEquals(15, transitions);
+        assertEquals(17, transitions);
     }
 
     @Test
     public void test_TestPint2Transitions_expectCorrectAmount() {
         Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "TP2");
-        int transitions = getNumRealTransitions(entry.getValue().getTransistions());
-        assertEquals(17, transitions);
-    }
-
-    @Test
-    public void test_TestPint3Transitions_expectCorrectAmount() {
-        Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "TP3");
         int transitions = getNumRealTransitions(entry.getValue().getTransistions());
         assertEquals(19, transitions);
     }
@@ -128,47 +136,40 @@ public class ParticlePlatformTest {
     public void test_northTxTransitions_expectCorrectAmount() {
         Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "tx-north");
         int transitions = getNumRealTransitions(entry.getValue().getTransistions());
-        assertEquals(21, transitions);
+        assertEquals(23, transitions);
     }
 
     @Test
     public void test_northSwitchTransitions_expectCorrectAmount() {
         Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "rxSwitch-north");
         int transitions = getNumRealTransitions(entry.getValue().getTransistions());
-        assertEquals(23, transitions);
+        assertEquals(25, transitions);
     }
 
     @Test
     public void test_southTxTransitions_expectCorrectAmount() {
         Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "tx-south");
         int transitions = getNumRealTransitions(entry.getValue().getTransistions());
-        assertEquals(25, transitions);
+        assertEquals(27, transitions);
     }
 
     @Test
     public void test_southSwitchTransitions_expectCorrectAmount() {
         Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "rxSwitch-south");
         int transitions = getNumRealTransitions(entry.getValue().getTransistions());
-        assertEquals(27, transitions);
+        assertEquals(29, transitions);
     }
 
     @Test
     public void test_eastTxTransitions_expectCorrectAmount() {
         Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "tx-east");
         int transitions = getNumRealTransitions(entry.getValue().getTransistions());
-        assertEquals(29, transitions);
-    }
-
-    @Test
-    public void test_eastSwitchTransitions_expectCorrectAmount() {
-        Map.Entry<PinWire, TestablePinWireProbe> entry = getEntryByWireName(probes, "rxSwitch-east");
-        int transitions = getNumRealTransitions(entry.getValue().getTransistions());
-        assertEquals(31, transitions);
+        assertEquals(30, transitions);
     }
 
     @Test
     public void test_rxNorthPullUpDownWrites_expectCorrectAmount() {
-        assertEquals(27 + 33, registerToWriteCount[56]);
+        assertEquals(47 + 33, registerToWriteCount[56]);
     }
 
     @Test
@@ -193,7 +194,6 @@ public class ParticlePlatformTest {
         String udrText = rebuildTextFromUdrWrites();
         Set<String> erroneousFragments = newErroneousFragments();
         String[] lines = toLines(udrText);
-        assertTrue(lines.length > 0);
 
         for (String l : lines) {
             String lowerCase = l.toLowerCase();
@@ -203,6 +203,7 @@ public class ParticlePlatformTest {
                 }
             }
         }
+        assertEquals(1, lines.length);
     }
 
     /**

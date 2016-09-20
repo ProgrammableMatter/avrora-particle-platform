@@ -99,13 +99,13 @@ public class ParticlePlatform extends Platform {
         wires.add(northWires.rx);
         wires.add(northWires.rxSwitch);
 
+        wires.add(eastWires.tx);
+        wires.add(eastWires.rx);
+//        wires.add(eastWires.rxSwitch);
+
         wires.add(southWires.tx);
         wires.add(southWires.rx);
         wires.add(southWires.rxSwitch);
-
-        wires.add(eastWires.tx);
-        wires.add(eastWires.rx);
-        wires.add(eastWires.rxSwitch);
 
         for (PinWire signalLed : signalLeds) {
             wires.add(signalLed);
@@ -213,9 +213,11 @@ public class ParticlePlatform extends Platform {
     private void connectTestPoints() {
         // led name to pin name mapping
         Set<SimpleComponentMapping> testPointMapping = new HashSet<>();
-        testPointMapping.add(new SimpleComponentMapping("TP1", "PC2", Terminal.COLOR_PURPLE));
-        testPointMapping.add(new SimpleComponentMapping("TP2", "PA1", Terminal.COLOR_PURPLE));
-        testPointMapping.add(new SimpleComponentMapping("TP3", "PA5", Terminal.COLOR_PURPLE));
+//        testPointMapping.add(new SimpleComponentMapping("TP1", "PC2", Terminal.COLOR_PURPLE));
+//        testPointMapping.add(new SimpleComponentMapping("TP2", "PA1", Terminal.COLOR_PURPLE));
+//        testPointMapping.add(new SimpleComponentMapping("TP3", "PA5", Terminal.COLOR_PURPLE));
+        testPointMapping.add(new SimpleComponentMapping("TP1", "PB4", Terminal.COLOR_PURPLE));
+        testPointMapping.add(new SimpleComponentMapping("TP2", "PB1", Terminal.COLOR_PURPLE));
 
         for (SimpleComponentMapping testPoint : testPointMapping) {
             PinWire testPointWire = new PinWire(mcu.getSimulator(), testPoint.color, testPoint.name, mcu);
@@ -229,10 +231,17 @@ public class ParticlePlatform extends Platform {
     private void connectLeds() {
         // led name to pin name mapping
         Set<SimpleComponentMapping> signalLedMapping = new HashSet<>();
-        signalLedMapping.add(new SimpleComponentMapping("HEARTBEAT", "PB1", Terminal.COLOR_PURPLE));
-        signalLedMapping.add(new SimpleComponentMapping("STATUS0", "PB4", Terminal.COLOR_PURPLE));
+//        signalLedMapping.add(new SimpleComponentMapping("HEARTBEAT", "PB1", Terminal.COLOR_PURPLE));
+//        signalLedMapping.add(new SimpleComponentMapping("STATUS0", "PB4", Terminal.COLOR_PURPLE));
+//        signalLedMapping.add(new SimpleComponentMapping("STATUS1", "PB3", Terminal.COLOR_PURPLE));
+//        signalLedMapping.add(new SimpleComponentMapping("ERROR", "PA0", Terminal.COLOR_PURPLE));
         signalLedMapping.add(new SimpleComponentMapping("STATUS1", "PB3", Terminal.COLOR_PURPLE));
-        signalLedMapping.add(new SimpleComponentMapping("ERROR", "PA0", Terminal.COLOR_PURPLE));
+        signalLedMapping.add(new SimpleComponentMapping("STATUS2", "PA0", Terminal.COLOR_PURPLE));
+        signalLedMapping.add(new SimpleComponentMapping("STATUS3", "PA1", Terminal.COLOR_PURPLE));
+        signalLedMapping.add(new SimpleComponentMapping("STATUS4", "PA6", Terminal.COLOR_PURPLE));
+        signalLedMapping.add(new SimpleComponentMapping("STATUS5", "PA5", Terminal.COLOR_PURPLE));
+        signalLedMapping.add(new SimpleComponentMapping("STATUS6", "PC2", Terminal.COLOR_PURPLE));
+
 
         for (SimpleComponentMapping ledMapping : signalLedMapping) {
             PinWire signalLed = new PinWire(mcu.getSimulator(), ledMapping.color, ledMapping.name, mcu);
@@ -290,11 +299,11 @@ public class ParticlePlatform extends Platform {
         eastWires.rx.wireInput.enableInput();
         mcu.getPin("PD3").connectInput(eastWires.rx.wireInput);
         eastWires.rx.enableConnect();
-        // east switch (pwr/rx)
-        eastWires.rxSwitch = new PinWire(mcu.getSimulator(), Terminal.COLOR_PURPLE, "rxSwitch-east", mcu);
-        eastWires.rxSwitch.wireOutput.enableOutput();
-        mcu.getPin("PA6").connectOutput(eastWires.rxSwitch.wireOutput);
-        eastWires.rxSwitch.enableConnect();
+//        // east switch (pwr/rx)
+//        eastWires.rxSwitch = new PinWire(mcu.getSimulator(), Terminal.COLOR_PURPLE, "rxSwitch-east", mcu);
+//        eastWires.rxSwitch.wireOutput.enableOutput();
+//        mcu.getPin("PA6").connectOutput(eastWires.rxSwitch.wireOutput);
+//        eastWires.rxSwitch.enableConnect();
     }
 
     /**
