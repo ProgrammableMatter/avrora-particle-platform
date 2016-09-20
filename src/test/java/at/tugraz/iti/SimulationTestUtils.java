@@ -97,6 +97,10 @@ public class SimulationTestUtils {
         Defaults.addMonitor("particle-interrupts", ParticleInterruptMonitor.class);
     }
 
+    public static final String userHomeDirectory = System.getProperty("user.home") + "/";
+    public static final String firmwaresBaseDirectory =
+            ".CLion2016.1/system/cmake/generated/src-c0e425f7/c0e425f7/Debug/";
+
     /**
      * Default simulation command line arguments. Instanciates a (1,1) particle network.
      *
@@ -104,7 +108,8 @@ public class SimulationTestUtils {
      * @return the default simulation action
      */
     public static Option.Str setUpDefaultSimulationOptions(Options mainOptions) {
-        return setUpSimulationOptions(mainOptions, (short) 1, (short) 1, 350E-6, "ParticleSimulationIoTest"
+        return setUpSimulationOptions(mainOptions, (short) 1, (short) 1, 350E-6, userHomeDirectory + firmwaresBaseDirectory +
+                "particle-simulation-io-test/main/ParticleSimulationIoTest"
                 + ".elf", null);
     }
 

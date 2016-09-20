@@ -56,9 +56,8 @@ public class SimulationTestBase_1x1 {
     protected static double simulationSeconds = 0;
     protected static String firmware = "particle-simulation/main/ParticleSimulation.elf";
     protected static String communicationUnitFirmware = null;
-    private static String userHomeDirectory = System.getProperty("user.home") + "/";
-    private static String firmwaresBaseDirectory =
-            ".CLion2016.1/system/cmake/generated/src-c0e425f7/c0e425f7/Debug/";
+    private static String userHomeDirectory = SimulationTestUtils.userHomeDirectory;
+    private static String firmwaresBaseDirectory = SimulationTestUtils.firmwaresBaseDirectory;
     private static long lastSimulationRealDuration = -1;
     private static long lastInspectionDuration;
 
