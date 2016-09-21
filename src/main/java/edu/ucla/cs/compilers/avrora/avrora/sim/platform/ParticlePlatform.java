@@ -341,7 +341,7 @@ public class ParticlePlatform extends Platform {
      */
     private void propagateEastNeighbourToLocal() {
         if (eastNeighbor.getWestTx() != null && eastNeighbor.getWestTx().outputReady()) {
-            if (eastWires.rxSwitch.outputReady()) {
+//            if (eastWires.rxSwitch.outputReady()) {
                 if (eastWires.rx.inputReady()) {
 
                     // former implementation for particle platform with MOS-FET bridge at the east side
@@ -358,10 +358,10 @@ public class ParticlePlatform extends Platform {
                     logger.debug("skip: !inputReady()");
                     throw new IllegalStateException("misconfigured east wire: rx");
                 }
-            } else {
-                logger.debug("skip: !outputReady()");
-                throw new IllegalStateException("misconfigured east wire: rx-switch");
-            }
+//            } else {
+//                logger.debug("skip: !outputReady()");
+//                throw new IllegalStateException("misconfigured east wire: rx-switch");
+//            }
         } else {
             logger.debug("skip: !outputReady()");
             throw new IllegalStateException("misconfigured east neighbor's wire: tx");
