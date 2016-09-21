@@ -89,6 +89,11 @@ public class SimulationTestUtils {
 
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(SimulationTestUtils.class);
 
+    private static int simulatorRandomSeed = 0;
+    private static int simulatorRandomStartIntervalBegin = 0;
+    private static int simulatorRandomStartIntervalEnd = 32000;
+//    private static int simulatorRandomStartIntervalEnd = 0;
+
     public static void registerDefaultTestExtensions() {
         Defaults.addPlatform("particle", ParticlePlatform.Factory.class);
         Defaults.addSimulation("particle-network", ParticleSimulation.class);
@@ -118,7 +123,10 @@ public class SimulationTestUtils {
         Option.Str action = setUpDefaultArguments(mainOptions);
         // for serial terminal use: -monitors=...,serial -terminal -devices=0:0:/tmp/in.txt:/tmp/out.txt
         // -waitForConnection=true
+
         StringBuilder cliArgs = new StringBuilder("-banner=false -status-timing=true -verbose=all " +
+                "-random-start=["+simulatorRandomStartIntervalBegin +","+simulatorRandomStartIntervalEnd+"] " +
+                "-random-seed="+ simulatorRandomSeed+ " "+
                 "-seconds-precision=11 " +
                 "-action=simulate -simulation=particle-network -rowcount=" + rows + " -columncount=" +
                 columns + " " +
