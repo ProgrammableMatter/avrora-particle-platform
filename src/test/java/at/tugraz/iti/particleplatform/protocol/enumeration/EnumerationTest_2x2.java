@@ -23,8 +23,8 @@ public class EnumerationTest_2x2 extends SimulationTestBase_1x1 {
 
         numberOfRows = 2;
         numberOfColumns = 2;
-        simulationSeconds = 1E-3 * 70;
-
+//        simulationSeconds = 1E-3 * 70;
+        simulationSeconds = 1E-3 * 250;
         nodeIdToType.clear();
         nodeIdToType.put(0, "NODE_TYPE_ORIGIN");
         nodeIdToType.put(1, "NODE_TYPE_TAIL");

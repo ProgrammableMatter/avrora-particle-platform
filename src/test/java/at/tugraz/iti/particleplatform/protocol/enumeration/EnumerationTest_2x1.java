@@ -33,6 +33,7 @@ public class EnumerationTest_2x1 extends SimulationTestBase_1x1 {
         executeTimeSyncPackageFunctionCallInspector.add(new SimulationTestUtils
                 .ExecuteSynchronizeLocalTimePackageFunctionCallInspector(1, 1));
 
+        simulationSeconds = 1E-3 * 150;
         SimulationTestBase_1x1.startSimulation();
     }
 }
