@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -177,6 +178,7 @@ public class ParticleFlashStateRegisterDetails {
 
         String detailedType;
         int intValue;
+        byte[] floatBytes = new byte[4];
         switch (type) {
             // int8_t
             case "bit":
@@ -236,6 +238,138 @@ public class ParticleFlashStateRegisterDetails {
             case "hex16":
                 detailedType = "0x" + Integer.toHexString(state.getDataByte(sramAddress + 1) & 0xff) + " "
                         + Integer.toHexString(value & 0xff);
+                break;
+
+            case "int32":
+                floatBytes = new byte[4];
+                floatBytes[3] = (byte) (value & 0xff);
+                floatBytes[2] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                floatBytes[1] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
+                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 3) & 0xff);
+                intValue = ByteBuffer.wrap(floatBytes).getInt();
+                if ((intValue & (1 << 31)) != 0) {
+                    detailedType = "";
+                } else {
+                    detailedType = "-";
+                }
+                detailedType += (intValue & 0x7FFF);
+                break;
+
+            case "int32[1]":
+                floatBytes = new byte[4];
+                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                floatBytes[2] = (byte) (value & 0xff);
+                floatBytes[1] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
+                intValue = ByteBuffer.wrap(floatBytes).getInt();
+                if ((intValue & (1 << 31)) != 0) {
+                    detailedType = "";
+                } else {
+                    detailedType = "-";
+                }
+                detailedType += (intValue & 0x7FFF);
+                break;
+
+            case "int32[2]":
+                floatBytes = new byte[4];
+                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
+                floatBytes[2] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                floatBytes[1] = (byte) (value & 0xff);
+                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                intValue = ByteBuffer.wrap(floatBytes).getInt();
+                if ((intValue & (1 << 31)) != 0) {
+                    detailedType = "";
+                } else {
+                    detailedType = "-";
+                }
+                detailedType += (intValue & 0x7FFF);
+                break;
+
+            case "int32[3]":
+                floatBytes = new byte[4];
+                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 0) & 0xff);
+                floatBytes[2] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
+                floatBytes[1] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                floatBytes[0] = (byte) (value & 0xff);
+                intValue = ByteBuffer.wrap(floatBytes).getInt();
+                if ((intValue & (1 << 31)) != 0) {
+                    detailedType = "";
+                } else {
+                    detailedType = "-";
+                }
+                detailedType += (intValue & 0x7FFF);
+                break;
+
+            case "uint32":
+                floatBytes = new byte[4];
+                floatBytes[3] = (byte) (value & 0xff);
+                floatBytes[2] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                floatBytes[1] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
+                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 3) & 0xff);
+                detailedType = "" + ByteBuffer.wrap(floatBytes).getInt();
+                break;
+
+            case "uint32[1]":
+                floatBytes = new byte[4];
+                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                floatBytes[2] = (byte) (value & 0xff);
+                floatBytes[1] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
+                detailedType = "" + ByteBuffer.wrap(floatBytes).getInt();
+                break;
+
+            case "uint32[2]":
+                floatBytes = new byte[4];
+                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
+                floatBytes[2] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                floatBytes[1] = (byte) (value & 0xff);
+                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                detailedType = "" + ByteBuffer.wrap(floatBytes).getInt();
+                break;
+
+            case "uint32[3]":
+                floatBytes = new byte[4];
+                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 0) & 0xff);
+                floatBytes[2] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
+                floatBytes[1] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                floatBytes[0] = (byte) (value & 0xff);
+                detailedType = "" + ByteBuffer.wrap(floatBytes).getInt();
+                break;
+
+            case "float32":
+                floatBytes = new byte[4];
+                floatBytes[3] = (byte) (value & 0xff);
+                floatBytes[2] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                floatBytes[1] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
+                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 3) & 0xff);
+                detailedType = "" + ByteBuffer.wrap(floatBytes).getFloat();
+                break;
+
+            case "float32[1]":
+                floatBytes = new byte[4];
+                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                floatBytes[2] = (byte) (value & 0xff);
+                floatBytes[1] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
+                detailedType = "" + ByteBuffer.wrap(floatBytes).getFloat();
+                break;
+
+            case "float32[2]":
+                floatBytes = new byte[4];
+                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
+                floatBytes[2] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                floatBytes[1] = (byte) (value & 0xff);
+                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                detailedType = "" + ByteBuffer.wrap(floatBytes).getFloat();
+                break;
+
+            case "float32[3]":
+                floatBytes = new byte[4];
+                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 3) & 0xff);
+                floatBytes[2] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
+                floatBytes[1] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                floatBytes[0] = (byte) (value & 0xff);
+                detailedType = "" + ByteBuffer.wrap(floatBytes).getFloat();
                 break;
 
             // int8_t

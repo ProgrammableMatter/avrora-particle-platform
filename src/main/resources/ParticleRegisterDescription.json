@@ -375,7 +375,7 @@
       {
         "property": "__structEndMarker",
         "type": "hex",
-        "address": "globalStateBase+471"
+        "address": "globalStateBase+485"
       }
     ],
     "Particle.node": [
@@ -2538,12 +2538,12 @@
         "address": "globalStateBase+392"
       },
       {
-        "property": "startIdx",
+        "property": "__insertIndex",
         "type": "hex",
         "address": "globalStateBase+393"
       },
       {
-        "property": "endIdx",
+        "property": "numSamples",
         "type": "hex",
         "address": "globalStateBase+394"
       },
@@ -2551,98 +2551,180 @@
         "property": "iterator",
         "type": "hex",
         "address": "globalStateBase+395"
+      }
+    ],
+    "Particle.timeSynchronization.fittingFunction": [
+      {
+        "property": "k[1]",
+        "type": "float32[1]",
+        "address": "globalStateBase+397"
+      },
+      {
+        "property": "k[2]",
+        "type": "float32[2]",
+        "address": "globalStateBase+398"
+      },
+      {
+        "property": "k[3]",
+        "type": "float32[3]",
+        "address": "globalStateBase+399"
       },
       {
         "property": "k",
-        "type": "hex32",
+        "type": "float32",
         "address": "globalStateBase+396"
       },
       {
+        "property": "d[1]",
+        "type": "float32[1]",
+        "address": "globalStateBase+401"
+      },
+      {
+        "property": "d[2]",
+        "type": "float32[2]",
+        "address": "globalStateBase+402"
+      },
+      {
+        "property": "d[3]",
+        "type": "float32[3]",
+        "address": "globalStateBase+403"
+      },
+      {
         "property": "d",
-        "type": "hex32",
+        "type": "float32",
         "address": "globalStateBase+400"
       },
       {
-        "property": "variance",
-        "type": "hex32",
+        "property": "(__pad[7:1] | isCalculationValid[0])",
+        "type": "bit",
         "address": "globalStateBase+404"
+      }
+    ],
+    "Particle.timeSynchronization": [
+      {
+        "property": "mean[1]",
+        "type": "float32[1]",
+        "address": "globalStateBase+406"
+      },
+      {
+        "property": "mean[2]",
+        "type": "float32[2]",
+        "address": "globalStateBase+407"
+      },
+      {
+        "property": "mean[3]",
+        "type": "float32[3]",
+        "address": "globalStateBase+408"
+      },
+      {
+        "property": "mean",
+        "type": "float32",
+        "address": "globalStateBase+405"
+      },
+      {
+        "property": "progressiveMean[1]",
+        "type": "uint32[1]",
+        "address": "globalStateBase+410"
+      },
+      {
+        "property": "progressiveMean[2]",
+        "type": "uint32[2]",
+        "address": "globalStateBase+411"
+      },
+      {
+        "property": "progressiveMean[3]",
+        "type": "uint32[3]",
+        "address": "globalStateBase+412"
+      },
+      {
+        "property": "progressiveMean",
+        "type": "uint32",
+        "address": "globalStateBase+409"
+      },
+      {
+        "property": "variance[1]",
+        "type": "float32[1]",
+        "address": "globalStateBase+414"
+      },
+      {
+        "property": "variance[2]",
+        "type": "float32[2]",
+        "address": "globalStateBase+415"
+      },
+      {
+        "property": "variance[3]",
+        "type": "float32[3]",
+        "address": "globalStateBase+416"
+      },
+      {
+        "property": "variance",
+        "type": "float32",
+        "address": "globalStateBase+413"
+      },
+      {
+        "property": "stdDeviance[1]",
+        "type": "float32[1]",
+        "address": "globalStateBase+418"
+      },
+      {
+        "property": "stdDeviance[2]",
+        "type": "float32[2]",
+        "address": "globalStateBase+419"
+      },
+      {
+        "property": "stdDeviance[3]",
+        "type": "float32[3]",
+        "address": "globalStateBase+420"
+      },
+      {
+        "property": "stdDeviance",
+        "type": "float32",
+        "address": "globalStateBase+417"
+      },
+      {
+        "property": "(__pad[7:1] | isCalculationValid[0])",
+        "type": "bit",
+        "address": "globalStateBase+421"
       }
     ],
     "Particle.localTime": [
       {
         "property": "numTimePeriodsPassed[1]",
         "type": "unsigned",
-        "address": "globalStateBase+409"
+        "address": "globalStateBase+423"
       },
       {
         "property": "numTimePeriodsPassed",
         "type": "unsigned int",
-        "address": "globalStateBase+408"
+        "address": "globalStateBase+422"
       },
       {
         "property": "timePeriodInterruptDelay[1]",
         "type": "unsigned",
-        "address": "globalStateBase+411"
+        "address": "globalStateBase+425"
       },
       {
         "property": "timePeriodInterruptDelay",
         "type": "unsigned int",
-        "address": "globalStateBase+410"
+        "address": "globalStateBase+424"
       },
       {
         "property": "newTimePeriodInterruptDelay[1]",
         "type": "unsigned",
-        "address": "globalStateBase+413"
+        "address": "globalStateBase+427"
       },
       {
         "property": "newTimePeriodInterruptDelay",
         "type": "unsigned int",
-        "address": "globalStateBase+412"
+        "address": "globalStateBase+426"
       },
       {
         "property": "(__pad[7:1] | isTimePeriodInterruptDelayUpdateable[0])",
         "type": "bit",
-        "address": "globalStateBase+414"
+        "address": "globalStateBase+428"
       }
     ],
     "Particle.directionOrientedPorts.north": [
-      {
-        "property": "discoveryPulseCounter[0]",
-        "type": "hex16",
-        "address": "globalStateBase+415"
-      },
-      {
-        "property": "txPort[0]",
-        "type": "hex16",
-        "address": "globalStateBase+417"
-      },
-      {
-        "property": "rxPort[0]",
-        "type": "hex16",
-        "address": "globalStateBase+419"
-      },
-      {
-        "property": "receivePimpl[0]",
-        "type": "hex16",
-        "address": "globalStateBase+421"
-      },
-      {
-        "property": "txHighPimpl[0]",
-        "type": "hex16",
-        "address": "globalStateBase+423"
-      },
-      {
-        "property": "txLowPimpl[0]",
-        "type": "hex16",
-        "address": "globalStateBase+425"
-      },
-      {
-        "property": "protocol[0]",
-        "type": "hex16",
-        "address": "globalStateBase+427"
-      }
-    ],
-    "Particle.directionOrientedPorts.east": [
       {
         "property": "discoveryPulseCounter[0]",
         "type": "hex16",
@@ -2679,7 +2761,7 @@
         "address": "globalStateBase+441"
       }
     ],
-    "Particle.directionOrientedPorts.south": [
+    "Particle.directionOrientedPorts.east": [
       {
         "property": "discoveryPulseCounter[0]",
         "type": "hex16",
@@ -2716,7 +2798,7 @@
         "address": "globalStateBase+455"
       }
     ],
-    "Particle.directionOrientedPorts.simultaneous": [
+    "Particle.directionOrientedPorts.south": [
       {
         "property": "discoveryPulseCounter[0]",
         "type": "hex16",
@@ -2751,6 +2833,43 @@
         "property": "protocol[0]",
         "type": "hex16",
         "address": "globalStateBase+469"
+      }
+    ],
+    "Particle.directionOrientedPorts.simultaneous": [
+      {
+        "property": "discoveryPulseCounter[0]",
+        "type": "hex16",
+        "address": "globalStateBase+471"
+      },
+      {
+        "property": "txPort[0]",
+        "type": "hex16",
+        "address": "globalStateBase+473"
+      },
+      {
+        "property": "rxPort[0]",
+        "type": "hex16",
+        "address": "globalStateBase+475"
+      },
+      {
+        "property": "receivePimpl[0]",
+        "type": "hex16",
+        "address": "globalStateBase+477"
+      },
+      {
+        "property": "txHighPimpl[0]",
+        "type": "hex16",
+        "address": "globalStateBase+479"
+      },
+      {
+        "property": "txLowPimpl[0]",
+        "type": "hex16",
+        "address": "globalStateBase+481"
+      },
+      {
+        "property": "protocol[0]",
+        "type": "hex16",
+        "address": "globalStateBase+483"
       }
     ]
   }
