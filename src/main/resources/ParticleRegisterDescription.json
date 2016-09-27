@@ -262,17 +262,10 @@
         "address": 56
       }
     ],
-    "SPH": [
-      {
-        "property": "(- | - | - | - | - | SP10 | SP9 | SP8)",
-        "type": "hex",
-        "address": 94
-      }
-    ],
     "OCR0": [
       {
         "property": "",
-        "type": "hex",
+        "type": "uint8_t",
         "address": 92
       }
     ],
@@ -283,6 +276,13 @@
         "address": 47
       }
     ],
+    "OCR1B": [
+      {
+        "property": "",
+        "type": "uint16_t",
+        "address": 72
+      }
+    ],
     "GIFR": [
       {
         "property": "(INTF1 | INTF0 | INTF2 | - | - | - | - | -)",
@@ -290,25 +290,18 @@
         "address": 90
       }
     ],
-    "OCR1AL": [
+    "OCR1A": [
       {
         "property": "",
-        "type": "hex",
+        "type": "uint16_t",
         "address": 74
       }
     ],
-    "OCR1AH": [
+    "SPH": [
       {
-        "property": "",
+        "property": "(- | - | - | - | - | SP10 | SP9 | SP8)",
         "type": "hex",
-        "address": 75
-      }
-    ],
-    "OCR1BL": [
-      {
-        "property": "",
-        "type": "hex",
-        "address": 72
+        "address": 94
       }
     ],
     "int16-out": [
@@ -316,13 +309,6 @@
         "property": "",
         "type": "unsigned int",
         "address": 61
-      }
-    ],
-    "OCR1BH": [
-      {
-        "property": "",
-        "type": "hex",
-        "address": 73
       }
     ],
     "A.dir": [
@@ -376,7 +362,7 @@
       {
         "property": "__structEndMarker",
         "type": "hex",
-        "address": "globalStateBase+485"
+        "address": "globalStateBase+487"
       }
     ],
     "Particle.node": [
@@ -394,12 +380,12 @@
     "Particle.node.address": [
       {
         "property": "row",
-        "type": "unsigned",
+        "type": "uint8_t",
         "address": "globalStateBase+5"
       },
       {
         "property": "column",
-        "type": "unsigned",
+        "type": "uint8_t",
         "address": "globalStateBase+6"
       }
     ],
@@ -427,89 +413,89 @@
     "Particle.discoveryPulseCounters": [
       {
         "property": "loopCount",
-        "type": "unsigned",
+        "type": "uint8_t",
         "address": "globalStateBase+10"
       }
     ],
     "Particle.communication.timerAdjustment": [
       {
         "property": "maxShortIntervalDuration[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+12"
       },
       {
         "property": "maxShortIntervalDuration",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+11"
       },
       {
         "property": "maxShortIntervalDurationOvertimePercentageRatio",
-        "type": "unsigned",
+        "type": "uint8_t",
         "address": "globalStateBase+13"
       },
       {
         "property": "maxLongIntervalDuration[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+15"
       },
       {
         "property": "maxLongIntervalDuration",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+14"
       },
       {
         "property": "maxLongIntervalDurationOvertimePercentageRatio",
-        "type": "unsigned",
+        "type": "uint8_t",
         "address": "globalStateBase+16"
       },
       {
         "property": "transmissionClockDelay[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+18"
       },
       {
         "property": "transmissionClockDelay",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+17"
       },
       {
         "property": "transmissionClockDelayHalf[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+20"
       },
       {
         "property": "transmissionClockDelayHalf",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+19"
       },
       {
         "property": "newTransmissionClockDelay[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+22"
       },
       {
         "property": "newTransmissionClockDelay",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+21"
       },
       {
         "property": "transmissionClockShift[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+24"
       },
       {
         "property": "transmissionClockShift",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+23"
       },
       {
         "property": "newTransmissionClockShift[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+26"
       },
       {
         "property": "newTransmissionClockShift",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+25"
       },
       {
@@ -521,67 +507,67 @@
     "Particle.communication.ports.tx.north.buffer": [
       {
         "property": "bytes[0]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+28"
       },
       {
         "property": "bytes[1]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+29"
       },
       {
         "property": "bytes[2]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+30"
       },
       {
         "property": "bytes[3]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+31"
       },
       {
         "property": "bytes[4]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+32"
       },
       {
         "property": "bytes[5]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+33"
       },
       {
         "property": "bytes[6]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+34"
       },
       {
         "property": "bytes[7]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+35"
       },
       {
         "property": "bytes[8]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+36"
       },
       {
         "property": "receptionStartTimestamp[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+40"
       },
       {
         "property": "receptionStartTimestamp",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+39"
       },
       {
         "property": "receptionEndTimestamp[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+42"
       },
       {
         "property": "receptionEndTimestamp",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+41"
       }
     ],
@@ -593,7 +579,7 @@
       },
       {
         "property": "bitMask",
-        "type": "bit",
+        "type": "uint8_t",
         "address": "globalStateBase+38"
       }
     ],
@@ -605,7 +591,7 @@
       },
       {
         "property": "bitMask",
-        "type": "bit",
+        "type": "uint8_t",
         "address": "globalStateBase+44"
       }
     ],
@@ -619,67 +605,67 @@
     "Particle.communication.ports.tx.east.buffer": [
       {
         "property": "bytes[0]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+46"
       },
       {
         "property": "bytes[1]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+47"
       },
       {
         "property": "bytes[2]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+48"
       },
       {
         "property": "bytes[3]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+49"
       },
       {
         "property": "bytes[4]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+50"
       },
       {
         "property": "bytes[5]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+51"
       },
       {
         "property": "bytes[6]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+52"
       },
       {
         "property": "bytes[7]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+53"
       },
       {
         "property": "bytes[8]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+54"
       },
       {
         "property": "receptionStartTimestamp[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+58"
       },
       {
         "property": "receptionStartTimestamp",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+57"
       },
       {
         "property": "receptionEndTimestamp[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+60"
       },
       {
         "property": "receptionEndTimestamp",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+59"
       }
     ],
@@ -691,7 +677,7 @@
       },
       {
         "property": "bitMask",
-        "type": "bit",
+        "type": "uint8_t",
         "address": "globalStateBase+56"
       }
     ],
@@ -703,7 +689,7 @@
       },
       {
         "property": "bitMask",
-        "type": "bit",
+        "type": "uint8_t",
         "address": "globalStateBase+62"
       }
     ],
@@ -717,67 +703,67 @@
     "Particle.communication.ports.tx.south.buffer": [
       {
         "property": "bytes[0]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+64"
       },
       {
         "property": "bytes[1]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+65"
       },
       {
         "property": "bytes[2]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+66"
       },
       {
         "property": "bytes[3]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+67"
       },
       {
         "property": "bytes[4]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+68"
       },
       {
         "property": "bytes[5]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+69"
       },
       {
         "property": "bytes[6]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+70"
       },
       {
         "property": "bytes[7]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+71"
       },
       {
         "property": "bytes[8]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+72"
       },
       {
         "property": "receptionStartTimestamp[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+76"
       },
       {
         "property": "receptionStartTimestamp",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+75"
       },
       {
         "property": "receptionEndTimestamp[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+78"
       },
       {
         "property": "receptionEndTimestamp",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+77"
       }
     ],
@@ -789,7 +775,7 @@
       },
       {
         "property": "bitMask",
-        "type": "bit",
+        "type": "uint8_t",
         "address": "globalStateBase+74"
       }
     ],
@@ -801,7 +787,7 @@
       },
       {
         "property": "bitMask",
-        "type": "bit",
+        "type": "uint8_t",
         "address": "globalStateBase+80"
       }
     ],
@@ -1175,12 +1161,12 @@
     "Particle.communication.ports.rx.north.snapshotsBuffer": [
       {
         "property": "temporarySnapshotTimerValue[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+144"
       },
       {
         "property": "temporarySnapshotTimerValue",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+143"
       },
       {
@@ -1195,74 +1181,74 @@
       },
       {
         "property": "numberHalfCyclesPassed",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+147"
       }
     ],
     "Particle.communication.ports.rx.north.buffer": [
       {
         "property": "bytes[0]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+148"
       },
       {
         "property": "bytes[1]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+149"
       },
       {
         "property": "bytes[2]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+150"
       },
       {
         "property": "bytes[3]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+151"
       },
       {
         "property": "bytes[4]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+152"
       },
       {
         "property": "bytes[5]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+153"
       },
       {
         "property": "bytes[6]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+154"
       },
       {
         "property": "bytes[7]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+155"
       },
       {
         "property": "bytes[8]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+156"
       },
       {
         "property": "receptionStartTimestamp[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+160"
       },
       {
         "property": "receptionStartTimestamp",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+159"
       },
       {
         "property": "receptionEndTimestamp[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+162"
       },
       {
         "property": "receptionEndTimestamp",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+161"
       }
     ],
@@ -1274,7 +1260,7 @@
       },
       {
         "property": "bitMask",
-        "type": "bit",
+        "type": "uint8_t",
         "address": "globalStateBase+158"
       }
     ],
@@ -1648,12 +1634,12 @@
     "Particle.communication.ports.rx.east.snapshotsBuffer": [
       {
         "property": "temporarySnapshotTimerValue[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+226"
       },
       {
         "property": "temporarySnapshotTimerValue",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+225"
       },
       {
@@ -1668,74 +1654,74 @@
       },
       {
         "property": "numberHalfCyclesPassed",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+229"
       }
     ],
     "Particle.communication.ports.rx.east.buffer": [
       {
         "property": "bytes[0]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+230"
       },
       {
         "property": "bytes[1]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+231"
       },
       {
         "property": "bytes[2]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+232"
       },
       {
         "property": "bytes[3]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+233"
       },
       {
         "property": "bytes[4]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+234"
       },
       {
         "property": "bytes[5]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+235"
       },
       {
         "property": "bytes[6]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+236"
       },
       {
         "property": "bytes[7]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+237"
       },
       {
         "property": "bytes[8]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+238"
       },
       {
         "property": "receptionStartTimestamp[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+242"
       },
       {
         "property": "receptionStartTimestamp",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+241"
       },
       {
         "property": "receptionEndTimestamp[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+244"
       },
       {
         "property": "receptionEndTimestamp",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+243"
       }
     ],
@@ -1747,7 +1733,7 @@
       },
       {
         "property": "bitMask",
-        "type": "bit",
+        "type": "uint8_t",
         "address": "globalStateBase+240"
       }
     ],
@@ -2121,12 +2107,12 @@
     "Particle.communication.ports.rx.south.snapshotsBuffer": [
       {
         "property": "temporarySnapshotTimerValue[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+308"
       },
       {
         "property": "temporarySnapshotTimerValue",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+307"
       },
       {
@@ -2141,74 +2127,74 @@
       },
       {
         "property": "numberHalfCyclesPassed",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+311"
       }
     ],
     "Particle.communication.ports.rx.south.buffer": [
       {
         "property": "bytes[0]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+312"
       },
       {
         "property": "bytes[1]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+313"
       },
       {
         "property": "bytes[2]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+314"
       },
       {
         "property": "bytes[3]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+315"
       },
       {
         "property": "bytes[4]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+316"
       },
       {
         "property": "bytes[5]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+317"
       },
       {
         "property": "bytes[6]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+318"
       },
       {
         "property": "bytes[7]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+319"
       },
       {
         "property": "bytes[8]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+320"
       },
       {
         "property": "receptionStartTimestamp[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+324"
       },
       {
         "property": "receptionStartTimestamp",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+323"
       },
       {
         "property": "receptionEndTimestamp[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+326"
       },
       {
         "property": "receptionEndTimestamp",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+325"
       }
     ],
@@ -2220,7 +2206,7 @@
       },
       {
         "property": "bitMask",
-        "type": "bit",
+        "type": "uint8_t",
         "address": "globalStateBase+322"
       }
     ],
@@ -2239,34 +2225,34 @@
       },
       {
         "property": "loopCount",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+328"
       }
     ],
     "Particle.periphery.blinkAddress": [
       {
         "property": "blinkRowCounter",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+330"
       },
       {
         "property": "blinkColumnCounter",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+331"
       },
       {
         "property": "blinkAddressBlinkDelay",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+332"
       },
       {
         "property": "lastExecutionTime[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+334"
       },
       {
         "property": "lastExecutionTime",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+333"
       },
       {
@@ -2278,17 +2264,17 @@
     "Particle.periphery.blinkTimeInterval": [
       {
         "property": "localTimeMultiplier",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+337"
       },
       {
         "property": "lastExecutionTime[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+339"
       },
       {
         "property": "lastExecutionTime",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+338"
       },
       {
@@ -2310,7 +2296,7 @@
       },
       {
         "property": "stateTimeoutCounter",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+346"
       },
       {
@@ -2332,7 +2318,7 @@
       },
       {
         "property": "stateTimeoutCounter",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+352"
       },
       {
@@ -2354,7 +2340,7 @@
       },
       {
         "property": "stateTimeoutCounter",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+358"
       },
       {
@@ -2366,12 +2352,12 @@
     "Particle.protocol.networkGeometry": [
       {
         "property": "rows",
-        "type": "unsigned",
+        "type": "uint8_t",
         "address": "globalStateBase+360"
       },
       {
         "property": "columns",
-        "type": "unsigned",
+        "type": "uint8_t",
         "address": "globalStateBase+361"
       }
     ],
@@ -2411,146 +2397,146 @@
     "Particle.actuationCommand.actuationStart": [
       {
         "property": "periodTimeStamp[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+368"
       },
       {
         "property": "periodTimeStamp",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+367"
       }
     ],
     "Particle.actuationCommand.actuationEnd": [
       {
         "property": "periodTimeStamp[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+370"
       },
       {
         "property": "periodTimeStamp",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+369"
       }
     ],
     "Particle.timeSynchronization.timeIntervalSamples": [
       {
         "property": "samples[0][1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+373"
       },
       {
         "property": "samples[0]",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+372"
       },
       {
         "property": "samples[1][1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+375"
       },
       {
         "property": "samples[1]",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+374"
       },
       {
         "property": "samples[2][1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+377"
       },
       {
         "property": "samples[2]",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+376"
       },
       {
         "property": "samples[3][1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+379"
       },
       {
         "property": "samples[3]",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+378"
       },
       {
         "property": "samples[4][1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+381"
       },
       {
         "property": "samples[4]",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+380"
       },
       {
         "property": "samples[5][1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+383"
       },
       {
         "property": "samples[5]",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+382"
       },
       {
         "property": "samples[6][1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+385"
       },
       {
         "property": "samples[6]",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+384"
       },
       {
         "property": "samples[7][1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+387"
       },
       {
         "property": "samples[7]",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+386"
       },
       {
         "property": "samples[8][1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+389"
       },
       {
         "property": "samples[8]",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+388"
       },
       {
         "property": "samples[9][1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+391"
       },
       {
         "property": "samples[9]",
-        "type": "unsigned int",
+        "type": "uint16_t",
         "address": "globalStateBase+390"
       },
       {
         "property": "samples[9]",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+392"
       },
       {
         "property": "__insertIndex",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+393"
       },
       {
         "property": "numSamples",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+394"
       },
       {
         "property": "iterator",
-        "type": "hex",
+        "type": "uint8_t",
         "address": "globalStateBase+395"
       }
     ],
@@ -2624,22 +2610,22 @@
       },
       {
         "property": "progressiveMean[1]",
-        "type": "uint32[1]",
+        "type": "uint32_t[1]",
         "address": "globalStateBase+410"
       },
       {
         "property": "progressiveMean[2]",
-        "type": "uint32[2]",
+        "type": "uint32_t[2]",
         "address": "globalStateBase+411"
       },
       {
         "property": "progressiveMean[3]",
-        "type": "uint32[3]",
+        "type": "uint32_t[3]",
         "address": "globalStateBase+412"
       },
       {
         "property": "progressiveMean",
-        "type": "uint32",
+        "type": "uint32_t",
         "address": "globalStateBase+409"
       },
       {
@@ -2683,194 +2669,204 @@
         "address": "globalStateBase+417"
       },
       {
-        "property": "(__pad[7:1] | isCalculationValid[0])",
-        "type": "bit",
+        "property": "nextSyncPackageTransmissionStartTime[1]",
+        "type": "hex",
+        "address": "globalStateBase+422"
+      },
+      {
+        "property": "nextSyncPackageTransmissionStartTime",
+        "type": "uint16_t",
         "address": "globalStateBase+421"
+      },
+      {
+        "property": "(__pad[7:2] | isNextSyncPackageTransmissionEnabled[1] | isCalculationValid[0])",
+        "type": "bit",
+        "address": "globalStateBase+423"
       }
     ],
     "Particle.localTime": [
       {
         "property": "numTimePeriodsPassed[1]",
-        "type": "unsigned",
-        "address": "globalStateBase+423"
-      },
-      {
-        "property": "numTimePeriodsPassed",
-        "type": "unsigned int",
-        "address": "globalStateBase+422"
-      },
-      {
-        "property": "timePeriodInterruptDelay[1]",
-        "type": "unsigned",
+        "type": "hex",
         "address": "globalStateBase+425"
       },
       {
-        "property": "timePeriodInterruptDelay",
-        "type": "unsigned int",
+        "property": "numTimePeriodsPassed",
+        "type": "uint16_t",
         "address": "globalStateBase+424"
       },
       {
-        "property": "newTimePeriodInterruptDelay[1]",
-        "type": "unsigned",
+        "property": "timePeriodInterruptDelay[1]",
+        "type": "hex",
         "address": "globalStateBase+427"
       },
       {
-        "property": "newTimePeriodInterruptDelay",
-        "type": "unsigned int",
+        "property": "timePeriodInterruptDelay",
+        "type": "uint16_t",
         "address": "globalStateBase+426"
+      },
+      {
+        "property": "newTimePeriodInterruptDelay[1]",
+        "type": "hex",
+        "address": "globalStateBase+429"
+      },
+      {
+        "property": "newTimePeriodInterruptDelay",
+        "type": "uint16_t",
+        "address": "globalStateBase+428"
       },
       {
         "property": "(__pad[7:1] | isTimePeriodInterruptDelayUpdateable[0])",
         "type": "bit",
-        "address": "globalStateBase+428"
+        "address": "globalStateBase+430"
       }
     ],
     "Particle.directionOrientedPorts.north": [
       {
         "property": "discoveryPulseCounter[0]",
         "type": "hex16",
-        "address": "globalStateBase+429"
+        "address": "globalStateBase+431"
       },
       {
         "property": "txPort[0]",
         "type": "hex16",
-        "address": "globalStateBase+431"
+        "address": "globalStateBase+433"
       },
       {
         "property": "rxPort[0]",
         "type": "hex16",
-        "address": "globalStateBase+433"
+        "address": "globalStateBase+435"
       },
       {
         "property": "receivePimpl[0]",
         "type": "hex16",
-        "address": "globalStateBase+435"
+        "address": "globalStateBase+437"
       },
       {
         "property": "txHighPimpl[0]",
         "type": "hex16",
-        "address": "globalStateBase+437"
+        "address": "globalStateBase+439"
       },
       {
         "property": "txLowPimpl[0]",
         "type": "hex16",
-        "address": "globalStateBase+439"
+        "address": "globalStateBase+441"
       },
       {
         "property": "protocol[0]",
         "type": "hex16",
-        "address": "globalStateBase+441"
+        "address": "globalStateBase+443"
       }
     ],
     "Particle.directionOrientedPorts.east": [
       {
         "property": "discoveryPulseCounter[0]",
         "type": "hex16",
-        "address": "globalStateBase+443"
+        "address": "globalStateBase+445"
       },
       {
         "property": "txPort[0]",
         "type": "hex16",
-        "address": "globalStateBase+445"
+        "address": "globalStateBase+447"
       },
       {
         "property": "rxPort[0]",
         "type": "hex16",
-        "address": "globalStateBase+447"
+        "address": "globalStateBase+449"
       },
       {
         "property": "receivePimpl[0]",
         "type": "hex16",
-        "address": "globalStateBase+449"
+        "address": "globalStateBase+451"
       },
       {
         "property": "txHighPimpl[0]",
         "type": "hex16",
-        "address": "globalStateBase+451"
+        "address": "globalStateBase+453"
       },
       {
         "property": "txLowPimpl[0]",
         "type": "hex16",
-        "address": "globalStateBase+453"
+        "address": "globalStateBase+455"
       },
       {
         "property": "protocol[0]",
         "type": "hex16",
-        "address": "globalStateBase+455"
+        "address": "globalStateBase+457"
       }
     ],
     "Particle.directionOrientedPorts.south": [
       {
         "property": "discoveryPulseCounter[0]",
         "type": "hex16",
-        "address": "globalStateBase+457"
+        "address": "globalStateBase+459"
       },
       {
         "property": "txPort[0]",
         "type": "hex16",
-        "address": "globalStateBase+459"
+        "address": "globalStateBase+461"
       },
       {
         "property": "rxPort[0]",
         "type": "hex16",
-        "address": "globalStateBase+461"
+        "address": "globalStateBase+463"
       },
       {
         "property": "receivePimpl[0]",
         "type": "hex16",
-        "address": "globalStateBase+463"
+        "address": "globalStateBase+465"
       },
       {
         "property": "txHighPimpl[0]",
         "type": "hex16",
-        "address": "globalStateBase+465"
+        "address": "globalStateBase+467"
       },
       {
         "property": "txLowPimpl[0]",
         "type": "hex16",
-        "address": "globalStateBase+467"
+        "address": "globalStateBase+469"
       },
       {
         "property": "protocol[0]",
         "type": "hex16",
-        "address": "globalStateBase+469"
+        "address": "globalStateBase+471"
       }
     ],
     "Particle.directionOrientedPorts.simultaneous": [
       {
         "property": "discoveryPulseCounter[0]",
         "type": "hex16",
-        "address": "globalStateBase+471"
+        "address": "globalStateBase+473"
       },
       {
         "property": "txPort[0]",
         "type": "hex16",
-        "address": "globalStateBase+473"
+        "address": "globalStateBase+475"
       },
       {
         "property": "rxPort[0]",
         "type": "hex16",
-        "address": "globalStateBase+475"
+        "address": "globalStateBase+477"
       },
       {
         "property": "receivePimpl[0]",
         "type": "hex16",
-        "address": "globalStateBase+477"
+        "address": "globalStateBase+479"
       },
       {
         "property": "txHighPimpl[0]",
         "type": "hex16",
-        "address": "globalStateBase+479"
+        "address": "globalStateBase+481"
       },
       {
         "property": "txLowPimpl[0]",
         "type": "hex16",
-        "address": "globalStateBase+481"
+        "address": "globalStateBase+483"
       },
       {
         "property": "protocol[0]",
         "type": "hex16",
-        "address": "globalStateBase+483"
+        "address": "globalStateBase+485"
       }
     ]
   }

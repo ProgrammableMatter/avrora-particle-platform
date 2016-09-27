@@ -178,7 +178,7 @@ public class ParticleFlashStateRegisterDetails {
 
         String detailedType;
         int intValue;
-        byte[] floatBytes = new byte[4];
+        byte[] bytes = new byte[4];
         switch (type) {
             // int8_t
             case "bit":
@@ -192,7 +192,7 @@ public class ParticleFlashStateRegisterDetails {
                         .toBinaryString(value & 0xFF)).replace(' ', '0');
                 break;
 
-            // uint8_t
+            case "uint8_t":
             case "unsigned":
                 detailedType = "" + Byte.toUnsignedInt(value);
                 break;
@@ -209,13 +209,14 @@ public class ParticleFlashStateRegisterDetails {
                 detailedType = "'" + asCharRepresentation + "'";
                 break;
 
-            // int8_t
+            case "int8_t":
             case "signed":
                 detailedType = "" + value;
                 break;
 
-            // int16_t
+            case "int16_t":
             case "int":
+            case "int16":
             case "signed int":
                 intValue = ((state.getDataByte(sramAddress + 1) & 0xff) << 8) | (value & 0xff);
                 if ((intValue & (1 << 15)) != 0) {
@@ -226,14 +227,14 @@ public class ParticleFlashStateRegisterDetails {
                 detailedType += (intValue & 0x7FFF);
                 break;
 
-            // uint16_t
+            case "uint16_t":
             case "uint":
+            case "uint16":
             case "unsigned int":
                 intValue = ((state.getDataByte(sramAddress + 1) & 0xff) << 8) | (value & 0xff);
-                detailedType = "" + intValue;
+                detailedType = "" + (intValue & 0x7FFF);
                 break;
 
-            // int16_t
             case "dhex":
             case "hex16":
                 detailedType = "0x" + Integer.toHexString(state.getDataByte(sramAddress + 1) & 0xff) + " "
@@ -242,11 +243,11 @@ public class ParticleFlashStateRegisterDetails {
 
             // int32_t: on 1st byte written
             case "int32":
-                floatBytes[3] = (byte) (value & 0xff);
-                floatBytes[2] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
-                floatBytes[1] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
-                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 3) & 0xff);
-                intValue = ByteBuffer.wrap(floatBytes).getInt();
+                bytes[3] = (byte) (value & 0xff);
+                bytes[2] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                bytes[1] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
+                bytes[0] = (byte) (state.getDataByte(sramAddress + 3) & 0xff);
+                intValue = ByteBuffer.wrap(bytes).getInt();
                 if ((intValue & (1 << 31)) != 0) {
                     detailedType = "";
                 } else {
@@ -257,11 +258,11 @@ public class ParticleFlashStateRegisterDetails {
 
             // int32_t: on 2nd byte written
             case "int32[1]":
-                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
-                floatBytes[2] = (byte) (value & 0xff);
-                floatBytes[1] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
-                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
-                intValue = ByteBuffer.wrap(floatBytes).getInt();
+                bytes[3] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                bytes[2] = (byte) (value & 0xff);
+                bytes[1] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                bytes[0] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
+                intValue = ByteBuffer.wrap(bytes).getInt();
                 if ((intValue & (1 << 31)) != 0) {
                     detailedType = "";
                 } else {
@@ -272,11 +273,11 @@ public class ParticleFlashStateRegisterDetails {
 
             // int32_t: on 3rd byte written
             case "int32[2]":
-                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
-                floatBytes[2] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
-                floatBytes[1] = (byte) (value & 0xff);
-                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
-                intValue = ByteBuffer.wrap(floatBytes).getInt();
+                bytes[3] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
+                bytes[2] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                bytes[1] = (byte) (value & 0xff);
+                bytes[0] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                intValue = ByteBuffer.wrap(bytes).getInt();
                 if ((intValue & (1 << 31)) != 0) {
                     detailedType = "";
                 } else {
@@ -287,11 +288,11 @@ public class ParticleFlashStateRegisterDetails {
 
             // int32_t: on 4th byte written
             case "int32[3]":
-                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 3) & 0xff);
-                floatBytes[2] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
-                floatBytes[1] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
-                floatBytes[0] = (byte) (value & 0xff);
-                intValue = ByteBuffer.wrap(floatBytes).getInt();
+                bytes[3] = (byte) (state.getDataByte(sramAddress - 3) & 0xff);
+                bytes[2] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
+                bytes[1] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                bytes[0] = (byte) (value & 0xff);
+                intValue = ByteBuffer.wrap(bytes).getInt();
                 if ((intValue & (1 << 31)) != 0) {
                     detailedType = "";
                 } else {
@@ -302,73 +303,77 @@ public class ParticleFlashStateRegisterDetails {
 
             // on 1st byte written
             case "uint32":
-                floatBytes[3] = (byte) (value & 0xff);
-                floatBytes[2] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
-                floatBytes[1] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
-                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 3) & 0xff);
-                detailedType = "" + ByteBuffer.wrap(floatBytes).getInt();
+            case "uint32_t":
+                bytes[3] = (byte) (value & 0xff);
+                bytes[2] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                bytes[1] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
+                bytes[0] = (byte) (state.getDataByte(sramAddress + 3) & 0xff);
+                detailedType = "" + ByteBuffer.wrap(bytes).getInt();
                 break;
 
             // on 2nd byte written
             case "uint32[1]":
-                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
-                floatBytes[2] = (byte) (value & 0xff);
-                floatBytes[1] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
-                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
-                detailedType = "" + ByteBuffer.wrap(floatBytes).getInt();
+            case "uint32_t[1]":
+                bytes[3] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                bytes[2] = (byte) (value & 0xff);
+                bytes[1] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                bytes[0] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
+                detailedType = "" + ByteBuffer.wrap(bytes).getInt();
                 break;
 
             // on 3rd byte written
             case "uint32[2]":
-                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
-                floatBytes[2] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
-                floatBytes[1] = (byte) (value & 0xff);
-                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
-                detailedType = "" + ByteBuffer.wrap(floatBytes).getInt();
+            case "uint32_t[2]":
+                bytes[3] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
+                bytes[2] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                bytes[1] = (byte) (value & 0xff);
+                bytes[0] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                detailedType = "" + ByteBuffer.wrap(bytes).getInt();
                 break;
 
             // on 4th byte written
             case "uint32[3]":
-                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 3) & 0xff);
-                floatBytes[2] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
-                floatBytes[1] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
-                floatBytes[0] = (byte) (value & 0xff);
-                detailedType = "" + ByteBuffer.wrap(floatBytes).getInt();
+            case "uint32_t[3]":
+                bytes[3] = (byte) (state.getDataByte(sramAddress - 3) & 0xff);
+                bytes[2] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
+                bytes[1] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                bytes[0] = (byte) (value & 0xff);
+                detailedType = "" + ByteBuffer.wrap(bytes).getInt();
                 break;
 
             // on 1st byte written
             case "float32":
-                floatBytes[3] = (byte) (value & 0xff);
-                floatBytes[2] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
-                floatBytes[1] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
-                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 3) & 0xff);
-                detailedType = "" + ByteBuffer.wrap(floatBytes).getFloat();
+                bytes[3] = (byte) (value & 0xff);
+                bytes[2] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                bytes[1] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
+                bytes[0] = (byte) (state.getDataByte(sramAddress + 3) & 0xff);
+                detailedType = "" + ByteBuffer.wrap(bytes).getFloat();
                 break;
 
             // on 2nd byte written
             case "float32[1]":
-                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
-                floatBytes[2] = (byte) (value & 0xff);
-                floatBytes[1] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
-                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
-                detailedType = "" + ByteBuffer.wrap(floatBytes).getFloat();
+                bytes[3] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                bytes[2] = (byte) (value & 0xff);
+                bytes[1] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                bytes[0] = (byte) (state.getDataByte(sramAddress + 2) & 0xff);
+                detailedType = "" + ByteBuffer.wrap(bytes).getFloat();
                 break;
 
             // on 3rd byte written
             case "float32[2]":
-                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
-                floatBytes[2] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
-                floatBytes[1] = (byte) (value & 0xff);
-                floatBytes[0] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
-                detailedType = "" + ByteBuffer.wrap(floatBytes).getFloat();
+                bytes[3] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
+                bytes[2] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                bytes[1] = (byte) (value & 0xff);
+                bytes[0] = (byte) (state.getDataByte(sramAddress + 1) & 0xff);
+                detailedType = "" + ByteBuffer.wrap(bytes).getFloat();
                 break;
             // on 4th byte written
             case "float32[3]":
-                floatBytes[3] = (byte) (state.getDataByte(sramAddress - 3) & 0xff);
-                floatBytes[2] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
-                floatBytes[1] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
-                floatBytes[0] = (byte) (value & 0xff);
-                detailedType = "" + ByteBuffer.wrap(floatBytes).getFloat();
+                bytes[3] = (byte) (state.getDataByte(sramAddress - 3) & 0xff);
+                bytes[2] = (byte) (state.getDataByte(sramAddress - 2) & 0xff);
+                bytes[1] = (byte) (state.getDataByte(sramAddress - 1) & 0xff);
+                bytes[0] = (byte) (value & 0xff);
+                detailedType = "" + ByteBuffer.wrap(bytes).getFloat();
                 break;
 
             // int8_t
